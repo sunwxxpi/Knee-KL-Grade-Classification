@@ -1,15 +1,15 @@
 class EarlyStopping:
-    """ÁÖ¾îÁø patience ÀÌÈÄ·Î validation loss°¡ °³¼±µÇÁö ¾ÊÀ¸¸é ÇÐ½ÀÀ» Á¶±â ÁßÁö"""
+    """ì£¼ì–´ì§„ patience ì´í›„ë¡œ validation lossê°€ ê°œì„ ë˜ì§€ ì•Šìœ¼ë©´ í•™ìŠµì„ ì¡°ê¸° ì¤‘ì§€"""
     def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
         """
         Args:
-            patience (int): validation loss°¡ °³¼±µÈ ÈÄ ±â´Ù¸®´Â ±â°£
+            patience (int): validation lossê°€ ê°œì„ ëœ í›„ ê¸°ë‹¤ë¦¬ëŠ” ê¸°ê°„
                             Default: 7
-            verbose (bool): TrueÀÏ °æ¿ì °¢ validation lossÀÇ °³¼± »çÇ× ¸Þ¼¼Áö Ãâ·Â
+            verbose (bool): Trueì¼ ê²½ìš° ê° validation lossì˜ ê°œì„  ì‚¬í•­ ë©”ì„¸ì§€ ì¶œë ¥
                             Default: False
-            delta (float): °³¼±µÇ¾ú´Ù°í ÀÎÁ¤µÇ´Â monitered quantityÀÇ ÃÖ¼Ò º¯È­
+            delta (float): ê°œì„ ë˜ì—ˆë‹¤ê³  ì¸ì •ë˜ëŠ” monitered quantityì˜ ìµœì†Œ ë³€í™”
                             Default: 0
-            path (str): checkpointÀúÀå °æ·Î
+            path (str): checkpointì €ìž¥ ê²½ë¡œ
                             Default: 'checkpoint.pt'
         """
         self.patience = patience
@@ -39,7 +39,7 @@ class EarlyStopping:
             self.counter = 0
 
     def save_checkpoint(self, val_loss, model):
-        '''validation loss°¡ °¨¼ÒÇÏ¸é ¸ðµ¨À» ÀúÀåÇÑ´Ù.'''
+        '''validation lossê°€ ê°ì†Œí•˜ë©´ ëª¨ë¸ì„ ì €ìž¥í•œë‹¤.'''
         if self.verbose:
             print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
         torch.save(model_ft,'./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
