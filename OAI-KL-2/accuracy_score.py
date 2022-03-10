@@ -7,7 +7,10 @@ csv = pd.read_csv('./KneeXray/Test_correct.csv', names = ['data', 'label'])
 Test_correct_label = csv['label']
 Test_correct_label_list = Test_correct_label.values.tolist()
 
-csv = pd.read_csv('./submission.csv', names = ['data', 'label'])
+fold = 5
+epoch = 3
+
+csv = pd.read_csv('./submission/{}fold_epoch{}_submission.csv'.format(fold, epoch), names = ['data', 'label'])
 submission_label = csv['label']
 submission_label_list = submission_label.values.tolist()
 accuracy_score=accuracy_score(Test_correct_label_list, submission_label_list)
@@ -21,12 +24,12 @@ print(conf_matrix)
                              
 title = 'Confusion Matrix'
 cmap=plt.cm.Greens
-plt.figure(figsize=(6, 6))
+plt.figure(figsize=(7, 7.5))
 plt.imshow(conf_matrix, interpolation='nearest', cmap=cmap)  # , cmap=plt.cm.Greens
 plt.title(title, size=12)
 plt.colorbar(fraction=0.05, pad=0.05)
 tick_marks = np.arange(5, 5)
-plt.xlabel('Predicted label\naccuracy={:0.5f}'.format(accuracy_score))
+plt.xlabel('Predicted label\n\naccuracy={:0.5f}\nTotal : 1656\n0 : 639          1 : 296          2 : 447          3 : 223          4 : 51'.format(accuracy_score))
 plt.ylabel('True label')
 plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
 plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
