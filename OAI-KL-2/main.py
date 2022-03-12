@@ -11,7 +11,7 @@ from efficientnet_pytorch import EfficientNet
 from sklearn.model_selection import KFold
 import random
 from dataset import ImageDataset
-from EarlyStop import EarlyStopping
+from early_stop import EarlyStopping
 
 def train_for_kfold(model, dataloader, criterion, optimizer):
     model.train()
