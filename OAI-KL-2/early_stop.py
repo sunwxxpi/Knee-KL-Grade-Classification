@@ -1,3 +1,6 @@
+import numpy as np
+import torch
+
 class EarlyStopping:
     """주어진 patience 이후로 validation loss가 개선되지 않으면 학습을 조기 중지"""
     def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
@@ -21,13 +24,13 @@ class EarlyStopping:
         self.delta = delta
         self.path = path
 
-    def __call__(self, val_loss, model):
+    def __call__(self, val_loss, model, fold, epoch):
 
         score = -val_loss
 
         if self.best_score is None:
             self.best_score = score
-            self.save_checkpoint(val_loss, model)
+            self.save_checkpoint(val_loss, model, fold, epoch)
         elif score < self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
@@ -35,12 +38,12 @@ class EarlyStopping:
                 self.early_stop = True
         else:
             self.best_score = score
-            self.save_checkpoint(val_loss, model)
+            self.save_checkpoint(val_loss, model, fold, epoch)
             self.counter = 0
 
-    def save_checkpoint(self, val_loss, model):
+    def save_checkpoint(self, val_loss, model, fold, epoch):
         '''validation loss가 감소하면 모델을 저장한다.'''
         if self.verbose:
             print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
-        torch.save(model_ft,'./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+        torch.save(model,'./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
         self.val_loss_min = val_loss

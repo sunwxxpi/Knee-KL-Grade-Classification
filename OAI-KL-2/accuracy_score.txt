@@ -7,7 +7,6 @@ by KFold, EfficientNet-b4 (pretrained)
 22/03/09
 
 
-
 1fold_epoch2 : 0.509
 2fold_epoch4 : 0.635
 3fold_epoch3 : 0.649
@@ -15,3 +14,12 @@ by KFold, EfficientNet-b4 (pretrained)
 5fold_epoch3 : 0.657
 by KFold, EfficientNet-b4 (pretrained)
 22/03/10
+
+
+1fold_epoch2 : 0.608
+2fold_epoch6 : 0.584
+3fold_epoch4 : 0.653
+4fold_epoch3 : 0.623
+5fold_epoch3 : 0.668
+by KFold, EfficientNet-b4 (pretrained)
+22/03/12
