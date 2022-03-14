@@ -17,8 +17,8 @@ transform = transforms.Compose([
 test_data = ImageDataset(test)
 testloader = DataLoader(test_data, batch_size = 1, shuffle = False)
 
-fold = 3
-epoch = 2
+fold = 1
+epoch = 20
 
 model_ft = torch.load('./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold, epoch))
 preds = []

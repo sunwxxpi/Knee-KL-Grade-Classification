@@ -21,7 +21,7 @@ class ImageDataset(Dataset):
     def __getitem__(self, idx):
         path = self.path[idx]
         image = cv2.imread(path, cv2.IMREAD_COLOR)
-        image = cv2.resize(image, dsize=(380, 380), interpolation=cv2.INTER_CUBIC)
+        #image = cv2.resize(image, dsize=(380, 380), interpolation=cv2.INTER_CUBIC)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         if self.transforms:

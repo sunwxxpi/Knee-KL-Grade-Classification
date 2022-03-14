@@ -53,11 +53,11 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size = batch_size, sampler = train_sampler)
         test_loader = DataLoader(dataset, batch_size = batch_size, sampler = test_sampler)
     
-        model_ft = EfficientNet.from_pretrained('efficientnet-b4', num_classes=5)
+        model_ft = EfficientNet.from_pretrained('efficientnet-b1', num_classes=5)
         model_ft = nn.DataParallel(model_ft)
         model_ft = model_ft.cuda()
 
-        optimizer = optim.Adam(model_ft.parameters())
+        optimizer = optim.Adam(model_ft.parameters(), lr = 0.0005)
         criterion = nn.CrossEntropyLoss()
         history = {'train_loss': [], 'test_loss': []}
         
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     dataset = ImageDataset(train_data, transforms = transform)
     torch.manual_seed(42)
     epochs = 100
-    batch_size = 32
+    batch_size = 16
     k = 5
     splits = KFold(n_splits = k, shuffle = True, random_state = 42)
     foldperf = {}
