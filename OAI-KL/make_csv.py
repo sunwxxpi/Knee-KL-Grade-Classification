@@ -1,6 +1,8 @@
 import glob
 import pandas as pd
 
+#files = os.listdir('./KneeXray/train/0/')
+
 a = glob.glob('./KneeXray/train/0/'+'*.png')
 a_label = ['0' for x in range(0,len(a),1)]
 b = glob.glob('./KneeXray/train/1/'+'*.png')
