@@ -45,7 +45,7 @@ def test_for_kfold(model, dataloader, criterion):
 def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx,val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 20
+        patience = 10
         early_stopping = EarlyStopping(patience = patience, verbose = True)
     
         train_sampler = SubsetRandomSampler(train_idx)
@@ -96,7 +96,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
     print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f),np.mean(testl_f)))
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./KneeXray/Train.csv')
+    train_data = pd.read_csv('./KneeXray/Train_he.csv')
     transform = transforms.Compose([ 
                                     transforms.ToTensor(),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
