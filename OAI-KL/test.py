@@ -16,7 +16,7 @@ transform = transforms.Compose([
                                ])
 
 test_data = ImageDataset(test)
-testloader = DataLoader(test_data, batch_size = 1, shuffle = False)
+testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 fold = 1
 epoch = 5

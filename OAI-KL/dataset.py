@@ -7,7 +7,7 @@ from torch import nn, optim
 import torch.nn.functional as F
 
 class ImageDataset(Dataset):
-    def __init__(self, df, transforms = transforms.Compose([transforms.ToTensor()])):
+    def __init__(self, df, transforms=transforms.Compose([transforms.ToTensor()])):
         self.path = df['data']
         self.transforms = transforms
         if 'label' in df:
@@ -30,7 +30,7 @@ class ImageDataset(Dataset):
         if self.target is not None:
             return {
                     'image': image.float(),
-                    'target': torch.tensor(self.target[idx], dtype = torch.long)
+                    'target': torch.tensor(self.target[idx], dtype=torch.long)
                    }
         else: 
             return {

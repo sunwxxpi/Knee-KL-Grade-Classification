@@ -46,12 +46,12 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx,val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
         patience = 10
-        early_stopping = EarlyStopping(patience = patience, verbose = True)
+        early_stopping = EarlyStopping(patience=patience, verbose=True)
     
         train_sampler = SubsetRandomSampler(train_idx)
         test_sampler = SubsetRandomSampler(val_idx)
-        train_loader = DataLoader(dataset, batch_size = batch_size, sampler = train_sampler)
-        test_loader = DataLoader(dataset, batch_size = batch_size, sampler = test_sampler)
+        train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
+        test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
     
         model_ft = EfficientNet.from_pretrained('efficientnet-b4', num_classes=5)
         model_ft = nn.DataParallel(model_ft)
@@ -102,12 +102,12 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                   ])
     
-    dataset = ImageDataset(train_data, transforms = transform)
+    dataset = ImageDataset(train_data, transforms=transform)
     torch.manual_seed(42)
     epochs = 100
     batch_size = 32
     k = 5
-    splits = KFold(n_splits = k, shuffle = True, random_state = 42)
+    splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}
 
     train(dataset, epochs, batch_size, k, splits, foldperf)

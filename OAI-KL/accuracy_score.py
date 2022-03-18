@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import numpy as np
 
-csv = pd.read_csv('./KneeXray/Test_he_correct.csv', names = ['data', 'label'])
+csv = pd.read_csv('./KneeXray/Test_correct.csv', names = ['data', 'label'])
 Test_correct_label = csv['label']
 Test_correct_label_list = Test_correct_label.values.tolist()
 
