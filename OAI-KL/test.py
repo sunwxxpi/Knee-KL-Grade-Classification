@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from PIL import Image
 from dataset import ImageDataset
 
-test = pd.read_csv('./KneeXray/Test_he_correct.csv')
+test = pd.read_csv('./KneeXray/Test_correct.csv')
 
 transform = transforms.Compose([ 
                                 transforms.ToTensor(),
@@ -18,8 +18,8 @@ transform = transforms.Compose([
 test_data = ImageDataset(test)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
-fold = 1
-epoch = 5
+fold = 5
+epoch = 6
 
 model_ft = torch.load('./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold, epoch))
 preds = []

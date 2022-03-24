@@ -45,3 +45,12 @@ by KFold, EfficientNet-b4 (pretrained), Histogram Nomalization
 5fold_epoch2 : 0.631
 by KFold, EfficientNet-b4 (pretrained), CLAHE
 22/03/18
+
+1fold_epoch8 : 0.701
+2fold_epoch6 : 0.687
+3fold_epoch6 : 0.704
+4fold_epoch6 : 0.652
+5fold_epoch6 : 0.684
+by KFold, EfficientNet-b4 (pretrained)
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0007
