@@ -46,6 +46,36 @@ by KFold, EfficientNet-b4 (pretrained), Histogram Nomalization
 by KFold, EfficientNet-b4 (pretrained), CLAHE
 22/03/18
 
+1fold_epoch5 : 0.681
+2fold_epoch5 : 0.690
+3fold_epoch3 : 0.696
+4fold_epoch5 : 0.658
+5fold_epoch4 : 0.677
+by KFold, EfficientNet-b4 (pretrained)
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0003
+22/03/24
+
+1fold_epoch2 : 0.565
+2fold_epoch3 : 0.680
+3fold_epoch2 : 0.614
+4fold_epoch5 : 0.677
+5fold_epoch3 : 0.692
+by KFold, EfficientNet-b4 (pretrained)
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0005
+22/03/24
+
+1fold_epoch5 : 0.718
+2fold_epoch5 : 0.690
+3fold_epoch3 : 0.690
+4fold_epoch5 : 0.681
+5fold_epoch4 : 0.699
+by KFold, EfficientNet-b4 (pretrained)
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0006
+22/03/24
+
 1fold_epoch8 : 0.701
 2fold_epoch6 : 0.687
 3fold_epoch6 : 0.704
@@ -54,3 +84,4 @@ by KFold, EfficientNet-b4 (pretrained), CLAHE
 by KFold, EfficientNet-b4 (pretrained)
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.0007
+22/03/24

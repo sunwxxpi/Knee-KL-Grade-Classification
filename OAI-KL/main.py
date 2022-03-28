@@ -45,7 +45,7 @@ def test_for_kfold(model, dataloader, criterion):
 def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx,val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 30
+        patience = 40
         early_stopping = EarlyStopping(patience=patience, verbose=True)
     
         train_sampler = SubsetRandomSampler(train_idx)
@@ -57,7 +57,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         model_ft = nn.DataParallel(model_ft)
         model_ft = model_ft.cuda()
 
-        optimizer = optim.Adam(model_ft.parameters())
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.00065)
         criterion = nn.CrossEntropyLoss()
         history = {'train_loss': [], 'test_loss': []}
         
@@ -105,7 +105,7 @@ if __name__ == '__main__':
                                   ])
     dataset = ImageDataset(train_data, transforms=transform)
     torch.manual_seed(42)
-    epochs = 300
+    epochs = 200
     batch_size = 32
     k = 5
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
