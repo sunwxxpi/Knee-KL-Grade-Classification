@@ -96,7 +96,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
     print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f),np.mean(testl_f)))
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./KneeXray/Train.csv')
+    train_data = pd.read_csv('./KneeXray/Train_cn.csv')
     transform = transforms.Compose([ 
                                     transforms.ToTensor(),
                                     transforms.RandomHorizontalFlip(p = 0.5),

@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from PIL import Image
 from dataset import ImageDataset
 
-test = pd.read_csv('./KneeXray/Test_correct.csv')
+test = pd.read_csv('./KneeXray/Test_cn_correct.csv')
 
 transform = transforms.Compose([ 
                                 transforms.ToTensor(),
