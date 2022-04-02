@@ -85,3 +85,23 @@ by KFold, EfficientNet-b4 (pretrained)
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.0007
 22/03/24
+
+1fold_epoch3 : 0.649
+2fold_epoch5 : 0.689
+3fold_epoch5 : 0.654
+4fold_epoch4 : 0.707
+5fold_epoch6 : 0.693
+by KFold, EfficientNet-b4 (pretrained), Custom Nomalization
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0006
+22/04/02
+
+1fold_epoch7 : 0.682
+2fold_epoch6 : 0.703
+3fold_epoch2 : 0.668
+4fold_epoch5 : 0.693
+5fold_epoch8 : 0.682
+by KFold, EfficientNet-b4 (pretrained), Custom Nomalization
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.00065
+22/04/02
