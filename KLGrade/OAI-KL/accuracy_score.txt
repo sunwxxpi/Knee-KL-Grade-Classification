@@ -105,3 +105,13 @@ by KFold, EfficientNet-b4 (pretrained), Custom Nomalization
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.00065
 22/04/02
+
+1fold_epoch5 : 0.702
+2fold_epoch4 : 0.685
+3fold_epoch5 : 0.674
+4fold_epoch4 : 0.690
+5fold_epoch4 : 0.719
+by KFold, EfficientNet-b4 (pretrained)
+HorizontalFlip(p=0.5), Rotation(10)
+Adam lr=0.0006
+22/04/05

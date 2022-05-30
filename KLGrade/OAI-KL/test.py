@@ -37,7 +37,7 @@ for i in model_list_pt:
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
 
     fold_and_epoch = i[10:-3]
-    submit.to_csv('{}{}_submission.csv'.format(submission_path, fold_and_epoch))
+    submit.to_csv('{}{}_submission.csv'.format(submission_path, fold_and_epoch), index = False)
     print('save {}{}_submission.csv'.format(submission_path, fold_and_epoch))
 
 '''
