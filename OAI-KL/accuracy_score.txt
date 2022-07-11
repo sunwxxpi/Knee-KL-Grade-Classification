@@ -1,71 +1,3 @@
-1fold_epoch2 : 0.506
-2fold_epoch2 : 0.625
-3fold_epoch3 : 0.609
-4fold_epoch5 : 0.657
-5fold_epoch3 : 0.642
-by KFold, EfficientNet-b4 (pretrained)
-22/03/09
-
-1fold_epoch2 : 0.509
-2fold_epoch4 : 0.635
-3fold_epoch3 : 0.649
-4fold_epoch3 : 0.640
-5fold_epoch3 : 0.657
-by KFold, EfficientNet-b4 (pretrained)
-22/03/10
-
-1fold_epoch2 : 0.608
-2fold_epoch6 : 0.584
-3fold_epoch4 : 0.653
-4fold_epoch3 : 0.623
-5fold_epoch3 : 0.668
-by KFold, EfficientNet-b4 (pretrained)
-22/03/12
-
-1fold_epoch5 : 0.396
-2fold_epoch2 : 0.634
-3fold_epoch2 : 0.607
-4fold_epoch3 : 0.533
-5fold_epoch2 : 0.595
-by KFold, EfficientNet-b4 (pretrained), Histogram Equalization
-22/03/18
-
-1fold_epoch2 : 0.616
-2fold_epoch2 : 0.605
-3fold_epoch2 : 0.551
-4fold_epoch4 : 0.683
-5fold_epoch2 : 0.625
-by KFold, EfficientNet-b4 (pretrained), Histogram Nomalization
-22/03/18
-
-1fold_epoch2 : 0.628
-2fold_epoch2 : 0.573
-3fold_epoch2 : 0.639
-4fold_epoch4 : 0.589
-5fold_epoch2 : 0.631
-by KFold, EfficientNet-b4 (pretrained), CLAHE
-22/03/18
-
-1fold_epoch5 : 0.681
-2fold_epoch5 : 0.690
-3fold_epoch3 : 0.696
-4fold_epoch5 : 0.658
-5fold_epoch4 : 0.677
-by KFold, EfficientNet-b4 (pretrained)
-HorizontalFlip(p=0.5), Rotation(10)
-Adam lr=0.0003
-22/03/24
-
-1fold_epoch2 : 0.565
-2fold_epoch3 : 0.680
-3fold_epoch2 : 0.614
-4fold_epoch5 : 0.677
-5fold_epoch3 : 0.692
-by KFold, EfficientNet-b4 (pretrained)
-HorizontalFlip(p=0.5), Rotation(10)
-Adam lr=0.0005
-22/03/24
-
 1fold_epoch5 : 0.718
 2fold_epoch5 : 0.690
 3fold_epoch3 : 0.690
@@ -115,3 +47,13 @@ by KFold, EfficientNet-b4 (pretrained)
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.0006
 22/04/05
+
+1fold_epoch3 : 0.702
+2fold_epoch7 : 0.715
+3fold_epoch4 : 0.707
+4fold_epoch5 : 0.705
+5fold_epoch4 : 0.719
+by KFold, EfficientNet-b5 (pretrained)
+HorizontalFlip(p=0.5), Rotation(15)
+Adam lr=0.0007
+22/07/04

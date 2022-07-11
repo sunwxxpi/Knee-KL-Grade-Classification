@@ -45,7 +45,7 @@ def test_for_kfold(model, dataloader, criterion):
 def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx,val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 40
+        patience = 30
         early_stopping = EarlyStopping(patience=patience, verbose=True)
     
         train_sampler = SubsetRandomSampler(train_idx)
@@ -53,11 +53,11 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         #model_ft = EfficientNet.from_name('efficientnet-b4', num_classes=5)
-        model_ft = EfficientNet.from_pretrained('efficientnet-b4', num_classes=5)
+        model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=5)
         model_ft = nn.DataParallel(model_ft)
         model_ft = model_ft.cuda()
 
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.00065)
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0007)
         criterion = nn.CrossEntropyLoss()
         history = {'train_loss': [], 'test_loss': []}
         
@@ -96,7 +96,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
     print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f),np.mean(testl_f)))
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./KneeXray/Train_cn.csv')
+    train_data = pd.read_csv('./KneeXray/Train.csv')
     transform = transforms.Compose([ 
                                     transforms.ToTensor(),
                                     transforms.RandomHorizontalFlip(p = 0.5),
@@ -105,8 +105,8 @@ if __name__ == '__main__':
                                   ])
     dataset = ImageDataset(train_data, transforms=transform)
     torch.manual_seed(42)
-    epochs = 200
-    batch_size = 32
+    epochs = 100
+    batch_size = 16
     k = 5
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}
