@@ -11,7 +11,7 @@ import os
 
 test = pd.read_csv('./KneeXray/Test_correct.csv')
 
-transform = transforms.Compose([ 
+transform = transforms.Compose([
                                 transforms.ToTensor(),
                                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                ])
@@ -39,21 +39,3 @@ for i in model_list_pt:
     fold_and_epoch = i[10:-3]
     submit.to_csv('{}{}_submission.csv'.format(submission_path, fold_and_epoch), index = False)
     print('save {}{}_submission.csv'.format(submission_path, fold_and_epoch))
-
-'''
-fold = 2
-epoch = 6
-
-model_ft = torch.load('./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold, epoch))
-preds = []
-
-for batch in testloader:
-    with torch.no_grad():
-        image = batch['image'].cuda()
-        output = model_ft(image)
-        preds.extend([i.item() for i in torch.argmax(output, axis = 1)])
-
-submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
-submit.to_csv('./submission/{}fold_epoch{}_submission.csv'.format(fold, epoch), index = False)
-print('saving submission.csv.....')
-'''
