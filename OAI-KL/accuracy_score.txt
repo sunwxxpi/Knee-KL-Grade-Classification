@@ -57,3 +57,6 @@ by KFold, EfficientNet-b5 (pretrained)
 HorizontalFlip(p=0.5), Rotation(15)
 Adam lr=0.0007
 22/07/04
+
+1fold 5
+2fold 9

@@ -1,10 +1,7 @@
-import numpy as np
 import cv2
 import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset
+from torch.utils.data import Dataset
 from torchvision import transforms
-from torch import nn, optim
-import torch.nn.functional as F
 
 class ImageDataset(Dataset):
     def __init__(self, df, transforms=transforms.Compose([transforms.ToTensor()])):

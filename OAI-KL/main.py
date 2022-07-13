@@ -1,15 +1,11 @@
 import pandas as pd
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset, random_split, SubsetRandomSampler
+from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import transforms
 from torch import nn, optim
-from torchvision import models
-import torch.nn.functional as F
-from PIL import Image
 from efficientnet_pytorch import EfficientNet
 from sklearn.model_selection import KFold
-import random
 from dataset import ImageDataset
 from early_stop import EarlyStopping
 
@@ -88,7 +84,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         foldperf['fold{}'.format(fold+1)] = history  
     
     testl_f,tl_f =[],[]
-    k=5
+    k=1
 
     for f in range(1, k+1):
         tl_f.append(np.mean(foldperf['fold{}'.format(f)]['train_loss']))
@@ -106,9 +102,9 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                   ])
     dataset = ImageDataset(train_data, transforms=transform)
-    batch_size = 32
+    batch_size = 1
     epochs = 100
-    k = 5
+    k = 2
     torch.manual_seed(42)
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}

@@ -1,13 +1,9 @@
 import pandas as pd
-import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset
-from torchvision import transforms
-from torch import nn, optim
-from torchvision import models
-import torch.nn.functional as F
-from PIL import Image
-from dataset import ImageDataset
 import os
+import torch
+from torch.utils.data import DataLoader
+from torchvision import transforms
+from dataset import ImageDataset
 
 test = pd.read_csv('./KneeXray/Test_correct.csv')
 
