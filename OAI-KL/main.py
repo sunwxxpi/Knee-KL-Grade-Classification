@@ -47,7 +47,8 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
         patience = 30
-        early_stopping = EarlyStopping(patience=patience, verbose=True)
+        delta = 0.2
+        early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
     
         train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
         test_sampler = SubsetRandomSampler(val_idx)
@@ -59,7 +60,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0007) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0006) # optimizer
         criterion = nn.CrossEntropyLoss() # loss function
         history = {'train_loss': [], 'test_loss': []}
         
@@ -105,7 +106,7 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                   ])
     dataset = ImageDataset(train_data, transforms=transform)
-    batch_size = 16
+    batch_size = 32
     epochs = 100
     k = 5
     torch.manual_seed(42)
