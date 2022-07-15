@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from dataset import ImageDataset
 
-test = pd.read_csv('./KneeXray/Test_correct.csv')
+test = pd.read_csv('./KneeXray/Test_correct.csv') # _cn _clahe 등, 수정 O, 수정 x -> 결과 비교
 
 transform = transforms.Compose([
                                 transforms.ToTensor(),

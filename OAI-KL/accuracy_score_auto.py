@@ -17,6 +17,7 @@ for i in submission_list_csv:
     submission_label = csv['label']
     submission_label_list = submission_label.values.tolist()
     
+    '''
     print('{}'.format(i))
     print()
     
@@ -28,4 +29,10 @@ for i in submission_list_csv:
     print(matrix)
     
     print()
-    print()    
+    print()
+    '''
+    
+    print('{}'.format(i))
+    score = accuracy_score(Test_correct_label_list, submission_label_list)
+    print('accuracy_score : {}'.format(score))
+    print()

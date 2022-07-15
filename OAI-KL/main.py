@@ -42,7 +42,7 @@ def test_for_kfold(model, dataloader, criterion):
 def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 30
+        patience = 20
         delta = 0.2
         early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
     
@@ -56,8 +56,8 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0006) # optimizer
         criterion = nn.CrossEntropyLoss() # loss function
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0005) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
@@ -94,17 +94,17 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
     print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f),np.mean(testl_f)))
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./KneeXray/Train.csv')
+    train_data = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
     transform = transforms.Compose([ 
                                     transforms.ToTensor(),
                                     transforms.RandomHorizontalFlip(p = 0.5),
-                                    transforms.RandomRotation(10),
+                                    transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                   ])
     dataset = ImageDataset(train_data, transforms=transform)
-    batch_size = 1
+    batch_size = 32
     epochs = 100
-    k = 2
+    k = 5
     torch.manual_seed(42)
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}

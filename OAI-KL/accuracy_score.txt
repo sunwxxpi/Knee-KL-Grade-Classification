@@ -58,5 +58,23 @@ HorizontalFlip(p=0.5), Rotation(15)
 Adam lr=0.0007
 22/07/04
 
-1fold 5
-2fold 9
+1fold_epoch7 : 0.701
+2fold_epoch5 : 0.713
+3fold_epoch11 : 0.718
+4fold_epoch7 : 0.706
+5fold_epoch7 : 0.721
+by KFold, EfficientNet-b5 (pretrained)
+HorizontalFlip(p=0.5), Rotation(15)
+Adam lr=0.0005
+22/07/14
+
+<Best HyperParameter>
+1fold_epoch7 : 0.710
+2fold_epoch7 : 0.727
+3fold_epoch5 : 0.709
+4fold_epoch5 : 0.705
+5fold_epoch6 : 0.710
+by KFold, EfficientNet-b5 (pretrained)
+HorizontalFlip(p=0.5), Rotation(20)
+Adam lr=0.0005
+22/07/15
