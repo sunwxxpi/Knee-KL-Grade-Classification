@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 import os
 
 image_path = './KneeXray/test/4/'

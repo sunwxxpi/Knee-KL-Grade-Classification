@@ -1,13 +1,3 @@
-1fold_epoch5 : 0.718
-2fold_epoch5 : 0.690
-3fold_epoch3 : 0.690
-4fold_epoch5 : 0.681
-5fold_epoch4 : 0.699
-by KFold, EfficientNet-b4 (pretrained)
-HorizontalFlip(p=0.5), Rotation(10)
-Adam lr=0.0006
-22/03/24
-
 1fold_epoch8 : 0.701
 2fold_epoch6 : 0.687
 3fold_epoch6 : 0.704
@@ -17,16 +7,6 @@ by KFold, EfficientNet-b4 (pretrained)
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.0007
 22/03/24
-
-1fold_epoch3 : 0.649
-2fold_epoch5 : 0.689
-3fold_epoch5 : 0.654
-4fold_epoch4 : 0.707
-5fold_epoch6 : 0.693
-by KFold, EfficientNet-b4 (pretrained), Custom Nomalization
-HorizontalFlip(p=0.5), Rotation(10)
-Adam lr=0.0006
-22/04/02
 
 1fold_epoch7 : 0.682
 2fold_epoch6 : 0.703
@@ -38,16 +18,6 @@ HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.00065
 22/04/02
 
-1fold_epoch5 : 0.702
-2fold_epoch4 : 0.685
-3fold_epoch5 : 0.674
-4fold_epoch4 : 0.690
-5fold_epoch4 : 0.719
-by KFold, EfficientNet-b4 (pretrained)
-HorizontalFlip(p=0.5), Rotation(10)
-Adam lr=0.0006
-22/04/05
-
 1fold_epoch3 : 0.702
 2fold_epoch7 : 0.715
 3fold_epoch4 : 0.707
@@ -57,16 +27,6 @@ by KFold, EfficientNet-b5 (pretrained)
 HorizontalFlip(p=0.5), Rotation(15)
 Adam lr=0.0007
 22/07/04
-
-1fold_epoch7 : 0.701
-2fold_epoch5 : 0.713
-3fold_epoch11 : 0.718
-4fold_epoch7 : 0.706
-5fold_epoch7 : 0.721
-by KFold, EfficientNet-b5 (pretrained)
-HorizontalFlip(p=0.5), Rotation(15)
-Adam lr=0.0005
-22/07/14
 
 <Best HyperParameter>
 1fold_epoch7 : 0.710
@@ -78,3 +38,6 @@ by KFold, EfficientNet-b5 (pretrained)
 HorizontalFlip(p=0.5), Rotation(20)
 Adam lr=0.0005
 22/07/15
+
+DenseNet-201 Rotation(15) - 2080TI
+EfficientNet-b5 Rotation(15) - a100

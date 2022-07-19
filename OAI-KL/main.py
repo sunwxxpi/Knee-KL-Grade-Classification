@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import transforms
+from torchvision import transforms # , models
 from torch import nn, optim
 from efficientnet_pytorch import EfficientNet
 from sklearn.model_selection import KFold
@@ -51,6 +51,12 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
+        # model_ft = models.resnet152(pretrained=True)
+        # in_ftrs = model_ft.fc.in_features
+        # model_ft.fc = nn.Linear(in_ftrs, 5)
+        # model_ft = models.densenet201(pretrained=True)
+        # in_ftrs = model_ft.classifier.in_features
+        # model_ft.classifier = nn.Linear(in_ftrs, 5)
         # model_ft = EfficientNet.from_name('efficientnet-b5', num_classes=5)
         model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=5)
         model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -67,9 +73,9 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
             test_loss = test_for_kfold(model_ft, test_loader, criterion)
 
             train_loss = train_loss / len(train_loader)
-            # train_acc = train_correct / len(train_loader.sampler)*100
+            # train_loss = train_correct / len(train_loader.sampler)*100
             test_loss = test_loss / len(test_loader)
-            # test_acc = test_correct / len(test_loader.sampler)*100
+            # test_loss = test_correct / len(test_loader.sampler)*100
 
             print("Epoch:{}/{} AVG Training Loss:{:.3f} AVG Test Loss:{:.3f}".format(epoch + 1, epochs, train_loss, test_loss))
             
@@ -83,8 +89,8 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         
         foldperf['fold{}'.format(fold+1)] = history  
     
-    testl_f,tl_f =[],[]
-    k=1
+    testl_f, tl_f = [], []
+    k = 1
 
     for f in range(1, k+1):
         tl_f.append(np.mean(foldperf['fold{}'.format(f)]['train_loss']))
@@ -95,12 +101,12 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
 
 if __name__ == '__main__':
     train_data = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
-    transform = transforms.Compose([ 
+    transform = transforms.Compose([
                                     transforms.ToTensor(),
-                                    transforms.RandomHorizontalFlip(p = 0.5),
+                                    transforms.RandomHorizontalFlip(p=0.5),
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
-                                  ])
+                                    ])
     dataset = ImageDataset(train_data, transforms=transform)
     batch_size = 32
     epochs = 100
