@@ -1,43 +1,79 @@
-1fold_epoch8 : 0.701
-2fold_epoch6 : 0.687
-3fold_epoch6 : 0.704
-4fold_epoch6 : 0.652
-5fold_epoch6 : 0.684
+1fold_epoch8 : 0.709
+2fold_epoch6 : 0.692
+3fold_epoch6 : 0.705
+4fold_epoch6 : 0.674
+5fold_epoch6 : 0.698
 by KFold, EfficientNet-b4 (pretrained)
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.0007
+(380, 380)
 22/03/24
 
-1fold_epoch7 : 0.682
-2fold_epoch6 : 0.703
-3fold_epoch2 : 0.668
-4fold_epoch5 : 0.693
-5fold_epoch8 : 0.682
+1fold_epoch7 : 0.696
+2fold_epoch6 : 0.677
+3fold_epoch2 : 0.655
+4fold_epoch5 : 0.681
+5fold_epoch8 : 0.687
 by KFold, EfficientNet-b4 (pretrained), Custom Nomalization
 HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.00065
+(380, 380)
 22/04/02
 
-1fold_epoch3 : 0.702
-2fold_epoch7 : 0.715
-3fold_epoch4 : 0.707
+1fold_epoch3 : 0.708
+2fold_epoch7 : 0.724
+3fold_epoch4 : 0.709
 4fold_epoch5 : 0.705
-5fold_epoch4 : 0.719
+5fold_epoch4 : 0.707
 by KFold, EfficientNet-b5 (pretrained)
 HorizontalFlip(p=0.5), Rotation(15)
 Adam lr=0.0007
+(380, 380)
 22/07/04
 
-<Best HyperParameter>
-1fold_epoch7 : 0.710
-2fold_epoch7 : 0.727
-3fold_epoch5 : 0.709
-4fold_epoch5 : 0.705
-5fold_epoch6 : 0.710
+1fold_epoch7 : 0.716
+2fold_epoch7 : 0.726
+3fold_epoch5 : 0.711
+4fold_epoch5 : 0.713
+5fold_epoch6 : 0.699
 by KFold, EfficientNet-b5 (pretrained)
 HorizontalFlip(p=0.5), Rotation(20)
 Adam lr=0.0005
+(380, 380)
 22/07/15
 
-DenseNet-201 Rotation(15) - 2080TI
-EfficientNet-b5 Rotation(15) - a100
+1fold_epoch18 : 0.728
+2fold_epoch29 : 0.692
+3fold_epoch17 : 0.695
+4fold_epoch13 : 0.699
+5fold_epoch15 : 0.710
+by KFold, DenseNet-201 (pretrained)
+HorizontalFlip(p=0.5), Rotation(20)
+Adam lr=0.0005
+(300, 300)
+22/07/20
+
+1fold_epoch14 : 0.711
+2fold_epoch17 : 0.709
+3fold_epoch21 : 0.692
+4fold_epoch17 : 0.696
+5fold_epoch21 : 0.711
+by KFold, DenseNet-201 (pretrained)
+HorizontalFlip(p=0.5), Rotation(20)
+Adam lr=0.0005
+(380, 380)
+22/07/20
+
+1fold_epoch3 : 0.686
+2fold_epoch5 : 0.714
+3fold_epoch7 : 0.702
+4fold_epoch8 : 0.689
+5fold_epoch3 : 0.696
+by KFold, EfficientNet-b5 (pretrained)
+HorizontalFlip(p=0.5), Rotation(20)
+Adam lr=0.0005
+(300, 300)
+22/07/20
+
+300 300 resnet-152 - 2080TI
+300 300 efficientnet-b5 - a100

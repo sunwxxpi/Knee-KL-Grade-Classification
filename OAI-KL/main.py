@@ -42,8 +42,8 @@ def test_for_kfold(model, dataloader, criterion):
 def train(dataset, epochs, batch_size, k, splits, foldperf):
 
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 20
-        delta = 0.2
+        patience = 10
+        delta = 0.15
         early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
     
         train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler

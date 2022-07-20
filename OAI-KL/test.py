@@ -12,7 +12,7 @@ transform = transforms.Compose([
                                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                ])
 
-test_data = ImageDataset(test)
+test_data = ImageDataset(test, transforms=transform)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 model_path = './models/'
@@ -21,8 +21,8 @@ model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 
 for i in model_list_pt: 
-    model_ft = torch.load('{}{}'.format(model_path, i))
     preds = []
+    model_ft = torch.load('{}{}'.format(model_path, i))
 
     for batch in testloader:
         with torch.no_grad():

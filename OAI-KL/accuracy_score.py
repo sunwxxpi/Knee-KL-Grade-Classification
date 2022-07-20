@@ -7,8 +7,8 @@ csv = pd.read_csv('./KneeXray/Test_correct.csv', names = ['data', 'label'])
 Test_correct_label = csv['label']
 Test_correct_label_list = Test_correct_label.values.tolist()
 
-fold = 1
-epoch = 24
+fold = 5
+epoch = 3
 
 csv = pd.read_csv('./submission/{}fold_epoch{}_submission.csv'.format(fold, epoch), names=['data', 'label'])
 submission_label = csv['label']
@@ -31,7 +31,7 @@ plt.imshow(matrix, interpolation='nearest', cmap=cmap)  # , cmap=plt.cm.Greens
 plt.title(title, size=12)
 plt.colorbar(fraction=0.05, pad=0.05)
 tick_marks = np.arange(5, 5)
-plt.xlabel('Predicted label\n\naccuracy={:0.5f}\nTotal : 1656\n0 : 639          1 : 296          2 : 447          3 : 223          4 : 51'.format(score))
+plt.xlabel('Predicted label\n\naccuracy={:0.5f}\nbalanced accuracy={:0.5f}\nTotal : 1656\n0 : 639          1 : 296          2 : 447          3 : 223          4 : 51'.format(score, balanced_score))
 plt.ylabel('True label')
 plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
 plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
