@@ -1,3 +1,4 @@
+from numpy import isin
 import pandas as pd
 import os
 import torch
@@ -20,25 +21,18 @@ submission_path = './submission/'
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 
-preds = []
-for i in range(1656):
-    globals()['max_{}'.format(i)] = []
-
-for i in model_list_pt:
-    k = 0
+for i in model_list_pt: 
+    preds = []
     model_ft = torch.load('{}{}'.format(model_path, i))
 
     for batch in testloader:
         with torch.no_grad():
             image = batch['image'].cuda()
             output = model_ft(image)
-            globals()['max_{}'.format(k)].extend([j.item() for j in torch.argmax(output, axis=1)])
-            k = k + 1
+            preds.extend([i.item() for i in torch.argmax(output, axis=1)]) # tensor 자료형의 예측 라벨 값을 list로 뽑아 preds = []에 extend
+    
+    submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
 
-for i in range(1656):
-    preds.append(max(set(globals()['max_{}'.format(i)]), key=globals()['max_{}'.format(i)].count)) # Hard Voting Ensemble 후 예측 라벨 값을 preds = []에 append
-
-submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
-
-submit.to_csv('{}ensemble_submission.csv'.format(submission_path), index=False)
-print('save ensemble_submission.csv')
+    fold_and_epoch = i[10:-3]
+    submit.to_csv('{}{}_submission.csv'.format(submission_path, fold_and_epoch), index=False)
+    print('save {}{}_submission.csv'.format(submission_path, fold_and_epoch))

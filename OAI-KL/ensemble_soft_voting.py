@@ -87,7 +87,7 @@ for i in model_list_pt:
 preds = []
 ensemble = [0 for i in range(1656)]
 for i in range(1656):
-    ensemble[i] = (globals()['softmax_numpy_{}'.format('kfold_CNN_2fold_epoch17.pt')][i] + globals()['softmax_numpy_{}'.format('kfold_CNN_2fold_epoch7.pt')][i] + globals()['softmax_numpy_{}'.format('kfold_CNN_5fold_epoch38.pt')][i]*0.45)/2.45
+    ensemble[i] = (globals()['softmax_numpy_{}'.format('kfold_CNN_2fold_epoch17.pt')][i]*1.2 + globals()['softmax_numpy_{}'.format('kfold_CNN_2fold_epoch7.pt')][i]*1.2 + globals()['softmax_numpy_{}'.format('kfold_CNN_5fold_epoch38.pt')][i]*0.6)/3
     
     output = torch.tensor(ensemble[i])
     preds.extend([i.item() for i in torch.argmax(output, axis=1)]) # tensor 자료형의 예측 라벨 값을 list로 뽑아 preds = []에 extend
