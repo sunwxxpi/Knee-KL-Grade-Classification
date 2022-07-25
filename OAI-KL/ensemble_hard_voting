@@ -21,26 +21,24 @@ submission_path = './submission/'
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 
-for i in model_list_pt: 
-    globals()['softmax_numpy_{}'.format(i)] = []
+preds = []
+for i in range(1656):
+    globals()['max_{}'.format(i)] = []
+
+for i in model_list_pt:
+    k = 0
     model_ft = torch.load('{}{}'.format(model_path, i))
 
     for batch in testloader:
         with torch.no_grad():
             image = batch['image'].cuda()
             output = model_ft(image)
-            softmax = nn.Softmax(dim=1)
-            softmax_output = softmax(output).detach().cpu().numpy()
-            globals()['softmax_numpy_{}'.format(i)].append(softmax_output)
-            
-preds = []
-ensemble = [0 for i in range(1656)]
+            globals()['max_{}'.format(k)].extend([j.item() for j in torch.argmax(output, axis=1)])
+            k = k + 1
+
 for i in range(1656):
-    ensemble[i] = (globals()['softmax_numpy_{}'.format('kfold_CNN_2fold_epoch7.pt')][i] + globals()['softmax_numpy_{}'.format('kfold_CNN_5fold_epoch21.pt')][i]) / 2
-    
-    output = torch.tensor(ensemble[i])
-    preds.extend([i.item() for i in torch.argmax(output, axis=1)])
-    
+    preds.append(max(set(globals()['max_{}'.format(i)]), key=globals()['max_{}'.format(i)].count)) # Hard Voting Ensemble 후 예측 라벨 값을 preds = []에 append
+
 submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
 
 submit.to_csv('{}ensemble_submission.csv'.format(submission_path), index=False)

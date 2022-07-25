@@ -1,3 +1,4 @@
+from numpy import isin
 import pandas as pd
 import os
 import torch
@@ -28,7 +29,7 @@ for i in model_list_pt:
         with torch.no_grad():
             image = batch['image'].cuda()
             output = model_ft(image)
-            preds.extend([i.item() for i in torch.argmax(output, axis=1)])
+            preds.extend([i.item() for i in torch.argmax(output, axis=1)]) # tensor 자료형의 예측 라벨 값을 list로 뽑아 preds = []에 extend
     
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test['data']], 'label':preds})
 

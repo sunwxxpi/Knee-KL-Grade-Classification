@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score
 
 csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'])
 Test_correct_label = csv['label']
@@ -17,5 +17,7 @@ for i in submission_list_csv:
     
     print('{}'.format(i))
     score = accuracy_score(Test_correct_label_list, submission_label_list)
+    balanced_score = balanced_accuracy_score(Test_correct_label_list, submission_label_list)
     print('accuracy_score : {}'.format(score))
+    print('balanced_accuracy_score : {}'.format(balanced_score))
     print()

@@ -89,7 +89,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         
         foldperf['fold{}'.format(fold+1)] = history  
     
-    testl_f, tl_f = [], []
+    tl_f, testl_f = [], []
     k = 1
 
     for f in range(1, k+1):
