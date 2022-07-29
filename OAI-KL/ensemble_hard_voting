@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import torch
+import ttach as tta
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -11,9 +12,13 @@ test = pd.read_csv('./KneeXray/Test_correct.csv') # _cn _clahe 등, 수정 O, �
 transform = transforms.Compose([
                                 transforms.ToTensor(),
                                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
-                               ])
+                                ])
 test_data = ImageDataset(test, transforms=transform)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
+
+transform_tta = tta.Compose([
+                            tta.HorizontalFlip()
+                            ])
 
 model_path = './models/'
 submission_path = './submission/'
@@ -27,6 +32,7 @@ preds = []
 for i in model_list_pt:
     k = 0
     globals()['model_ft_{}'.format(i)] = torch.load('{}{}'.format(model_path, i))
+    globals()['model_ft_{}'.format(i)] = tta.ClassificationTTAWrapper(globals()['model_ft_{}'.format(i)], transform_tta)
 
     for batch in testloader:
         with torch.no_grad():
@@ -37,9 +43,9 @@ for i in model_list_pt:
 
 for i in range(1656):
     if len(globals()['max_{}'.format(i)]) == len(set(globals()['max_{}'.format(i)])): # 3개의 models Hard Voting Ensemble : 동점인 경우 -> Soft Voting
-        '''
         globals()['max_{}'.format(i)].sort()
-        preds.append(globals()['max_{}'.format(i)][2])
+        preds.append(globals()['max_{}'.format(i)][1])
+        
         '''
         for i in model_list_pt:
             globals()['softmax_numpy_{}'.format(i)] = []
@@ -58,6 +64,7 @@ for i in range(1656):
             
             output = torch.tensor(ensemble[i])
             preds.extend([i.item() for i in torch.argmax(output, axis=1)]) # tensor 자료형의 예측 라벨 값을 list로 뽑아 preds = []에 extend
+            '''
         
     else:
         preds.append(max(set(globals()['max_{}'.format(i)]), key=globals()['max_{}'.format(i)].count)) # Hard Voting Ensemble 후 예측 라벨 값을 preds = []에 append
