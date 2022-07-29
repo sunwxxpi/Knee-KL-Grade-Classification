@@ -28,8 +28,8 @@ class ImageDataset(Dataset):
             return {
                     'image': image.float(),
                     'target': torch.tensor(self.target[idx], dtype=torch.long)
-                   }
+                    }
         else: 
             return {
                     'image': image.float()
-                   }
+                    }
