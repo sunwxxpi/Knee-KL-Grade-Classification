@@ -35,7 +35,7 @@ for i in range(1656):
     # ensemble[i][k] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][k] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][k] + globals()['{}_probs'.format('3fold_epoch21_submission.csv')][i][k]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
 
 ensemble_output = torch.tensor(ensemble)
-preds.extend([i.item() for i in torch.argmax(ensemble_output, axis=1)]) # tensor 자료형의 예측 라벨 값을 list로 뽑아 preds = []에 extend
+preds.extend([i.item() for i in torch.argmax(ensemble_output, axis=1)])
     
 submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds})
 
