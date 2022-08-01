@@ -18,6 +18,6 @@ for i in submission_list_csv:
     submission_label_list = submission_label.values.tolist()
     
     print('{}'.format(i))
-    report = classification_report(Test_correct_label_list, submission_label_list, labels=label, digits=4) # micro avg f1 score = accuracy score
+    report = classification_report(Test_correct_label_list, submission_label_list, labels=label, digits=4)
     print(report)
     print()
