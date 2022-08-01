@@ -40,7 +40,6 @@ def test_for_kfold(model, dataloader, criterion):
     return test_loss
 
 def train(dataset, epochs, batch_size, k, splits, foldperf):
-
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
         patience = 10
         delta = 0.15
@@ -97,17 +96,17 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         testl_f.append(np.mean(foldperf['fold{}'.format(f)]['test_loss']))
 
     print('Performance of {} fold cross validation'.format(k))
-    print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f),np.mean(testl_f)))
+    print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f), np.mean(testl_f)))
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
+    train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
     transform = transforms.Compose([
                                     transforms.ToTensor(),
                                     transforms.RandomHorizontalFlip(p=0.5),
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                     ])
-    dataset = ImageDataset(train_data, transforms=transform)
+    dataset = ImageDataset(train_csv, transforms=transform)
     batch_size = 32
     epochs = 100
     k = 5
