@@ -10,7 +10,7 @@ submission_path = './submission/'
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
 
-label = ['0', '1', '2', '3', '4'] # 라벨 설정
+label = ['0', '1', '2', '3', '4']
 
 for i in submission_list_csv:
     submission_csv = pd.read_csv('{}{}'.format(submission_path, i), names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'])

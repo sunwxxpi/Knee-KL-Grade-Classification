@@ -2,7 +2,7 @@ import glob
 import pandas as pd
 
 a = glob.glob('./KneeXray/train/0_cn/'+'*.png') # glob.glob >> list 형식으로 반환
-a_label = ['0' for x in range(0,len(a),1)] # 개수만큼 '0' >> list 형식으로 반환
+a_label = ['0' for x in range(0,len(a),1)]
 b = glob.glob('./KneeXray/train/1_cn/'+'*.png')
 b_label = ['1' for x in range(0,len(b),1)]
 c = glob.glob('./KneeXray/train/2_cn/'+'*.png')
