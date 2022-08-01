@@ -1,6 +1,5 @@
 import pandas as pd
 import os
-from sklearn.exceptions import DataDimensionalityWarning
 import torch
 
 # mode = 'soft_voting'
@@ -60,7 +59,7 @@ elif mode == 'hard_voting':
                 probs_ensemble[i][k] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][k] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][k] + globals()['{}_probs'.format('3fold_epoch21_submission.csv')][i][k]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
                 
             probs_ensemble_output = torch.tensor(probs_ensemble)
-            preds[i].append([k.item() for k in torch.argmax(probs_ensemble_output[i], axis=1)])
+            preds[i].append([k.item() for k in torch.argmax(probs_ensemble_output[i], axis=1)]) # 좀 고쳐야함
         
         else:
             preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
