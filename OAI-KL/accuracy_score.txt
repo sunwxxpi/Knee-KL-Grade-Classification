@@ -62,48 +62,50 @@ Adam lr=0.0005
 22/07/21
 ----------------------------------------(300, 300)----------------------------------------
 
+Accuracy / Macro Avg F1-Score / Weighted Avg F1-Score
+
 ----------------------------------------(380, 380)----------------------------------------
 <DenseNet-201 (pretrained)>
-1fold_epoch14 : 0.711 >>>
-2fold_epoch17 : 0.709 >>> o
-3fold_epoch21 : 0.692 >>>
-4fold_epoch17 : 0.696 >>>
-5fold_epoch21 : 0.711 >>>
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch14 : 0.7271 / 0.6945 / 0.6960
+2fold_epoch17 : 0.7258 / 0.6983 / 0.6993
+3fold_epoch21 : 0.6920 / 0.6915 / 0.6817
+4fold_epoch17 : 0.7011 / 0.6673 / 0.6690
+5fold_epoch21 : 0.7258 / 0.6889 / 0.6947 
+HorizontalFlip(p=0.5), Rotation(20) , TTA
 Adam lr=0.0005
 22/07/20
 
 <EfficientNet-b5 (pretrained)>
-1fold_epoch7 : 0.716 >>>
-2fold_epoch7 : 0.726 >>> 
-3fold_epoch5 : 0.711 >>>
-4fold_epoch5 : 0.713
-5fold_epoch6 : 0.699
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch7 : 0.7222 / 0.7095 / 0.7079
+2fold_epoch7 : 0.7283 / 0.6918 / 0.6999
+3fold_epoch5 : 0.7150 / 0.7131 / 0.7090
+4fold_epoch5 : 0.7198 / 0.6838 / 0.6851
+5fold_epoch6 : 0.7089 / 0.6777 / 0.6970
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/15
 
 <EfficientNet-b5 (pretrained)>
-1fold_epoch3 : 0.708 >>>
-2fold_epoch7 : 0.724 >>> o
-3fold_epoch4 : 0.709
-4fold_epoch5 : 0.705
-5fold_epoch4 : 0.707 >>>
-HorizontalFlip(p=0.5), Rotation(15)
+1fold_epoch3 : 0.7107 / 0.6534 / 0.6558
+2fold_epoch7 : 0.7349 / 0.6784 / 0.7061
+3fold_epoch4 : 0.7132 / 0.6638 / 0.6775
+4fold_epoch5 : 0.7144 / 0.6918 / 0.6964
+5fold_epoch4 : 0.7174 / 0.7026 / 0.6974
+HorizontalFlip(p=0.5), Rotation(15), TTA
 Adam lr=0.0007
 22/07/04
 
 <ResNet-152 (pretrained)>
-1fold_epoch53 : 0.704
-2fold_epoch36 : 0.705 >>>
-3fold_epoch45 : 0.690
-4fold_epoch51 : 0.699
-5fold_epoch38 : 0.691 >>>
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch53 : 0.7029 / 0.6759 / 0.6803
+2fold_epoch36 : 0.7132 / 0.6843 / 0.6866
+3fold_epoch45 : 0.6999 / 0.6759 / 0.6834
+4fold_epoch51 : 0.7023 / 0.6909 /  0.6946
+5fold_epoch38 : 0.6914 / 0.6721 / 0.6734
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/21
 ----------------------------------------(380, 380)----------------------------------------
 
  - local
- - 2080TI
  - a100
+ - 2080TI
