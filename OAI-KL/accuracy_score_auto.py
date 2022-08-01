@@ -3,8 +3,8 @@ import os
 from sklearn.metrics import classification_report
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'])
-Test_correct_label = test_csv['label']
-Test_correct_label_list = Test_correct_label.values.tolist()
+Test_correct_labels = test_csv['label']
+Test_correct_labels_list = Test_correct_labels.values.tolist()
 
 submission_path = './submission/'
 submission_list = os.listdir(submission_path)
@@ -18,6 +18,6 @@ for i in submission_list_csv:
     submission_label_list = submission_label.values.tolist()
     
     print('{}'.format(i))
-    report = classification_report(Test_correct_label_list, submission_label_list, labels=label, digits=4)
+    report = classification_report(Test_correct_labels_list, submission_label_list, labels=label, digits=4)
     print(report)
     print()
