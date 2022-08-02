@@ -36,17 +36,17 @@ for i in submission_list_csv:
     for j in range(1656):
         globals()['{}_probs'.format(i)].append(globals()['{}_image_{}'.format(i, j)])
         
-mode = 'soft_voting'
-# mode = 'hard_voting'
+# mode = 'soft_voting'
+mode = 'hard_voting'
 
 preds = []
 
 if mode == 'soft_voting':
     for i in range(1656):
-        for k in range(5):
-            # probs_ensemble[i][k] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][k] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][k]) / 2
-        
-            probs_ensemble[i][k] = (globals()['{}_probs'.format('1fold_epoch53_submission.csv')][i][k] + globals()['{}_probs'.format('3fold_epoch21_submission.csv')][i][k] + globals()['{}_probs'.format('5fold_epoch4_submission.csv')][i][k]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
+        for j in range(5):
+            # probs_ensemble[i][j] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][j] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][j]) / 2
+            
+            probs_ensemble[i][j] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][j] + globals()['{}_probs'.format('3fold_epoch5_submission.csv')][i][j] + globals()['{}_probs'.format('4fold_epoch51_submission.csv')][i][j]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
     
     ensemble_output = torch.tensor(probs_ensemble)
     preds.extend([i.item() for i in torch.argmax(ensemble_output, axis=1)])
@@ -57,7 +57,7 @@ elif mode == 'hard_voting':
             for j in range(5):
                 # probs_ensemble[i][j] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][j] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][j]) / 2
             
-                probs_ensemble[i][j] = (globals()['{}_probs'.format('1fold_epoch53_submission.csv')][i][j] + globals()['{}_probs'.format('3fold_epoch21_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch4_submission.csv')][i][j]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
+                probs_ensemble[i][j] = (globals()['{}_probs'.format('1fold_epoch14_submission.csv')][i][j] + globals()['{}_probs'.format('3fold_epoch5_submission.csv')][i][j] + globals()['{}_probs'.format('4fold_epoch51_submission.csv')][i][j]) / 3 # 1.35 1.35 0.3 || 1.3 1.35 0.35 || 1.35 1.3 0.35
             
             probs_ensemble_output = torch.tensor([probs_ensemble[i]])
             preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
@@ -67,5 +67,5 @@ elif mode == 'hard_voting':
             
 submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds})
 
-submit.to_csv('{}ensemble_submission.csv'.format(submission_path), index=False)
+submit.to_csv('{}10fold_epoch10_submission.csv'.format(submission_path), index=False)
 print('save ensemble_submission.csv')
