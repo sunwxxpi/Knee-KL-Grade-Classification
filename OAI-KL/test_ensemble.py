@@ -1,5 +1,5 @@
-import pandas as pd
 import os
+import pandas as pd
 import torch
 
 test_csv = pd.read_csv('./KneeXray/Test.csv')
@@ -26,7 +26,6 @@ for i in submission_list_csv:
     for j in range(1656):
         globals()['{}_image_{}'.format(i, j)] = [0 for k in range(5)]
         
-    
     for j in range(5):
         submission_probs = submission_csv['prob_{}'.format(j)]
         submission_probs_list = submission_probs.values.tolist()

@@ -1,5 +1,5 @@
-import pandas as pd
 import os
+import pandas as pd
 from sklearn.metrics import classification_report
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'])
