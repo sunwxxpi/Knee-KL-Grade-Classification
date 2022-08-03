@@ -1,2 +1,2 @@
-# KLGrade
-SunWoo98Pi's KLGrade
+# KLGrade Classification
+Knee Osteoarthritis_KLGrade Classification using Deep-Learning
