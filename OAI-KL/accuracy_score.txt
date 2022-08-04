@@ -19,45 +19,46 @@ HorizontalFlip(p=0.5), Rotation(10)
 Adam lr=0.00065
 (380, 380)
 22/04/02
+-------------------------------------------(구)-------------------------------------------
 
 ----------------------------------------(300, 300)----------------------------------------
 <DenseNet-201 (pretrained)>
-1fold_epoch18 : 0.728
-2fold_epoch29 : 0.692
-3fold_epoch17 : 0.695
-4fold_epoch13 : 0.699
-5fold_epoch15 : 0.710
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch18 : 0.7234 / 0.7016 / 0.6960
+2fold_epoch29 : 0.6993 / 0.6412 / 0.6481
+3fold_epoch17 : 0.7029 / 0.6549 / 0.6622
+4fold_epoch13 : 0.7029 / 0.6715 / 0.6720
+5fold_epoch15 : 0.7204 / 0.7040 / 0.6957
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/20
 
 <EfficientNet-b5 (pretrained)>
-1fold_epoch3 : 0.686
-2fold_epoch5 : 0.714 
-3fold_epoch7 : 0.702
-4fold_epoch8 : 0.689
-5fold_epoch3 : 0.696
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch3 : 0.6860 / 0.6994 / 0.6858
+2fold_epoch5 : 0.7222 / 0.6723 / 0.6794
+3fold_epoch7 : 0.7017 / 0.6548 / 0.6622
+4fold_epoch8 : 0.6975 / 0.6697 / 0.6717
+5fold_epoch3 : 0.6987 / 0.6595 / 0.6568
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/20
 
 <EfficientNet-b5 (pretrained)>
-1fold_epoch3 : 0.700
-2fold_epoch7 : 0.699
-3fold_epoch2 : 0.690
-4fold_epoch5 : 0.701
-5fold_epoch5 : 0.705
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch3 : 0.7017 / 0.6920 / 0.6852
+2fold_epoch7 : 0.7077 / 0.6906 / 0.6926
+3fold_epoch2 : 0.7029 / 0.6398 / 0.6422
+4fold_epoch5 : 0.7023 / 0.6598 / 0.6549
+5fold_epoch5 : 0.7216 / 0.7042 / 0.7024
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/21
 
 <ResNet-152 (pretrained)>
-1fold_epoch51 : 0.684
-2fold_epoch42 : 0.684
-3fold_epoch67 : 0.694
-4fold_epoch51 : 0.690
-5fold_epoch62 : 0.693
-HorizontalFlip(p=0.5), Rotation(20)
+1fold_epoch51 : 0.6926 / 0.6847 / 0.6843
+2fold_epoch42 : 0.6787 / 0.6161 / 0.6155
+3fold_epoch67 : 0.6957 / 0.6747 / 0.6732
+4fold_epoch51 : 0.6914 / 0.6527 / 0.6646
+5fold_epoch62 : 0.6902 / 0.6411 / 0.6604
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/21
 ----------------------------------------(300, 300)----------------------------------------
@@ -71,7 +72,7 @@ Accuracy / Macro Avg F1-Score / Weighted Avg F1-Score
 3fold_epoch21 : 0.6920 / 0.6915 / 0.6817
 4fold_epoch17 : 0.7011 / 0.6673 / 0.6690
 5fold_epoch21 : 0.7258 / 0.6889 / 0.6947 
-HorizontalFlip(p=0.5), Rotation(20) , TTA
+HorizontalFlip(p=0.5), Rotation(20), TTA
 Adam lr=0.0005
 22/07/20
 
