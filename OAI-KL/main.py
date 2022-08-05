@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import transforms # , models
+from torchvision import transforms, models
 from torch import nn, optim
 from efficientnet_pytorch import EfficientNet
 from sklearn.model_selection import KFold
@@ -53,11 +53,21 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         # model_ft = models.resnet152(pretrained=True)
         # in_ftrs = model_ft.fc.in_features
         # model_ft.fc = nn.Linear(in_ftrs, 5)
+        
         # model_ft = models.densenet201(pretrained=True)
         # in_ftrs = model_ft.classifier.in_features
         # model_ft.classifier = nn.Linear(in_ftrs, 5)
-        # model_ft = EfficientNet.from_name('efficientnet-b5', num_classes=5)
-        model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=5)
+        
+        # model_ft = EfficientNet.from_pretrained('efficientnet-b5', num_classes=5)
+        
+        model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
+        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+        sequential_0 = model_ft.classifier._modules.get('0')
+        sequential_1 = nn.Linear(in_ftrs, 5)
+        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        
+        # model_ft = torch.hub.load('hankyul2/EfficientNetV2-pytorch', 'efficientnet_v2_s_in21k', pretrained=True, nclass=5)
+        
         model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
@@ -107,7 +117,7 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                     ])
     dataset = ImageDataset(train_csv, transforms=transform)
-    batch_size = 32
+    batch_size = 16
     epochs = 100
     k = 5
     torch.manual_seed(42)
