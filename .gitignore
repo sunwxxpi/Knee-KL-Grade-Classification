@@ -1,7 +1,8 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Dataset / Models / Submissions
 OAI-KL/KneeXray/
 OAI-KL/models/
 OAI-KL/submission/
-
-# Byte-compiled / optimized / DLL files
-OAI-KL/__pycache__/
-*.py[cod]
