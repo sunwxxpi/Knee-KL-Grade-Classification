@@ -3,5 +3,5 @@ OAI-KL/models/
 OAI-KL/submission/
 
 # Byte-compiled / optimized / DLL files
-OAI-KL./__pycache__/
+OAI-KL/__pycache__/
 *.py[cod]
