@@ -1,4 +1,5 @@
 import os
+import natsort
 import pandas as pd
 import ttach as tta
 import torch
@@ -24,6 +25,7 @@ model_path = './models/'
 submission_path = './submission/'
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
+model_list_pt = natsort.natsorted(model_list_pt)
 
 for i in model_list_pt: 
     preds = []
