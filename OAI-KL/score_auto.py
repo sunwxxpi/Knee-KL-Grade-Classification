@@ -1,7 +1,7 @@
 import os
 import natsort
 import pandas as pd
-from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score, f1_score
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
@@ -18,6 +18,10 @@ for i in submission_list_csv:
     submission_labels_list = submission_labels.values.tolist()
     
     print('{}'.format(i))
-    report = classification_report(test_correct_labels_list, submission_labels_list, digits=4)
-    print(report)
+    accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
+    f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
+    f1_weighted = f1_score(test_correct_labels_list, submission_labels_list, average='weighted')
+    print('Accuracy Score : {}'.format(accuracy))
+    print('F1 Score (Macro) : {}'.format(f1_macro))
+    print('F1 Score (Weighted) : {}'.format(f1_weighted))
     print()
