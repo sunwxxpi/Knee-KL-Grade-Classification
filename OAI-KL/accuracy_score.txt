@@ -96,8 +96,8 @@ Adam lr=0.0005
 22/07/20
 
 <EfficientNet-b5 (pretrained)>
-1fold_epoch7 : 0.7222 / 0.7095 / 0.7079 >>>>>>>>>>>>>>>>>>>> F1
-2fold_epoch7 : 0.7283 / 0.6918 / 0.6999 >>>>>>>>>>>>>>>>>>>> Accuracy
+1fold_epoch7 : 0.7222 / 0.7095 / 0.7079 
+2fold_epoch7 : 0.7283 / 0.6918 / 0.6999 >>>>>>>>>>>>>>>>>>>>
 3fold_epoch5 : 0.7150 / 0.7131 / 0.7090
 4fold_epoch5 : 0.7198 / 0.6838 / 0.6851
 5fold_epoch6 : 0.7089 / 0.6777 / 0.6970
@@ -116,6 +116,17 @@ HorizontalFlip(p=0.5), Rotation(15), TTA
 Batch Size : 32
 Adam lr=0.0007
 22/07/04
+
+<EfficientNet_V2_s (pretrained.1k)>
+1fold_epoch26 : 0.7319 / 0.7329 / 0.7331
+2fold_epoch32 : 0.7264 / 0.7294 / 0.7212
+3fold_epoch32 : 0.7264 / 0.7328 / 0.7279
+4fold_epoch26 : 0.7434 / 0.7273 / 0.7276 
+5fold_epoch32 : 0.7319 / 0.7185 / 0.7230
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0006
+22/08/08
 
 <EfficientNet_V2_s (pretrained.1k)>
 1fold_epoch26 : 0.7301 / 0.7278 / 0.7275
@@ -159,4 +170,4 @@ Adam lr=0.0005
 
 effi_v2_s batch16 (380, 380) lr 0.0006 - local
  - a100
-effi-b4 batch32 (448, 448) lr 0.0005 - 2080TI
+Noisy Student(b5) batch32 (380, 380) lr 0.0006 - 2080TI
