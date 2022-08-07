@@ -72,7 +72,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0005) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0007) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
@@ -99,7 +99,6 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         foldperf['fold{}'.format(fold+1)] = history  
     
     tl_f, testl_f = [], []
-    k = 1
 
     for f in range(1, k+1):
         tl_f.append(np.mean(foldperf['fold{}'.format(f)]['train_loss']))
