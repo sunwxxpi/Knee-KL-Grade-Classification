@@ -1,5 +1,5 @@
-import numpy as np
 import torch
+import numpy as np
 
 class EarlyStopping:
     def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):

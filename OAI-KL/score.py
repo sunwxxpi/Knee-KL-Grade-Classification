@@ -1,7 +1,7 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import torch
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay, classification_report
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)

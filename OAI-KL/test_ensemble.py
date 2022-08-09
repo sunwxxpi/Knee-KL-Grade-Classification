@@ -1,7 +1,7 @@
 import os
-import pandas as pd
-import numpy as np
 import torch
+import numpy as np
+import pandas as pd
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']

@@ -1,5 +1,5 @@
-import cv2
 import torch
+import cv2
 from torch.utils.data import Dataset
 from torchvision import transforms
 
