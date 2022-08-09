@@ -8,8 +8,8 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-fold = 1
-epoch = 7
+fold = 10
+epoch = 10
 
 submission_csv = pd.read_csv('./submission/{}fold_epoch{}_submission.csv'.format(fold, epoch), names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
 submission_labels = submission_csv['label']
