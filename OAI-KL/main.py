@@ -1,3 +1,4 @@
+import ssl
 import torch
 import timm
 import numpy as np
@@ -8,6 +9,8 @@ from torchvision import transforms, models
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
+
+# ssl._create_default_https_context = ssl._create_unverified_context
 
 def train_for_kfold(model, dataloader, criterion, optimizer):
     train_loss = 0.0
