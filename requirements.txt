@@ -20,7 +20,7 @@ numpy @ file:///C:/ci/numpy_and_numpy_base_1652802206636/work
 opencv-python==4.6.0.66
 packaging==21.3
 pandas==1.4.2
-Pillow==9.0.1
+Pillow==9.2.0
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pyOpenSSL @ file:///opt/conda/conda-bld/pyopenssl_1643788558760/work
 pyparsing==3.0.9
