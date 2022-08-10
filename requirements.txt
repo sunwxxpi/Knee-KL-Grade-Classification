@@ -5,7 +5,6 @@ charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654
 colorama==0.4.5
 cryptography @ file:///C:/ci/cryptography_1652101772384/work
 cycler==0.11.0
-efficientnet-pytorch==0.7.1
 fonttools==4.33.3
 idna @ file:///tmp/build/80754af9/idna_1637925883363/work
 imageio==2.20.0
@@ -41,7 +40,6 @@ timm==0.6.7
 torch==1.12.1
 torchaudio==0.12.1
 torchvision==0.13.1
-tqdm==4.64.0
 ttach==0.0.3
 typing_extensions @ file:///opt/conda/conda-bld/typing_extensions_1647553014482/work
 urllib3 @ file:///C:/ci/urllib3_1650640043075/work
