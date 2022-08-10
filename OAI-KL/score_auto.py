@@ -21,7 +21,9 @@ for i in submission_list_csv:
     accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
     f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
     f1_weighted = f1_score(test_correct_labels_list, submission_labels_list, average='weighted')
-    print('Accuracy Score : {}'.format(accuracy))
-    print('F1 Score (Macro) : {}'.format(f1_macro))
-    print('F1 Score (Weighted) : {}'.format(f1_weighted))
-    print()
+    
+    if accuracy > 0.7 and f1_macro > 0.7 and f1_weighted > 0.7:
+        print('Accuracy Score : {}'.format(accuracy))
+        print('F1 Score (Macro) : {}'.format(f1_macro))
+        print('F1 Score (Weighted) : {}'.format(f1_weighted))
+        print()
