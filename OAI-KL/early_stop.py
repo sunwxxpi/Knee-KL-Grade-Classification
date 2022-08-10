@@ -25,7 +25,7 @@ class EarlyStopping:
 
     def save_checkpoint(self, val_loss, model, fold, epoch):
         if self.verbose:
-            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+            print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
             
         torch.save(model,'./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
         self.val_loss_min = val_loss
