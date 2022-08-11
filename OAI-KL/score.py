@@ -21,7 +21,7 @@ matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, norm
 
 title = 'Confusion Matrix'
 plt.figure(1, figsize=(7, 7.5))
-plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Blues)
+plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Purples)
 plt.title(title, size=12)
 plt.colorbar(fraction=0.05, pad=0.05)
 tick_marks = np.arange(5, 5)
@@ -31,7 +31,7 @@ plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
 plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
 
 fmt = '.3f' if normalize else 'd'
-thresh = 200
+thresh = 0.6
 for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
         plt.text(j, i, format(matrix[i, j], fmt), ha="center", va="center", color="white" if matrix[i, j] > thresh else "black")  # Horizontal Alignment
