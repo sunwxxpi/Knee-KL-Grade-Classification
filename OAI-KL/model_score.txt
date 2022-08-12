@@ -1,0 +1,215 @@
+<EfficientNet_V2_s (pretrained.1k)>
+1fold_epoch18 : 0.7180 / 0.7042 / 0.7056        1fold_epoch18 : 0.7240 / 0.7048 / 0.7055
+2fold_epoch8 : 0.7114 / 0.7056 / 0.7049         2fold_epoch22 : 0.7256 / 0.7102 / 0.7064
+3fold_epoch10 : 0.7240 / 0.7167 / 0.7126        3fold_epoch10 : 0.7180 / 0.7083 / 0.7041
+4fold_epoch11 : 0.7174 / 0.7175 / 0.7157        4fold_epoch20 : 0.7156 / 0.7176 / 0.7137
+5fold_epoch14 : 0.7289 / 0.7190 / 0.7141        5fold_epoch8 : 0.7295 / 0.7058 / 0.7050
+Unify Left/Right Aug X, TTA X                   Unify Left/Right Aug X, TTA O
+
+1fold_epoch16 : 0.7240 / 0.7120 / 0.7145        1fold_epoch18 : 0.7283 / 0.7181 / 0.7202
+2fold_epoch15 : 0.7210 / 0.7177 / 0.7162        2fold_epoch15 : 0.7301 / 0.7312 / 0.7282
+3fold_epoch17 : 0.7156 / 0.7227 / 0.7196        3fold_epoch17 : 0.7270 / 0.7366 / 0.7302
+4fold_epoch13 : 0.7216 / 0.7198 / 0.7108        4fold_epoch13 : 0.7307 / 0.7243 / 0.7158
+5fold_epoch15 : 0.7361 / 0.7277 / 0.7264        5fold_epoch22 : 0.7409 / 0.7387 / 0.7334
+Unify Left/Right Aug O, TTA X                   Unify Left/Right Aug O, TTA O
+Batch Size : 16
+Adam lr=0.0005
+(380, 380)
+22/08/11
+
+<DenseNet-201 (pretrained)>
+1fold_epoch18 : 0.7234 / 0.7016 / 0.6960
+2fold_epoch29 : 0.6993 / 0.6412 / 0.6481
+3fold_epoch17 : 0.7029 / 0.6549 / 0.6622
+4fold_epoch13 : 0.7029 / 0.6715 / 0.6720
+5fold_epoch15 : 0.7204 / 0.7040 / 0.6957
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(300, 300)
+22/07/20
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch3 : 0.6860 / 0.6994 / 0.6858
+2fold_epoch5 : 0.7222 / 0.6723 / 0.6794
+3fold_epoch7 : 0.7017 / 0.6548 / 0.6622
+4fold_epoch8 : 0.6975 / 0.6697 / 0.6717
+5fold_epoch3 : 0.6987 / 0.6595 / 0.6568
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(300, 300)
+22/07/20
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch3 : 0.7017 / 0.6920 / 0.6852
+2fold_epoch7 : 0.7077 / 0.6906 / 0.6926
+3fold_epoch2 : 0.7029 / 0.6398 / 0.6422
+4fold_epoch5 : 0.7023 / 0.6598 / 0.6549
+5fold_epoch5 : 0.7216 / 0.7042 / 0.7024
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(300, 300)
+22/07/21
+
+<ResNet-152 (pretrained)>
+1fold_epoch51 : 0.6926 / 0.6847 / 0.6843
+2fold_epoch42 : 0.6787 / 0.6161 / 0.6155
+3fold_epoch67 : 0.6957 / 0.6747 / 0.6732
+4fold_epoch51 : 0.6914 / 0.6527 / 0.6646
+5fold_epoch62 : 0.6902 / 0.6411 / 0.6604
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(300, 300)
+22/07/21
+
+<EfficientNet-b4 (pretrained)>
+1fold_epoch7 : 0.696
+2fold_epoch6 : 0.677
+3fold_epoch2 : 0.655
+4fold_epoch5 : 0.681
+5fold_epoch8 : 0.687
+HorizontalFlip(p=0.5), Rotation(10), Custom Nomalization
+Batch Size : 32
+Adam lr=0.00065
+(380, 380)
+22/04/02
+
+<EfficientNet-b4 (pretrained)>
+1fold_epoch8 : 0.709
+2fold_epoch6 : 0.692
+3fold_epoch6 : 0.705
+4fold_epoch6 : 0.674
+5fold_epoch6 : 0.698
+HorizontalFlip(p=0.5), Rotation(10)
+Batch Size : 32
+Adam lr=0.0007
+(380, 380)
+22/03/24
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch7 : 0.7162 / 0.6984 / 0.6967
+2fold_epoch10 : 0.7264 / 0.7315 / 0.7185
+3fold_epoch8 : 0.7089 / 0.7069 / 0.7019
+4fold_epoch3 : 0.7144 / 0.7070 / 0.6988
+5fold_epoch7 : 0.7228 / 0.7070 / 0.7179
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(380, 380)
+22/08/09
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch3 : 0.7107 / 0.6534 / 0.6558
+2fold_epoch7 : 0.7349 / 0.6784 / 0.7061
+3fold_epoch4 : 0.7132 / 0.6638 / 0.6775
+4fold_epoch5 : 0.7144 / 0.6918 / 0.6964
+5fold_epoch4 : 0.7174 / 0.7026 / 0.6974
+HorizontalFlip(p=0.5), Rotation(15), TTA
+Batch Size : 32
+Adam lr=0.0007
+(380, 380)
+22/07/04
+
+<EfficientNet_V2_s (pretrained.1k)>
+1fold_epoch23 : 0.7367 / 0.7207 / 0.7152
+2fold_epoch22 : 0.7373 / 0.7253 / 0.7312
+3fold_epoch11 : 0.7343 / 0.7295 / 0.7287
+4fold_epoch13 : 0.7403 / 0.7306 / 0.7260
+5fold_epoch22 : 0.7385 / 0.7261 / 0.7270
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0005
+(380, 380)
+22/08/09
+
+<EfficientNet_V2_s (pretrained.1k)>
+1fold_epoch26 : 0.7319 / 0.7329 / 0.7331
+2fold_epoch22 : 0.7264 / 0.7294 / 0.7212
+3fold_epoch32 : 0.7264 / 0.7328 / 0.7279
+4fold_epoch26 : 0.7434 / 0.7273 / 0.7276
+5fold_epoch32 : 0.7319 / 0.7185 / 0.7230
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0006
+(380, 380)
+22/08/08
+
+<ResNet-152 (pretrained)>
+1fold_epoch53 : 0.7029 / 0.6759 / 0.6803
+2fold_epoch36 : 0.7132 / 0.6843 / 0.6866
+3fold_epoch45 : 0.6999 / 0.6759 / 0.6834
+4fold_epoch51 : 0.7023 / 0.6909 /  0.6946
+5fold_epoch38 : 0.6914 / 0.6721 / 0.6734
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+(380, 380)
+22/07/21
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch17 : 0.7234 / 0.7274 / 0.7226
+2fold_epoch10 : 0.7114 / 0.7197 / 0.7089
+3fold_epoch13 : 0.7180 / 0.7362 / 0.7239
+4fold_epoch10 : 0.7216 / 0.7105 / 0.7073 
+5fold_epoch6 : 0.7313 / 0.7199 / 0.7172
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0005
+(448, 448)
+22/08/07
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch4 : 0.7216 / 0.7226 / 0.7190
+2fold_epoch11 : 0.7337 / 0.7207 / 0.7211
+3fold_epoch9 : 0.7162 / 0.7115 / 0.7124
+4fold_epoch9 : 0.7271 / 0.7258 / 0.7237
+5fold_epoch8 : 0.7258 / 0.7117 / 0.7095
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0005
+(512, 512)
+22/08/06
+-------------------------------------------(구)-------------------------------------------
+
+----------------------------------------(380, 380)----------------------------------------
+<DenseNet-201 (pretrained)>
+1fold_epoch14 : 0.7271 / 0.6945 / 0.6960
+2fold_epoch17 : 0.7258 / 0.6983 / 0.6993 >>>>>>>>>>>>>>>>>>>>
+3fold_epoch21 : 0.6920 / 0.6915 / 0.6817
+4fold_epoch17 : 0.7011 / 0.6673 / 0.6690
+5fold_epoch21 : 0.7258 / 0.6889 / 0.6947 
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+22/07/20
+
+<EfficientNet-b5 (pretrained)>
+1fold_epoch7 : 0.7222 / 0.7095 / 0.7079 
+2fold_epoch7 : 0.7283 / 0.6918 / 0.6999 >>>>>>>>>>>>>>>>>>>>
+3fold_epoch5 : 0.7150 / 0.7131 / 0.7090
+4fold_epoch5 : 0.7198 / 0.6838 / 0.6851
+5fold_epoch6 : 0.7089 / 0.6777 / 0.6970
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32
+Adam lr=0.0005
+22/07/15
+
+<EfficientNet_V2_s (pretrained.1k)>
+1fold_epoch26 : 0.7301 / 0.7278 / 0.7275
+2fold_epoch30 : 0.7295 / 0.7260 / 0.7265
+3fold_epoch21 : 0.7319 / 0.7121 / 0.7229
+4fold_epoch17 : 0.7307 / 0.7024 / 0.7123
+5fold_epoch23 : 0.7379 / 0.7367 / 0.7358 >>>>>>>>>>>>>>>>>>>> Hard Voting
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0007
+22/08/06
+----------------------------------------(380, 380)----------------------------------------
+
+
+ - local
+ - 2080TI
+ - a100
