@@ -17,6 +17,18 @@ Adam lr=0.0005
 (380, 380)
 22/08/11
 
+<EfficientNet-b5 (pretrained)>
+1fold_epoch14 : 0.6824 / 0.6976 / 0.6806
+2fold_epoch5 : 0.6944 / 0.7054 / 0.6957
+3fold_epoch5 : 0.6866 / 0.6868 / 0.6861
+4fold_epoch5 : 0.7011 / 0.6854 / 0.6794
+5fold_epoch8 : 0.7101 / 0.6806 / 0.6792
+HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 16
+Adam lr=0.0005
+(224, 224)
+22/08/13
+
 <DenseNet-201 (pretrained)>
 1fold_epoch18 : 0.7234 / 0.7016 / 0.6960
 2fold_epoch29 : 0.6993 / 0.6412 / 0.6481
