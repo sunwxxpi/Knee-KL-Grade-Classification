@@ -1,6 +1,5 @@
 # import ssl
 import torch
-import timm
 import numpy as np
 import pandas as pd
 from torch import nn, optim
@@ -44,7 +43,7 @@ def test_for_kfold(model, dataloader, criterion):
 
 def train(dataset, epochs, batch_size, k, splits, foldperf):
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 10
+        patience = 7
         delta = 0.15
         early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
     
@@ -53,12 +52,12 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
-        # model_ft = models.densenet201(pretrained=True)
+        # model_ft = models.densenet201(weights='IMAGENET1K_V1')
         # in_ftrs = model_ft.classifier.in_features
         # model_ft.classifier = nn.Linear(in_ftrs, 5)
         
-        # model_ft = models.efficientnet_b5(pretrained=True)
-        model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
+        model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
+        # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
         in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
         sequential_0 = model_ft.classifier._modules.get('0')
         sequential_1 = nn.Linear(in_ftrs, 5)
@@ -68,7 +67,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0005) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0007) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
@@ -112,7 +111,7 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                     ])
     dataset = ImageDataset(train_csv, transforms=transform)
-    batch_size = 16
+    batch_size = 32
     epochs = 100
     k = 5
     torch.manual_seed(42)
