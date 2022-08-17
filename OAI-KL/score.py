@@ -1,8 +1,7 @@
-import torch
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay, PrecisionRecallDisplay, classification_report
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
@@ -65,14 +64,20 @@ for i in range(5):
 for i in range(1656):
         probs.append(globals()['image_{}'.format(i)])
 
-correct_label = torch.tensor(correct_label)  
-probs = torch.tensor(probs)
+correct_label = np.array(correct_label)
+probs = np.array(probs)
 
 fig, axs = plt.subplots(figsize=(6, 6))
 for i in range(5):
     display = RocCurveDisplay.from_predictions(correct_label[:, i], probs[:, i], name='Class {}'.format(i), ax=axs)
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
+
+fig, axs = plt.subplots(figsize=(6, 6))
+for i in range(5):
+    display = PrecisionRecallDisplay.from_predictions(correct_label[:, i], probs[:, i], name='Class {}'.format(i), ax=axs)
+plt.xlabel('Recall')
+plt.ylabel('Precision')
 
 plt.show()
 
