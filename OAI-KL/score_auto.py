@@ -11,6 +11,7 @@ submission_path = './submission/'
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
 submission_list_csv = natsort.natsorted(submission_list_csv)
+submission_num = len(submission_list_csv)
 
 sum_accuracy = 0
 sum_f1_macro = 0
@@ -35,8 +36,7 @@ for i in submission_list_csv:
         print('F1 Score (Macro) : {}'.format(f1_macro))
         print('F1 Score (Weighted) : {}'.format(f1_weighted))
         print()
-    
-submission_num = len(submission_list_csv)
+
 avg_accuracy = sum_accuracy / submission_num
 avg_f1_macro = sum_f1_macro / submission_num
 avg_f1_weighted = sum_f1_weighted / submission_num
