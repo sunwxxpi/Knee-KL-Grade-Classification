@@ -30,15 +30,16 @@ for i in submission_list_csv:
     sum_f1_macro += f1_macro
     sum_f1_weighted += f1_weighted
     
-    if accuracy > 0.66 and f1_macro > 0.66 and f1_weighted > 0.66:
+    if accuracy > 0.67 and f1_macro > 0.67 and f1_weighted > 0.67:
         print('Accuracy Score : {}'.format(accuracy))
         print('F1 Score (Macro) : {}'.format(f1_macro))
         print('F1 Score (Weighted) : {}'.format(f1_weighted))
         print()
-
-avg_accuracy = sum_accuracy / 5.0
-avg_f1_macro = sum_f1_macro / 5.0
-avg_f1_weighted = sum_f1_weighted / 5.0
+    
+submission_num = len(submission_list_csv)
+avg_accuracy = sum_accuracy / submission_num
+avg_f1_macro = sum_f1_macro / submission_num
+avg_f1_weighted = sum_f1_weighted / submission_num
 
 print('Average Accuracy Score : {}'.format(avg_accuracy))
 print('Average F1 Score (Macro) : {}'.format(avg_f1_macro))
