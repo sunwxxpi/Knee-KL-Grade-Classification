@@ -7,6 +7,8 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
+test_image_num = len(test_correct_labels_list)
+
 fold = 10
 epoch = 10
 
@@ -35,9 +37,9 @@ for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
         plt.text(j, i, format(matrix[i, j], fmt), ha="center", va="center", color="white" if matrix[i, j] > thresh else "black")  # Horizontal Alignment
 
-correct_label = [[0 for j in range(5)] for i in range(1656)]
+correct_label = [[0 for j in range(5)] for i in range(test_image_num)]
 
-for i in range(1656):
+for i in range(test_image_num):
     if test_correct_labels_list[i] == 0:
         correct_label[i][0] = 1
     elif test_correct_labels_list[i] == 1:
@@ -51,17 +53,17 @@ for i in range(1656):
         
 probs = []
 
-for i in range(1656):
+for i in range(test_image_num):
         globals()['image_{}'.format(i)] = [0 for j in range(5)]
         
 for i in range(5):
         submission_probs = submission_csv['prob_{}'.format(i)]
         submission_probs_list = submission_probs.values.tolist()
         
-        for j in range(1656):
+        for j in range(test_image_num):
             globals()['image_{}'.format(j)][i] = submission_probs_list[j]
             
-for i in range(1656):
+for i in range(test_image_num):
         probs.append(globals()['image_{}'.format(i)])
 
 correct_label = np.array(correct_label)
