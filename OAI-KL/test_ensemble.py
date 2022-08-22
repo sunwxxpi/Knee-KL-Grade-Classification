@@ -46,11 +46,21 @@ mode = 'hard_voting'
 
 preds = []
 
+""" # 수동 Ensemble : 가중치 조절 가능
 for i in range(test_image_num):
     for j in range(5):
         # probs_ensemble[i][j] = (globals()['{}_probs'.format('2fold_epoch7_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch23_submission.csv')][i][j]) / 2
             
-        probs_ensemble[i][j] = (globals()['{}_probs'.format('2fold_epoch7_submission.csv')][i][j] + globals()['{}_probs'.format('2fold_epoch17_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch23_submission.csv')][i][j]) / 3
+        probs_ensemble[i][j] = (globals()['{}_probs'.format('5fold_epoch30_submission.csv')][i][j] + globals()['{}_probs'.format('2fold_epoch5_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch19_submission.csv')][i][j]) / 3 """
+
+# 자동 Ensemble : 가중치 1로 고정
+for i in submission_list_csv:
+    for j in range(test_image_num):
+        for k in range(5):
+            probs_ensemble[j][k] += globals()['{}_probs'.format(i)][j][k]
+                                 
+# probs_ensemble[j][k] = probs_ensemble[j][k] / 2
+probs_ensemble[j][k] = probs_ensemble[j][k] / 3
 
 if mode == 'soft_voting':
     ensemble_output = torch.tensor(probs_ensemble)
