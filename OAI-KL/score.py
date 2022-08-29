@@ -32,7 +32,7 @@ plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
 plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
 
 fmt = '.3f' if normalize else 'd'
-thresh = 0.6
+thresh = 0.5
 for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
         plt.text(j, i, format(matrix[i, j], fmt), ha="center", va="center", color="white" if matrix[i, j] > thresh else "black")  # Horizontal Alignment
