@@ -7,7 +7,6 @@ from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, ScoreCAM, AblationCAM, XG
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 
-# model = torch.load('./models/models_380_densenet-201_lr=0.0005_RandomRotation(20)_220720/kfold_CNN_2fold_epoch17.pt')
 model = torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt')
 
 target_layers = [model.module.features[-1]]
@@ -16,6 +15,8 @@ target_layers = [model.module.features[-1]]
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_img = test_csv['data']
 test_img_list = test_img.values.tolist()
+
+# path = ['./KneeXray/test/4/9688649L.png']
 
 for i in test_img_list:
     # Note: input_tensor can be a batch tensor with several images! """
