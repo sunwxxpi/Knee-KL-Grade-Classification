@@ -56,14 +56,15 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         in_ftrs = model_ft.classifier.in_features
         model_ft.classifier = nn.Linear(in_ftrs, 5) """
         
-        model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
-        # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
+        # model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
+        model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
         in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
         sequential_0 = model_ft.classifier._modules.get('0')
         sequential_1 = nn.Linear(in_ftrs, 5)
         model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
         
-        model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
+        if torch.cuda.device_count() > 1:
+            model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft = model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
@@ -111,7 +112,7 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                     ])
     dataset = ImageDataset(train_csv, transforms=transform)
-    batch_size = 32
+    batch_size = 16
     epochs = 100
     k = 5
     torch.manual_seed(42)

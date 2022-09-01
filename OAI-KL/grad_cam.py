@@ -13,16 +13,18 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 in_ftrs = model_ft.classifier.in_features
 model_ft.classifier = nn.Linear(in_ftrs, 5) """
 
-""" model_ft = models.efficientnet_b5()
+# model_ft = models.efficientnet_b5()
 model_ft = models.efficientnet_v2_s()
 in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
 sequential_0 = model_ft.classifier._modules.get('0')
 sequential_1 = nn.Linear(in_ftrs, 5)
-model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
+model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
 
-model_ft = torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt')
-# model_ft = model_ft.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
-# model_ft = model_ft.module.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
+# model_ft = torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt')
+if torch.cuda.device_count() > 1: 
+    model_ft = model_ft.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
+else:
+    model_ft = model_ft.module.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
 
 target_layers = [model_ft.module.features[-1]]
 # target_layers = [model_ft.module._bn1] # EfficientNet from lukemelas

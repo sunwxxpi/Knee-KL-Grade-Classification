@@ -31,22 +31,24 @@ model_list_pt = natsort.natsorted(model_list_pt)
 in_ftrs = model_ft.classifier.in_features
 model_ft.classifier = nn.Linear(in_ftrs, 5) """
 
-""" model_ft = models.efficientnet_b5()
+# model_ft = models.efficientnet_b5()
 model_ft = models.efficientnet_v2_s()
 in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
 sequential_0 = model_ft.classifier._modules.get('0')
 sequential_1 = nn.Linear(in_ftrs, 5)
-model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
+model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
 
 for i in model_list_pt: 
     preds = []
     probs_correct = []
     probs_predict = []
     probs_0, probs_1, probs_2, probs_3, probs_4 = [], [], [], [], []
-     
-    model_ft = torch.load('{}{}'.format(model_path, i))
-    # model_ft = model_ft.load_state_dict(torch.load('{}{}'.format(model_path, i)))
-    # model_ft = model_ft.module.load_state_dict(torch.load('{}{}'.format(model_path, i)))
+    
+    # model_ft = torch.load('{}{}'.format(model_path, i))
+    if torch.cuda.device_count() > 1: 
+        model_ft = model_ft.module.load_state_dict(torch.load('{}{}'.format(model_path, i)))
+    else:
+        model_ft = model_ft.load_state_dict(torch.load('{}{}'.format(model_path, i)))
     model_ft = tta.ClassificationTTAWrapper(model_ft, transform_tta)
 
     for batch in testloader:
