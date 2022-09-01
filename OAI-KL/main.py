@@ -52,9 +52,9 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
-        # model_ft = models.densenet201(weights='IMAGENET1K_V1')
-        # in_ftrs = model_ft.classifier.in_features
-        # model_ft.classifier = nn.Linear(in_ftrs, 5)
+        """ model_ft = models.densenet201(weights='IMAGENET1K_V1')
+        in_ftrs = model_ft.classifier.in_features
+        model_ft.classifier = nn.Linear(in_ftrs, 5) """
         
         model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
         # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')

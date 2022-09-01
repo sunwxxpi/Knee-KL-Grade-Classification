@@ -5,7 +5,7 @@ import pandas as pd
 import ttach as tta
 from torch import nn
 from torch.utils.data import DataLoader
-from torchvision import transforms
+from torchvision import transforms, models
 from dataset import ImageDataset
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv')
@@ -27,13 +27,26 @@ model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)
 
+""" model_ft = models.densenet201()
+in_ftrs = model_ft.classifier.in_features
+model_ft.classifier = nn.Linear(in_ftrs, 5) """
+
+""" model_ft = models.efficientnet_b5()
+model_ft = models.efficientnet_v2_s()
+in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+sequential_0 = model_ft.classifier._modules.get('0')
+sequential_1 = nn.Linear(in_ftrs, 5)
+model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
+
 for i in model_list_pt: 
     preds = []
     probs_correct = []
     probs_predict = []
     probs_0, probs_1, probs_2, probs_3, probs_4 = [], [], [], [], []
-    
+     
     model_ft = torch.load('{}{}'.format(model_path, i))
+    # model_ft = model_ft.load_state_dict(torch.load('{}{}'.format(model_path, i)))
+    # model_ft = model_ft.module.load_state_dict(torch.load('{}{}'.format(model_path, i)))
     model_ft = tta.ClassificationTTAWrapper(model_ft, transform_tta)
 
     for batch in testloader:

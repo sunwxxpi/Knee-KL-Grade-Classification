@@ -2,15 +2,30 @@ import torch
 import torchvision
 import numpy as np
 import pandas as pd
+from torch import nn
+from torchvision import models
 from PIL import Image
 from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, ScoreCAM, AblationCAM, XGradCAM, EigenCAM, FullGrad
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 
-model = torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt')
+""" model_ft = models.densenet201()
+in_ftrs = model_ft.classifier.in_features
+model_ft.classifier = nn.Linear(in_ftrs, 5) """
 
-target_layers = [model.module.features[-1]]
-# target_layers = [model.module._bn1] # EfficientNet from lukemelas
+""" model_ft = models.efficientnet_b5()
+model_ft = models.efficientnet_v2_s()
+in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+sequential_0 = model_ft.classifier._modules.get('0')
+sequential_1 = nn.Linear(in_ftrs, 5)
+model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
+
+model_ft = torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt')
+# model_ft = model_ft.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
+# model_ft = model_ft.module.load_state_dict(torch.load('./models/models_380_efficientnet-v2-s_lr=0.0007_RandomRotation(20)_220806/kfold_CNN_5fold_epoch23.pt'))
+
+target_layers = [model_ft.module.features[-1]]
+# target_layers = [model_ft.module._bn1] # EfficientNet from lukemelas
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_img = test_csv['data']
@@ -25,13 +40,13 @@ for i in test_img_list:
     image = (image - np.min(image)) / (np.max(image) - np.min(image)) # Max min normalization
     input_tensor = torchvision.transforms.functional.to_tensor(image).unsqueeze(0).float()
 
-    # cam = GradCAM(model=model, target_layers=target_layers, use_cuda=False)
-    # cam = GradCAMPlusPlus(model=model, target_layers=target_layers, use_cuda=False)
-    cam = ScoreCAM(model=model, target_layers=target_layers, use_cuda=False)
+    # cam = GradCAM(model=model_ft, target_layers=target_layers, use_cuda=False)
+    # cam = GradCAMPlusPlus(model=model_ft, target_layers=target_layers, use_cuda=False)
+    cam = ScoreCAM(model=model_ft, target_layers=target_layers, use_cuda=False)
 
     # We have to specify the target we want to generate the Class Activation Maps for.
     # If targets is None, the highest scoring category will be used for every image in the batch.
-    # Here we use ClassifierOutputTarget, but you can define your own custom targets That are, for example, combinations of categories, or specific outputs in a non standard model.
+    # Here we use ClassifierOutputTarget, but you can define your own custom targets That are, for example, combinations of categories, or specific outputs in a non standard model_ft.
     # targets = [ClassifierOutputTarget(281)]
     # target_category = None
 

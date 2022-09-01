@@ -27,7 +27,9 @@ class EarlyStopping:
         if self.verbose:
             print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
             
-        torch.save(model,'./models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+        torch.save(model, './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+        # torch.save(model.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+        # torch.save(model.module.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
         self.val_loss_min = val_loss
         
     def __call__(self, val_loss, model, fold, epoch):
