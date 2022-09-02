@@ -12,7 +12,7 @@ class EarlyStopping:
                             Default: False
             delta (float): 개선되었다고 인정되는 monitered quantity의 최소 변화
                             Default: 0
-            path (str): checkpoint저장 경로
+            path (str): checkpoint 저장 경로
                             Default: 'checkpoint.pt'
         """
         self.patience = patience
