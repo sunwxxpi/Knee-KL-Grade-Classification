@@ -65,7 +65,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
-        model_ft = model_ft.cuda() # model을 gpu에 할당
+        model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
         optimizer = optim.Adam(model_ft.parameters(), lr=0.0007) # optimizer

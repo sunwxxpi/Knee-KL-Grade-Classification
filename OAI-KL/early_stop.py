@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+from torch import nn
 
 class EarlyStopping:
     def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
@@ -28,7 +29,7 @@ class EarlyStopping:
             print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
         
         # torch.save(model, './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
-        if torch.cuda.device_count() > 1:    
+        if isinstance(model, nn.DataParallel):
             torch.save(model.module.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
         else:
             torch.save(model.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
