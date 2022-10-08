@@ -106,10 +106,10 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
 if __name__ == '__main__':
     train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
     transform = transforms.Compose([
-                                    transforms.ToTensor(),
+                                    transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
                                     transforms.RandomHorizontalFlip(p=0.5),
                                     transforms.RandomRotation(20),
-                                    transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
+                                    transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                     ])
     dataset = ImageDataset(train_csv, transforms=transform)
     batch_size = 16
