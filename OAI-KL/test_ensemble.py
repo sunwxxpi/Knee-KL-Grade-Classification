@@ -60,7 +60,6 @@ def hard_voting(probs_ensemble):
         if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
             probs_ensemble_output = torch.tensor([probs_ensemble[i]])
             preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
-        
         else:
             preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
             
