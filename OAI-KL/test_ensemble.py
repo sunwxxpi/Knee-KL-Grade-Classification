@@ -58,10 +58,11 @@ def hard_voting(probs_ensemble):
     
     for i in range(test_image_num):
         if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
-            probs_ensemble_output = torch.tensor([probs_ensemble[i]])
-            preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
+            # probs_ensemble_output = torch.tensor([probs_ensemble[i]])
+            # preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)]) # Hard Voting + Soft Voting(동점)
+            preds.append(min(labels_ensemble[i])) # Hard Voting
         else:
-            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
+            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count)) # Soft Voting
             
     probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, mode='hard')
 
