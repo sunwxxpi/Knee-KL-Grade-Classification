@@ -34,7 +34,7 @@ for i in submission_list_csv:
     f1_macro = round(f1_macro, 4)
     f1_weighted = round(f1_weighted, 4)
     
-    if accuracy > 0.67 and f1_macro > 0.67 and f1_weighted > 0.67:
+    if accuracy > 0.70 and f1_macro > 0.70 and f1_weighted > 0.70:
         print('Accuracy Score : {}'.format(accuracy))
         print('F1 Score (Macro) : {}'.format(f1_macro))
         print('F1 Score (Weighted) : {}'.format(f1_weighted))
@@ -47,6 +47,7 @@ avg_accuracy = round(avg_accuracy, 4)
 avg_f1_macro = round(avg_f1_macro, 4)
 avg_f1_weighted = round(avg_f1_weighted, 4)
 
+print('-------------------------------')
 print('Average Accuracy Score : {}'.format(avg_accuracy))
 print('Average F1 Score (Macro) : {}'.format(avg_f1_macro))
 print('Average F1 Score (Weighted) : {}'.format(avg_f1_weighted))
