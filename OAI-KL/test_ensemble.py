@@ -43,28 +43,40 @@ def probs_to_csv(probs_ensemble, set_epoch, mode):
     submit.to_csv('{}10fold_epoch{}_submission.csv'.format(submission_path, set_epoch), index=False)
     print('save {} ensemble_submission.csv'.format(mode))
     
-def soft_voting(probs_ensemble):
+    
+def hard_voting(probs_ensemble): # Hard Voting
+    global preds
+    preds = []
+    
+    for i in range(test_image_num):
+        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
+            preds.append(min(labels_ensemble[i])) # Select [Minimum Class]
+        else:
+            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
+            
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=10, mode='hard')
+    
+def soft_voting(probs_ensemble): # Soft Voting
     global preds
     preds = []
     
     ensemble_output = torch.tensor(probs_ensemble)
     preds.extend([i.item() for i in torch.argmax(ensemble_output, axis=1)])
     
-    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=10, mode='soft')
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, mode='soft')
             
-def hard_voting(probs_ensemble):
+def mix_voting(probs_ensemble): # Hard Voting + Soft Voting
     global preds
     preds = []
     
     for i in range(test_image_num):
-        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
-            # probs_ensemble_output = torch.tensor([probs_ensemble[i]])
-            # preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)]) # Hard Voting + Soft Voting(동점)
-            preds.append(min(labels_ensemble[i])) # Hard Voting
-        else:
-            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count)) # Soft Voting
+        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])): # Soft Voting
+            probs_ensemble_output = torch.tensor([probs_ensemble[i]])
+            preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
+        else: # Hard Voting
+            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
             
-    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, mode='hard')
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=12, mode='mix')
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
@@ -120,5 +132,6 @@ for i in submission_list_csv:
 # probs_ensemble[j][k] = probs_ensemble[j][k] / 2
 probs_ensemble[j][k] = probs_ensemble[j][k] / 3
 
-soft_voting(probs_ensemble)
 hard_voting(probs_ensemble)
+soft_voting(probs_ensemble)
+mix_voting(probs_ensemble)
