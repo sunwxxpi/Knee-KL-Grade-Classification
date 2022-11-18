@@ -65,7 +65,7 @@ def soft_voting(probs_ensemble): # Soft Voting
     
     probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, mode='soft')
             
-def mix_voting(probs_ensemble): # Hard Voting + Soft Voting
+def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
     global preds
     preds = []
     
