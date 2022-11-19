@@ -21,10 +21,10 @@ sequential_1 = nn.Linear(in_ftrs, 5)
 model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
 
 # model_ft = torch.load('./models/DenseNet-201/models_448_DenseNet-201_32_0.0006/kfold_CNN_1fold_epoch18.pt') # DenseNet-201 Best
-model_ft.load_state_dict(torch.load('./models/kfold_CNN_2fold_epoch26.pt')) # DenseNet-201 CAM
+# model_ft.load_state_dict(torch.load('./models/kfold_CNN_2fold_epoch26.pt')) # DenseNet-201 CAM
 # model_ft.load_state_dict(torch.load('./models/EfficientNet-b5/models_456_EfficientNet-b5_16_0.0005/kfold_CNN_5fold_epoch13.pt')) # EfficientNet-b5 Best
 # model_ft.load_state_dict(torch.load('./models/kfold_CNN_2fold_epoch4.pt')) # EfficientNet-b5 CAM
-# model_ft.load_state_dict(torch.load('./models/EfficientNet-V2-s/models_384_EfficientNet-V2-s_16_0.0007/kfold_CNN_5fold_epoch35.pt')) # EfficientNet-V2-s Best & CAM
+model_ft.load_state_dict(torch.load('./models/EfficientNet-V2-s/models_384_EfficientNet-V2-s_16_0.0007/kfold_CNN_5fold_epoch35.pt')) # EfficientNet-V2-s Best & CAM
 model_ft.eval()
 
 # target_layers = [model_ft.module.features[-1]]
