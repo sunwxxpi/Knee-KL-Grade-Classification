@@ -63,11 +63,4 @@ for i in test_img_list:
 
     cam_img = Image.fromarray(visualization, 'RGB')
     cam_img = cam_img.resize((224, 224))
-    cam_img.save('C:/Users/PiSunWoo-RTOS/Desktop/KLGrade Project/Final/Grad CAM/{}'.format(i.split('test')[-1]))
-
-""" save = input('If you want to save, please enter \'y\' or \'Y\'').lower()
-if save == 'y':
-    cam_img.save('C:/Users/PiSunWoo-RTOS/Desktop/{}'.format(path.split('/')[-1]))
-    print("Image saved at \'C:/Users/PiSunWoo-RTOS/Desktop/{}\'".format(path.split('/')[-1]))
-else:
-    print("Image not saved.") """
+    cam_img.save('./Grad CAM/{}'.format(i.split('test')[-1]))
