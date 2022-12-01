@@ -56,8 +56,8 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         in_ftrs = model_ft.classifier.in_features
         model_ft.classifier = nn.Linear(in_ftrs, 5) """
         
-        # model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
-        model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
+        model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
+        # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
         in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
         sequential_0 = model_ft.classifier._modules.get('0')
         sequential_1 = nn.Linear(in_ftrs, 5)
