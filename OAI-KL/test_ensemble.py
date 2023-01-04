@@ -128,9 +128,10 @@ for i in submission_list_csv:
     for j in range(test_image_num):
         for k in range(5):
             probs_ensemble[j][k] += globals()['{}_probs'.format(i)][j][k]
-                                 
-# probs_ensemble[j][k] = probs_ensemble[j][k] / 2
-probs_ensemble[j][k] = probs_ensemble[j][k] / 3
+
+probs_ensemble_array = np.array(probs_ensemble)
+# probs_ensemble = (probs_ensemble_array / 2).tolist()
+probs_ensemble = (probs_ensemble_array / 3).tolist()
 
 hard_voting(probs_ensemble)
 soft_voting(probs_ensemble)
