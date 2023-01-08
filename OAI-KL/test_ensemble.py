@@ -11,32 +11,32 @@ def probs_to_csv(probs_ensemble, set_epoch, mode):
     probs_3 = probs_ensemble[:, 3]
     probs_4 = probs_ensemble[:, 4]
 
-    probs_correct = [0 for i in range(test_image_num)]
-    probs_predict = [0 for i in range(test_image_num)]
+    probs_correct = []
+    probs_predict = []
                 
     for i in range(test_image_num):
         if test_correct_labels_list[i] == 0:
-            probs_correct[i] = probs_0[i]
+            probs_correct.append(probs_0)
         elif test_correct_labels_list[i] == 1:
-            probs_correct[i] = probs_1[i]
+            probs_correct.append(probs_1)
         elif test_correct_labels_list[i] == 2:
-            probs_correct[i] = probs_2[i]
+            probs_correct.append(probs_2)
         elif test_correct_labels_list[i] == 3:
-            probs_correct[i] = probs_3[i]
+            probs_correct.append(probs_3)
         elif test_correct_labels_list[i] == 4:
-            probs_correct[i] = probs_4[i]
+            probs_correct.append(probs_4)
             
     for i in range(test_image_num):
         if preds[i] == 0:
-            probs_predict[i] = probs_0[i]
+            probs_predict.append(probs_0)
         elif preds[i] == 1:
-            probs_predict[i] = probs_1[i]
+            probs_predict.append(probs_1)
         elif preds[i] == 2:
-            probs_predict[i] = probs_2[i]
+            probs_predict.append(probs_2)
         elif preds[i] == 3:
-            probs_predict[i] = probs_3[i]
+            probs_predict.append(probs_3)
         elif preds[i] == 4:
-            probs_predict[i] = probs_4[i]
+            probs_predict.append(probs_4)
             
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
