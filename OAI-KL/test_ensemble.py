@@ -52,7 +52,7 @@ def hard_voting(probs_ensemble): # Hard Voting
         if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
             preds.append(min(labels_ensemble[i])) # Select [Minimum Class]
         else:
-            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
+            preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
     probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=10, mode='hard')
     
@@ -74,7 +74,7 @@ def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
             probs_ensemble_output = torch.tensor([probs_ensemble[i]])
             preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
         else: # Hard Voting
-            preds.append(max(set(labels_ensemble[i]), key=labels_ensemble[i].count))
+            preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
     probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=12, mode='mix')
 
