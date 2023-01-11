@@ -43,8 +43,8 @@ def test_for_kfold(model, dataloader, criterion):
 
 def train(dataset, epochs, batch_size, k, splits, foldperf):
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 7
-        delta = 0.13
+        patience = 5
+        delta = 0.1
         early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
     
         train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
@@ -52,23 +52,27 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
+        model_ft = models.resnet152(weights='ResNet152_Weights.IMAGENET1K_V2')
+        in_ftrs = model_ft.fc.in_features
+        model_ft.fc = nn.Linear(in_ftrs, 5)
+        
         """ model_ft = models.densenet201(weights='IMAGENET1K_V1')
         in_ftrs = model_ft.classifier.in_features
         model_ft.classifier = nn.Linear(in_ftrs, 5) """
         
-        model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
+        """ model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
         # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
         in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
         sequential_0 = model_ft.classifier._modules.get('0')
         sequential_1 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
         
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0007) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=0.0006) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
