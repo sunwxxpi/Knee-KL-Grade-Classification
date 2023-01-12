@@ -4,9 +4,9 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 class ImageDataset(Dataset):
-    def __init__(self, df, img_size, transforms=transforms.Compose([transforms.ToTensor()])):
+    def __init__(self, df, image_size, transforms=transforms.Compose([transforms.ToTensor()])):
         self.path = df['data']
-        self.img_size = (img_size, img_size)
+        self.image_size = (image_size, image_size)
         self.transforms = transforms
         if 'label' in df:
             self.target = df['label']
@@ -19,9 +19,9 @@ class ImageDataset(Dataset):
     def __getitem__(self, idx):
         path = self.path[idx]
         image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-        image = cv2.resize(image, dsize=self.img_size, interpolation=cv2.INTER_CUBIC)
+        image = cv2.resize(image, dsize=self.image_size, interpolation=cv2.INTER_CUBIC)
         image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-        
+
         if self.transforms:
             image = self.transforms(image)
 

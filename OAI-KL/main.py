@@ -1,4 +1,5 @@
 # import ssl
+import argparse
 import torch
 import numpy as np
 import pandas as pd
@@ -8,7 +9,6 @@ from torchvision import transforms, models
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
-import argparse
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -123,19 +123,20 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model_type', dest='model_type', action='store')
-    parser.add_argument('-i', '--img_size', type=int, default=224, dest='img_size', action="store")
-    parser.add_argument('-l', '--learning_rate', type=float, default=0.0001, dest='learning_rate', action="store")
+    parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action="store")
+    parser.add_argument('-l', '--learning_rate', type=float, default=0.001, dest='learning_rate', action="store")
     args = parser.parse_args()
     
     train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
+                                    # transforms.Resize((args.image_size, args.image_size), transforms.InterpolationMode.BICUBIC),
                                     transforms.RandomHorizontalFlip(p=0.5),
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                     ])
-    dataset = ImageDataset(train_csv, img_size=args.img_size, transforms=transform)
-    print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
+    dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
+    print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
     batch_size = 16
     epochs = 100
     k = 5

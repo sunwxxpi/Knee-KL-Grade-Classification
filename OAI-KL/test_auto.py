@@ -1,4 +1,5 @@
 import os
+import argparse
 import natsort
 import torch
 import pandas as pd
@@ -7,30 +8,30 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import transforms, models
 from dataset import ImageDataset
-import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model_type', dest='model_type', action='store')
-parser.add_argument('-i', '--img_size', type=int, default=224, dest='img_size', action="store")
+parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action="store")
 args = parser.parse_args()
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv')
 
 transform = transforms.Compose([
                                 transforms.ToTensor(),
+                                # transforms.Resize((args.image_size, args.image_size), transforms.InterpolationMode.BICUBIC),
                                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                 ])
-test_data = ImageDataset(test_csv, img_size=args.img_size, transforms=transform)
-print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
+test_data = ImageDataset(test_csv, image_size=args.image_size, transforms=transform)
+print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 transform_tta = tta.Compose([
                             tta.HorizontalFlip()
                             ])
 
-img_size_dir = (args.img_size, args.img_size)
-model_path = './models/{}/{}/'.format(args.model_type, img_size_dir)
-submission_path = './submission/{}/{}/'.format(args.model_type, img_size_dir)
+image_size_dir = (args.image_size, args.image_size)
+model_path = './models/{}/{}/'.format(args.model_type, image_size_dir)
+submission_path = './submission/{}/{}/'.format(args.model_type, image_size_dir)
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)

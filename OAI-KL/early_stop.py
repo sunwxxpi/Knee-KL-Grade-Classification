@@ -29,13 +29,13 @@ class EarlyStopping:
         if self.verbose:
             print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
             
-        img_size_dir = (args.img_size, args.img_size)
+        image_size_dir = (args.image_size, args.image_size)
         
-        # torch.save(model, './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
+        # torch.save(model, './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
         if isinstance(model, nn.DataParallel):
-            torch.save(model.module.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
+            torch.save(model.module.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
         else:
-            torch.save(model.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
+            torch.save(model.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
             
         self.val_loss_min = val_loss
         
