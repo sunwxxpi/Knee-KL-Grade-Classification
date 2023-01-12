@@ -63,8 +63,8 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             in_ftrs = model_ft.classifier.in_features
             model_ft.classifier = nn.Linear(in_ftrs, 5)
             
-        elif args.model_type == 'efficientnet_b4':
-            model_ft = models.efficientnet_b4(weights='DEFAULT')
+        elif args.model_type == 'efficientnet_b3':
+            model_ft = models.efficientnet_b3(weights='DEFAULT')
             in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
             sequential_0 = model_ft.classifier._modules.get('0')
             sequential_1 = nn.Linear(in_ftrs, 5)
@@ -77,14 +77,15 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             sequential_1 = nn.Linear(in_ftrs, 5)
             model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
             
-        print('Model Type : ' + args.model_type)
+        print('Model Type : {}'.format(args.model_type))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # model을 gpu에 할당
 
         criterion = nn.CrossEntropyLoss() # loss function
-        optimizer = optim.Adam(model_ft.parameters(), lr=0.0006) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
+        print('Learning Rate : {}'.format(args.learning_rate))
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
@@ -121,8 +122,9 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_type', dest='model_type', action='store')
-    parser.add_argument('--img_size', type=int, default=224, dest='img_size', action="store")
+    parser.add_argument('-m', '--model_type', dest='model_type', action='store')
+    parser.add_argument('-i', '--img_size', type=int, default=224, dest='img_size', action="store")
+    parser.add_argument('-l', '--learning_rate', type=float, default=0.0001, dest='learning_rate', action="store")
     args = parser.parse_args()
     
     train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
@@ -132,8 +134,8 @@ if __name__ == '__main__':
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                     ])
-    print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
     dataset = ImageDataset(train_csv, img_size=args.img_size, transforms=transform)
+    print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
     batch_size = 16
     epochs = 100
     k = 5

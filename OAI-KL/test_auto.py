@@ -7,6 +7,12 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import transforms, models
 from dataset import ImageDataset
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-m', '--model_type', dest='model_type', action='store')
+parser.add_argument('-i', '--img_size', type=int, default=224, dest='img_size', action="store")
+args = parser.parse_args()
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv')
 
@@ -14,15 +20,42 @@ transform = transforms.Compose([
                                 transforms.ToTensor(),
                                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
                                 ])
-test_data = ImageDataset(test_csv, transforms=transform)
+test_data = ImageDataset(test_csv, img_size=args.img_size, transforms=transform)
+print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 transform_tta = tta.Compose([
                             tta.HorizontalFlip()
                             ])
 
-model_path = './models/'
-submission_path = './submission/'
+if args.model_type == 'resnet_101':
+        model_ft = models.resnet101(weights='DEFAULT')
+        in_ftrs = model_ft.fc.in_features
+        model_ft.fc = nn.Linear(in_ftrs, 5)
+            
+elif args.model_type == 'densenet_169':
+    model_ft = models.densenet169(weights='DEFAULT')
+    in_ftrs = model_ft.classifier.in_features
+    model_ft.classifier = nn.Linear(in_ftrs, 5)
+    
+elif args.model_type == 'efficientnet_b3':
+    model_ft = models.efficientnet_b3(weights='DEFAULT')
+    in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+    sequential_0 = model_ft.classifier._modules.get('0')
+    sequential_1 = nn.Linear(in_ftrs, 5)
+    model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+    
+elif args.model_type == 'efficientnet_v2_s':
+    model_ft = models.efficientnet_v2_s(weights='DEFAULT')
+    in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+    sequential_0 = model_ft.classifier._modules.get('0')
+    sequential_1 = nn.Linear(in_ftrs, 5)
+    model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+    
+print('Model Type : {}'.format(args.model_type))
+
+model_path = './models/{}/{}/'.format(args.model_type, args.img_size)
+submission_path = './submission/{}/{}/'.format(args.model_type, args.img_size)
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)
@@ -32,21 +65,6 @@ for i in model_list_pt:
     probs_correct = []
     probs_predict = []
     probs_0, probs_1, probs_2, probs_3, probs_4 = [], [], [], [], []
-    
-    model_ft = models.resnet152()
-    in_ftrs = model_ft.fc.in_features
-    model_ft.fc = nn.Linear(in_ftrs, 5)
-    
-    """ model_ft = models.densenet201()
-    in_ftrs = model_ft.classifier.in_features
-    model_ft.classifier = nn.Linear(in_ftrs, 5) """
-
-    """ # model_ft = models.efficientnet_b5()
-    model_ft = models.efficientnet_v2_s()
-    in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-    sequential_0 = model_ft.classifier._modules.get('0')
-    sequential_1 = nn.Linear(in_ftrs, 5)
-    model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
 
     model_ft.load_state_dict(torch.load('{}{}'.format(model_path, i)))
     # model_ft = torch.load('{}{}'.format(model_path, i))
