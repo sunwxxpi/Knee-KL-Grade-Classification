@@ -54,8 +54,9 @@ elif args.model_type == 'efficientnet_v2_s':
     
 print('Model Type : {}'.format(args.model_type))
 
-model_path = './models/{}/{}/'.format(args.model_type, args.img_size)
-submission_path = './submission/{}/{}/'.format(args.model_type, args.img_size)
+img_size_dir = (args.img_size, args.img_size)
+model_path = './models/{}/{}/'.format(args.model_type, img_size_dir)
+submission_path = './submission/{}/{}/'.format(args.model_type, img_size_dir)
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)
