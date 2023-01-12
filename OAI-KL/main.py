@@ -8,6 +8,7 @@ from torchvision import transforms, models
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
+import argparse
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -41,32 +42,43 @@ def test_for_kfold(model, dataloader, criterion):
              
     return test_loss
 
-def train(dataset, epochs, batch_size, k, splits, foldperf):
+def train(dataset, args, batch_size, epochs, k, splits, foldperf):
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
         patience = 5
         delta = 0.1
-        early_stopping = EarlyStopping(patience=patience, verbose=True, delta=delta)
+        early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
     
         train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
         test_sampler = SubsetRandomSampler(val_idx)
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
-        model_ft = models.resnet152(weights='ResNet152_Weights.IMAGENET1K_V2')
-        in_ftrs = model_ft.fc.in_features
-        model_ft.fc = nn.Linear(in_ftrs, 5)
-        
-        """ model_ft = models.densenet201(weights='IMAGENET1K_V1')
-        in_ftrs = model_ft.classifier.in_features
-        model_ft.classifier = nn.Linear(in_ftrs, 5) """
-        
-        """ model_ft = models.efficientnet_b5(weights='IMAGENET1K_V1')
-        # model_ft = models.efficientnet_v2_s(weights='IMAGENET1K_V1')
-        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-        sequential_0 = model_ft.classifier._modules.get('0')
-        sequential_1 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1) """
-        
+        if args.model_type == 'resnet_101':
+            model_ft = models.resnet101(weights='DEFAULT')
+            in_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(in_ftrs, 5)
+            
+        elif args.model_type == 'densenet_169':
+            model_ft = models.densenet169(weights='DEFAULT')
+            in_ftrs = model_ft.classifier.in_features
+            model_ft.classifier = nn.Linear(in_ftrs, 5)
+            
+        elif args.model_type == 'efficientnet_b5':
+            model_ft = models.efficientnet_b5(weights='DEFAULT')
+            in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+            sequential_0 = model_ft.classifier._modules.get('0')
+            sequential_1 = nn.Linear(in_ftrs, 5)
+            model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+            
+        elif args.model_type == 'efficientnet_v2_s':
+            model_ft = models.efficientnet_v2_s(weights='DEFAULT')
+            in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+            sequential_0 = model_ft.classifier._modules.get('0')
+            sequential_1 = nn.Linear(in_ftrs, 5)
+            model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+            
+        print('Model Type : ' + args.model_type)
+                
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # model을 gpu에 할당
@@ -91,7 +103,7 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
             history['train_loss'].append(train_loss)
             history['test_loss'].append(test_loss)
             
-            early_stopping(test_loss, model_ft, fold, epoch)
+            early_stopping(test_loss, model_ft, args, fold, epoch)
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
@@ -108,6 +120,11 @@ def train(dataset, epochs, batch_size, k, splits, foldperf):
     print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f), np.mean(testl_f)))
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_type', dest='model_type', action='store')
+    parser.add_argument('--img_size', type=int, default=224, dest='img_size', action="store")
+    args = parser.parse_args()
+    
     train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
@@ -115,7 +132,8 @@ if __name__ == '__main__':
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                     ])
-    dataset = ImageDataset(train_csv, transforms=transform)
+    print('Image Size : ({}, {})'.format(args.img_size, args.img_size))
+    dataset = ImageDataset(train_csv, img_size=args.img_size, transforms=transform)
     batch_size = 16
     epochs = 100
     k = 5
@@ -123,4 +141,4 @@ if __name__ == '__main__':
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}
 
-    train(dataset, epochs, batch_size, k, splits, foldperf)
+    train(dataset, args, batch_size, epochs, k, splits, foldperf)

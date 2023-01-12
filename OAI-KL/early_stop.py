@@ -3,7 +3,7 @@ import numpy as np
 from torch import nn
 
 class EarlyStopping:
-    def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
+    def __init__(self, args, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
         """
         Args:
             patience (int): validation loss가 개선된 후 기다리는 기간
@@ -15,6 +15,7 @@ class EarlyStopping:
             path (str): checkpoint 저장 경로
                             Default: 'checkpoint.pt'
         """
+        self.args = args
         self.patience = patience
         self.verbose = verbose
         self.counter = 0
@@ -24,25 +25,27 @@ class EarlyStopping:
         self.delta = delta
         self.path = path
 
-    def save_checkpoint(self, val_loss, model, fold, epoch):
+    def save_checkpoint(self, val_loss, model, args, fold, epoch):
         if self.verbose:
             print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+            
+        img_size_dir = (args.img_size, args.img_size)
         
-        # torch.save(model, './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+        # torch.save(model, './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
         if isinstance(model, nn.DataParallel):
-            torch.save(model.module.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+            torch.save(model.module.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
         else:
-            torch.save(model.state_dict(), './models/kfold_CNN_{}fold_epoch{}.pt'.format(fold + 1, epoch + 1))
+            torch.save(model.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, img_size_dir, fold + 1, epoch + 1))
             
         self.val_loss_min = val_loss
         
-    def __call__(self, val_loss, model, fold, epoch):
+    def __call__(self, val_loss, model, args, fold, epoch):
     
         score = -val_loss
 
         if self.best_score is None:
             self.best_score = score
-            self.save_checkpoint(val_loss, model, fold, epoch)
+            self.save_checkpoint(val_loss, model, args, fold, epoch)
         elif self.best_score - self.delta > score:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
@@ -51,5 +54,5 @@ class EarlyStopping:
         else:
             if self.best_score < score:
                 self.best_score = score
-            self.save_checkpoint(val_loss, model, fold, epoch)
+            self.save_checkpoint(val_loss, model, args, fold, epoch)
             self.counter = 0
