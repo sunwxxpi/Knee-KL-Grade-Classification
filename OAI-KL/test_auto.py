@@ -28,32 +28,6 @@ transform_tta = tta.Compose([
                             tta.HorizontalFlip()
                             ])
 
-if args.model_type == 'resnet_101':
-        model_ft = models.resnet101(weights='DEFAULT')
-        in_ftrs = model_ft.fc.in_features
-        model_ft.fc = nn.Linear(in_ftrs, 5)
-            
-elif args.model_type == 'densenet_169':
-    model_ft = models.densenet169(weights='DEFAULT')
-    in_ftrs = model_ft.classifier.in_features
-    model_ft.classifier = nn.Linear(in_ftrs, 5)
-    
-elif args.model_type == 'efficientnet_b3':
-    model_ft = models.efficientnet_b3(weights='DEFAULT')
-    in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-    sequential_0 = model_ft.classifier._modules.get('0')
-    sequential_1 = nn.Linear(in_ftrs, 5)
-    model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
-    
-elif args.model_type == 'efficientnet_v2_s':
-    model_ft = models.efficientnet_v2_s(weights='DEFAULT')
-    in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-    sequential_0 = model_ft.classifier._modules.get('0')
-    sequential_1 = nn.Linear(in_ftrs, 5)
-    model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
-    
-print('Model Type : {}'.format(args.model_type))
-
 img_size_dir = (args.img_size, args.img_size)
 model_path = './models/{}/{}/'.format(args.model_type, img_size_dir)
 submission_path = './submission/{}/{}/'.format(args.model_type, img_size_dir)
@@ -61,7 +35,33 @@ model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)
 
-for i in model_list_pt: 
+print('Model Type : {}'.format(args.model_type))
+
+for i in model_list_pt:
+    if args.model_type == 'resnet_101':
+        model_ft = models.resnet101(weights='DEFAULT')
+        in_ftrs = model_ft.fc.in_features
+        model_ft.fc = nn.Linear(in_ftrs, 5)
+            
+    elif args.model_type == 'densenet_169':
+        model_ft = models.densenet169(weights='DEFAULT')
+        in_ftrs = model_ft.classifier.in_features
+        model_ft.classifier = nn.Linear(in_ftrs, 5)
+        
+    elif args.model_type == 'efficientnet_b3':
+        model_ft = models.efficientnet_b3(weights='DEFAULT')
+        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+        sequential_0 = model_ft.classifier._modules.get('0')
+        sequential_1 = nn.Linear(in_ftrs, 5)
+        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        
+    elif args.model_type == 'efficientnet_v2_s':
+        model_ft = models.efficientnet_v2_s(weights='DEFAULT')
+        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+        sequential_0 = model_ft.classifier._modules.get('0')
+        sequential_1 = nn.Linear(in_ftrs, 5)
+        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+    
     preds = []
     probs_correct = []
     probs_predict = []
