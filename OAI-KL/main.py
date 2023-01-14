@@ -76,8 +76,6 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             sequential_0 = model_ft.classifier._modules.get('0')
             sequential_1 = nn.Linear(in_ftrs, 5)
             model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
-            
-        print('Model Type : {}'.format(args.model_type))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -85,7 +83,6 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
 
         criterion = nn.CrossEntropyLoss() # loss function
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
-        print('Learning Rate : {}'.format(args.learning_rate))
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
@@ -124,10 +121,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model_type', dest='model_type', action='store')
     parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action="store")
-    parser.add_argument('-l', '--learning_rate', type=float, default=0.001, dest='learning_rate', action="store")
+    parser.add_argument('-l', '--learning_rate', type=float, default=0.0005, dest='learning_rate', action="store")
     args = parser.parse_args()
+    print('Model Type : {}'.format(args.model_type))
+    print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
+    print('Learning Rate : {}'.format(args.learning_rate))
     
-    train_csv = pd.read_csv('./KneeXray/Train.csv') # _cn _clahe 등, 수정 필요
+    image_size_dir = (args.image_size, args.image_size)
+    train_csv = pd.read_csv('./KneeXray/Train_{}.csv'.format(image_size_dir))
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
                                     # transforms.Resize((args.image_size, args.image_size), transforms.InterpolationMode.BICUBIC),
@@ -136,7 +137,6 @@ if __name__ == '__main__':
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                     ])
     dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
-    print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
     batch_size = 16
     epochs = 100
     k = 5
