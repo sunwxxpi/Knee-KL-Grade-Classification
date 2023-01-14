@@ -1,8 +1,13 @@
 # Byte-compiled / optimized / DLL files
-OAI-KL/__pycache__/
+./OAI-KL/__pycache__/
 *.py[cod]
 
 # Dataset / Models / Submissions
-OAI-KL/KneeXray/
-OAI-KL/models/
-OAI-KL/submission/
+./OAI-KL/KneeXray/
+./OAI-KL/models/
+./OAI-KL/submission/
+
+# virtualenv
+./Lib
+./Scripts
+./pyvenv.cfg
