@@ -88,7 +88,8 @@ submission_path = './submission/'
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
 
-labels_ensemble = [[0 for j in range(3)] for i in range(test_image_num)]
+ensemble_model_num = len(submission_list_csv)
+labels_ensemble = [[0 for j in range(ensemble_model_num)] for i in range(test_image_num)]
 probs_ensemble = [[0 for j in range(5)] for i in range(test_image_num)]
 
 submission_index = 0
@@ -130,8 +131,7 @@ for i in submission_list_csv:
             probs_ensemble[j][k] += globals()['{}_probs'.format(i)][j][k]
 
 probs_ensemble_array = np.array(probs_ensemble)
-# probs_ensemble = (probs_ensemble_array / 2).tolist()
-probs_ensemble = (probs_ensemble_array / 3).tolist()
+probs_ensemble = (probs_ensemble_array / ensemble_model_num).tolist()
 
 hard_voting(probs_ensemble)
 soft_voting(probs_ensemble)
