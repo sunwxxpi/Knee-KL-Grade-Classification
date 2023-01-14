@@ -8,6 +8,4 @@ OAI-KL/models/
 OAI-KL/submission/
 
 # virtualenv
-Lib
-Scripts
-pyvenv.cfg
+KLGrade_venv
