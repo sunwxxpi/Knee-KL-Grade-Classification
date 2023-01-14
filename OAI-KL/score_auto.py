@@ -7,6 +7,8 @@ from sklearn.metrics import accuracy_score, f1_score
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model_type', dest='model_type', action='store')
 parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action="store")
+parser.add_argument('-t', '--threshold', type=float, default=0.65, dest='threshold', action="store")
+parser.add_argument('-r', '--remove_option', default=False, dest='remove_option', action="store_true")
 args = parser.parse_args()
 
 image_size_dir = (args.image_size, args.image_size)
@@ -41,8 +43,8 @@ for i in submission_list_csv:
     accuracy = round(accuracy, 4)
     f1_macro = round(f1_macro, 4)
     f1_weighted = round(f1_weighted, 4)
-    
-    if accuracy < 0.67 or f1_macro < 0.67 or f1_weighted < 0.67:
+        
+    if (accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold) and args.remove_option == True :
         print('Accuracy Score : {}'.format(accuracy))
         print('F1 Score (Macro) : {}'.format(f1_macro))
         # print('F1 Score (Weighted) : {}'.format(f1_weighted))
@@ -50,7 +52,7 @@ for i in submission_list_csv:
         print('{}{} Removed'.format(submission_path, i))
         print()
 
-    elif accuracy > 0.67 and f1_macro > 0.67 and f1_weighted > 0.67:
+    elif accuracy > args.threshold and f1_macro > args.threshold and f1_weighted > args.threshold:
         print('Accuracy Score : {}'.format(accuracy))
         print('F1 Score (Macro) : {}'.format(f1_macro))
         # print('F1 Score (Weighted) : {}'.format(f1_weighted))
