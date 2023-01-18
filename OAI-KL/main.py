@@ -4,11 +4,13 @@ import torch
 import numpy as np
 import pandas as pd
 from torch import nn, optim
+from torch.nn import functional as F
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import transforms, models
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
+from my_custom_loss import my_ce_loss, my_mse_loss, my_ce_mse_loss
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -19,8 +21,10 @@ def train_for_kfold(model, dataloader, criterion, optimizer):
         for batch in (dataloader):
             optimizer.zero_grad() # 반복 시 gradient(기울기)를 0으로 초기화, gradient는 += 되기 때문
             image, labels = batch['image'].cuda(), batch['target'].cuda() # tensor를 gpu에 할당
-
+            
+            # labels = F.one_hot(labels, num_classes=5).float() # nn.MSELoss() 사용 시 필요
             output = model(image) # image(data)를 model에 넣어서 hypothesis(가설) 값을 획득
+            
             loss = criterion(output, labels) # error, prediction loss를 계산
             train_loss += loss.item() # loss.item()을 통해 loss의 스칼라 값을 가져온다.
 
@@ -32,13 +36,15 @@ def train_for_kfold(model, dataloader, criterion, optimizer):
 def test_for_kfold(model, dataloader, criterion):
     test_loss = 0.0
     model.eval() # model을 eval mode로 전환 >> Dropout Layer 같은 경우 eval시 동작 하지 않아야 함
-    with torch.no_grad(): # gradient 연산 기록 추적 off 
+    with torch.no_grad(): # gradient 연산 기록 추적 off
         for batch in (dataloader):
-             image, labels = batch['image'].cuda(), batch['target'].cuda()
-             
-             output = model(image)
-             loss = criterion(output, labels)
-             test_loss += loss.item()
+            image, labels = batch['image'].cuda(), batch['target'].cuda()
+            
+            # labels = F.one_hot(labels, num_classes=5).float() # nn.MSELoss() 사용 시 필요
+            output = model(image)
+            
+            loss = criterion(output, labels)
+            test_loss += loss.item()
              
     return test_loss
 
@@ -81,7 +87,11 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # model을 gpu에 할당
 
-        criterion = nn.CrossEntropyLoss() # loss function
+        # criterion = nn.CrossEntropyLoss() # loss function
+        # criterion = nn.MSELoss()
+        # criterion = my_ce_loss
+        # criterion = my_mse_loss
+        criterion = my_ce_mse_loss
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
