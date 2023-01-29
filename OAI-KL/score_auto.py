@@ -11,11 +11,12 @@ parser.add_argument('-t', '--threshold', type=float, default=0.65, dest='thresho
 parser.add_argument('-r', '--remove_option', default=False, dest='remove_option', action="store_true")
 args = parser.parse_args()
 
-image_size_dir = (args.image_size, args.image_size)
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
+
+image_size_dir = (args.image_size, args.image_size)
 
 submission_path = './submission/'
 # submission_path = './submission/{}/{}/'.format(args.model_type, image_size_dir)

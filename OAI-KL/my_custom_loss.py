@@ -26,7 +26,7 @@ def my_ce_mse_loss(output, target):
     
     return torch.mean(A-B) + torch.mean(softmax_output*((C-D)**2))
 
-output = torch.Tensor([[0.3982, 0.8125, 0.6213, 0.9323, 0.5141],
+""" output = torch.Tensor([[0.3982, 0.8125, 0.6213, 0.9323, 0.5141],
                        [0.3122, 0.2135, 0.1213, 0.9123, 0.3241],
                        [0.2352, 0.1234, 0.7341, 0.1235, 0.3783]])
 
@@ -46,4 +46,4 @@ loss3 = criterion3(output, target)
 
 print(loss1)
 print(loss2)
-print(loss3)
+print(loss3) """

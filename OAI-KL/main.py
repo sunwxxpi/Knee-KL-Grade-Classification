@@ -10,7 +10,7 @@ from torchvision import transforms, models
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
-from my_custom_loss import my_ce_loss, my_mse_loss, my_ce_mse_loss
+from my_custom_loss import my_ce_mse_loss
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -89,8 +89,6 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
 
         # criterion = nn.CrossEntropyLoss() # loss function
         # criterion = nn.MSELoss()
-        # criterion = my_ce_loss
-        # criterion = my_mse_loss
         criterion = my_ce_mse_loss
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
         history = {'train_loss': [], 'test_loss': []}
@@ -138,6 +136,7 @@ if __name__ == '__main__':
     print('Learning Rate : {}'.format(args.learning_rate))
     
     image_size_dir = (args.image_size, args.image_size)
+    
     train_csv = pd.read_csv('./KneeXray/Train.csv')
     # train_csv = pd.read_csv('./KneeXray/Train_{}.csv'.format(image_size_dir))
     transform = transforms.Compose([
