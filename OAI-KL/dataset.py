@@ -20,7 +20,7 @@ class ImageDataset(Dataset):
         path = self.path[idx]
         image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
         image = cv2.resize(image, dsize=self.image_size, interpolation=cv2.INTER_CUBIC)
-        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB) # opencv에서는 BGR 방식으로 표현
 
         if self.transforms:
             image = self.transforms(image)

@@ -18,7 +18,8 @@ print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
 
 image_size_dir = (args.image_size, args.image_size)
 
-test_csv = pd.read_csv('./KneeXray/Test_correct_{}.csv'.format(image_size_dir))
+test_csv = pd.read_csv('./KneeXray/Test_correct.csv')
+# test_csv = pd.read_csv('./KneeXray/Test_correct_{}.csv'.format(image_size_dir))
 
 transform = transforms.Compose([
                                 transforms.ToTensor(),

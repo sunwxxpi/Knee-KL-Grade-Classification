@@ -17,7 +17,8 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-submission_path = './submission/{}/{}/'.format(args.model_type, image_size_dir)
+submission_path = './submission/'
+# submission_path = './submission/{}/{}/'.format(args.model_type, image_size_dir)
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
 submission_list_csv = natsort.natsorted(submission_list_csv)
@@ -52,7 +53,7 @@ for i in submission_list_csv:
         print('{}{} Removed'.format(submission_path, i))
         print()
 
-    elif accuracy > args.threshold and f1_macro > args.threshold and f1_weighted > args.threshold:
+    elif accuracy >= args.threshold and f1_macro >= args.threshold and f1_weighted >= args.threshold:
         print('Accuracy Score : {}'.format(accuracy))
         print('F1 Score (Macro) : {}'.format(f1_macro))
         # print('F1 Score (Weighted) : {}'.format(f1_weighted))

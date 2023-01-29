@@ -138,7 +138,8 @@ if __name__ == '__main__':
     print('Learning Rate : {}'.format(args.learning_rate))
     
     image_size_dir = (args.image_size, args.image_size)
-    train_csv = pd.read_csv('./KneeXray/Train_{}.csv'.format(image_size_dir))
+    train_csv = pd.read_csv('./KneeXray/Train.csv')
+    # train_csv = pd.read_csv('./KneeXray/Train_{}.csv'.format(image_size_dir))
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
                                     # transforms.Resize((args.image_size, args.image_size), transforms.InterpolationMode.BICUBIC),
