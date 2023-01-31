@@ -142,3 +142,32 @@ EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
 Hard Voting : 0.7699 / 0.7659 / 0.7631
 Soft Voting : 0.7572 / 0.7530 / 0.7515
 Mix Voting : 0.7669 / 0.7640 / 0.7619
+
+--------------------------------------------------------Custom Loss (L2CE)--------------------------------------------------------------
+<DenseNet-201 (pretrained)>                     <EfficientNet-b5 (pretrained)>                  <EfficientNet-V2-s (pretrained.1k)> 
+1fold_epoch29 : 0.7283 / 0.7098                 1fold_epoch10 : 0.7174 / 0.7242                 1fold_epoch14 : 0.7452 / 0.7330
+2fold_epoch14 : 0.7204 / 0.7212                 2fold_epoch8 : 0.7252 / 0.7265                  2fold_epoch21 : 0.7337 / 0.7175
+3fold_epoch25 : 0.7216 / 0.7112                 3fold_epoch7 : 0.7180 / 0.7140                  3fold_epoch30 : 0.7277 / 0.7366
+4fold_epoch28 : 0.7210 / 0.6983                 4fold_epoch9 : 0.7361 / 0.7246                  4fold_epoch22 : 0.7409 / 0.7277
+5fold_epoch29 : 0.7101 / 0.7211                 5fold_epoch6 : 0.7289 / 0.7244                  5fold_epoch30 : 0.7379 / 0.7367
+0.7203 / 0.7123                                 0.7251 / 0.7228                                 0.7371 / 0.7303
+HorizontalFlip(p=0.5), Rotation(20), TTA        HorizontalFlip(p=0.5), Rotation(20), TTA        HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32                                 Batch Size : 16                                 Batch Size : 16
+Adam lr=0.0006                                  Adam lr=0.0005                                  Adam lr=0.0007
+23/01/31                                        23/01/31                                        23/01/31                           
+--------------------------------------------------------Custom Loss (L2CE)--------------------------------------------------------------
+
+Accuracy Score / F1 Score (macro avg)
+
+DenseNet-201 : (448, 448) Batch Size_32 lr_0.0006
+2fold_epoch14 : 0.7204 / 0.7212
+
+EfficientNet-b5 : (456, 456) Batch Size_16 lr_0.0005
+4fold_epoch9 : 0.7361 / 0.7246
+
+EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
+1fold_epoch14 : 0.7452 / 0.7330
+
+Hard Voting : 0.7440 / 0.7421
+Soft Voting : 0.7579 / 0.7525
+Mix Voting : 0.7500 / 0.7496
