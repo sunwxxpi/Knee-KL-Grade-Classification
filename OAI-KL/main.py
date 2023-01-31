@@ -82,14 +82,24 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             sequential_0 = model_ft.classifier._modules.get('0')
             sequential_1 = nn.Linear(in_ftrs, 5)
             model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        
+        elif args.model_type == 'resnext':
+            model_ft = models.resnext50_32x4d(weights='DEFAULT')
+            in_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(in_ftrs, 5)
+            
+        elif args.model_type == 'regnet':
+            model_ft = models.regnet_y_8gf(weights='DEFAULT')
+            in_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(in_ftrs, 5)
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # model을 gpu에 할당
 
-        # criterion = nn.CrossEntropyLoss() # loss function
+        criterion = nn.CrossEntropyLoss() # loss function
         # criterion = nn.MSELoss()
-        criterion = my_ce_mse_loss
+        # criterion = my_ce_mse_loss
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
         history = {'train_loss': [], 'test_loss': []}
         
