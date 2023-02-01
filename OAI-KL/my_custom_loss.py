@@ -33,11 +33,10 @@ def my_ce_mse_loss(output, target):
 target = torch.LongTensor([0, 2, 1])
 # target = F.one_hot(target, num_classes=5).float()
 
-# criterion = nn.CrossEntropyLoss()
+# criterion1 = nn.CrossEntropyLoss()
 criterion1 = my_ce_loss
-# criterion = nn.MSELoss()
+# criterion2 = nn.MSELoss()
 criterion2 = my_mse_loss
-
 criterion3 = my_ce_mse_loss
 
 loss1 = criterion1(output, target)
