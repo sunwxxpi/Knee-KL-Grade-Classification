@@ -26,23 +26,31 @@ def my_ce_mse_loss(output, target):
     
     return torch.mean(A-B) + torch.mean(softmax_output*((C-D)**2))
 
-""" output = torch.Tensor([[0.3982, 0.8125, 0.6213, 0.9323, 0.5141],
-                       [0.3122, 0.2135, 0.1213, 0.9123, 0.3241],
-                       [0.2352, 0.1234, 0.7341, 0.1235, 0.3783]])
+if __name__ == '__main__':
+    output = torch.Tensor([[0.3982, 0.8125, 0.6213, 0.9323, 0.5141],
+                        [0.3122, 0.2135, 0.1213, 0.9123, 0.3241],
+                        [0.2352, 0.1234, 0.7341, 0.1235, 0.3783]])
 
-target = torch.LongTensor([0, 2, 1])
-# target = F.one_hot(target, num_classes=5).float()
+    target = torch.LongTensor([0, 2, 1])
 
-# criterion1 = nn.CrossEntropyLoss()
-criterion1 = my_ce_loss
-# criterion2 = nn.MSELoss()
-criterion2 = my_mse_loss
-criterion3 = my_ce_mse_loss
+    criterion1 = nn.CrossEntropyLoss()
+    loss1 = criterion1(output, target)
+    print(loss1)
+    
+    criterion2 = my_ce_loss
+    loss2 = criterion2(output, target)
+    print(loss2)
+    
+    target = F.one_hot(target, num_classes=5).float()
+    criterion3 = nn.MSELoss()
+    loss3 = criterion3(output, target)
+    print(loss3)
 
-loss1 = criterion1(output, target)
-loss2 = criterion2(output, target)
-loss3 = criterion3(output, target)
+    target = torch.LongTensor([0, 2, 1])
+    criterion4 = my_mse_loss
+    loss4 = criterion4(output, target)
+    print(loss4)
 
-print(loss1)
-print(loss2)
-print(loss3) """
+    criterion5 = my_ce_mse_loss
+    loss5 = criterion5(output, target)
+    print(loss5)
