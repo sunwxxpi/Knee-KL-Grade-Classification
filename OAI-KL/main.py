@@ -4,13 +4,14 @@ import torch
 import numpy as np
 import pandas as pd
 from torch import nn, optim
-from torch.nn import functional as F
+# from torch.nn import functional as F
 from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import transforms, models
+from torchvision import transforms
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
-from my_custom_loss import my_ce_mse_loss
+from model import model_list
+# from my_custom_loss import my_ce_mse_loss
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -59,39 +60,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
-        if args.model_type == 'resnet_101':
-            model_ft = models.resnet101(weights='DEFAULT')
-            in_ftrs = model_ft.fc.in_features
-            model_ft.fc = nn.Linear(in_ftrs, 5)
-            
-        elif args.model_type == 'densenet_169':
-            model_ft = models.densenet169(weights='DEFAULT')
-            in_ftrs = model_ft.classifier.in_features
-            model_ft.classifier = nn.Linear(in_ftrs, 5)
-            
-        elif args.model_type == 'efficientnet_b3':
-            model_ft = models.efficientnet_b3(weights='DEFAULT')
-            in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-            sequential_0 = model_ft.classifier._modules.get('0')
-            sequential_1 = nn.Linear(in_ftrs, 5)
-            model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
-            
-        elif args.model_type == 'efficientnet_v2_s':
-            model_ft = models.efficientnet_v2_s(weights='DEFAULT')
-            in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-            sequential_0 = model_ft.classifier._modules.get('0')
-            sequential_1 = nn.Linear(in_ftrs, 5)
-            model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
-        
-        elif args.model_type == 'resnext':
-            model_ft = models.resnext50_32x4d(weights='DEFAULT')
-            in_ftrs = model_ft.fc.in_features
-            model_ft.fc = nn.Linear(in_ftrs, 5)
-            
-        elif args.model_type == 'regnet':
-            model_ft = models.regnet_y_8gf(weights='DEFAULT')
-            in_ftrs = model_ft.fc.in_features
-            model_ft.fc = nn.Linear(in_ftrs, 5)
+        model_ft = model_list(args)
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -101,6 +70,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         # criterion = nn.MSELoss()
         # criterion = my_ce_mse_loss
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
+        
         history = {'train_loss': [], 'test_loss': []}
         
         print('Fold {}'.format(fold + 1))
