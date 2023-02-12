@@ -10,7 +10,7 @@ from torchvision import transforms
 from sklearn.model_selection import KFold
 from dataset import ImageDataset
 from early_stop import EarlyStopping
-from model import model_list
+from model import model_return
 # from my_custom_loss import my_ce_mse_loss
 
 # ssl._create_default_https_context = ssl._create_unverified_context
@@ -60,7 +60,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
-        model_ft = model_list(args)
+        model_ft = model_return(args)
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리

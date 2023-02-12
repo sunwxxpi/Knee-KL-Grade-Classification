@@ -1,7 +1,7 @@
 from torch import nn
 from torchvision import models
 
-def model_list(args):
+def model_return(args):
     if args.model_type == 'resnet_101':
         model_ft = models.resnet101(weights='DEFAULT')
         in_ftrs = model_ft.fc.in_features
@@ -45,13 +45,5 @@ def model_list(args):
         model_ft = models.shufflenet_v2_x2_0(weights='DEFAULT')
         in_ftrs = model_ft.fc.in_features
         model_ft.fc = nn.Linear(in_ftrs, 5)
-        
-    """ elif args.model_type == 'convnext_tiny':
-        model_ft = models.convnext_tiny(weights='DEFAULT')
-        in_ftrs = model_ft.classifier._modules.__getitem__('2').__getattribute__('in_features')
-        sequential_0 = model_ft.classifier._modules.get('0')
-        sequential_1 = model_ft.classifier._modules.get('1')
-        sequential_2 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1, sequential_2) """
         
     return model_ft

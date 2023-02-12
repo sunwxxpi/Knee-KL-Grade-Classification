@@ -8,7 +8,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from dataset import ImageDataset
-from model import model_list
+from model import model_return
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model_type', dest='model_type', action='store')
@@ -41,7 +41,7 @@ model_list_pt = [file for file in model_list if file.endswith(".pt")]
 model_list_pt = natsort.natsorted(model_list_pt)
 
 for i in model_list_pt:
-    model_ft = model_list(args)
+    model_ft = model_return(args)
     
     preds = []
     probs_correct = []
