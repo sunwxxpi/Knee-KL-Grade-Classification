@@ -11,9 +11,21 @@ def model_return(args):
         model_ft = models.densenet169(weights='DEFAULT')
         in_ftrs = model_ft.classifier.in_features
         model_ft.classifier = nn.Linear(in_ftrs, 5)
+    
+    elif args.model_type == 'densenet_201':
+        model_ft = models.densenet201(weights='DEFAULT')
+        in_ftrs = model_ft.classifier.in_features
+        model_ft.classifier = nn.Linear(in_ftrs, 5)
         
     elif args.model_type == 'efficientnet_b3':
         model_ft = models.efficientnet_b3(weights='DEFAULT')
+        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
+        sequential_0 = model_ft.classifier._modules.get('0')
+        sequential_1 = nn.Linear(in_ftrs, 5)
+        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        
+    elif args.model_type == 'efficientnet_b5':
+        model_ft = models.efficientnet_b5(weights='DEFAULT')
         in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
         sequential_0 = model_ft.classifier._modules.get('0')
         sequential_1 = nn.Linear(in_ftrs, 5)
