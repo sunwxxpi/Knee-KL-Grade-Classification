@@ -10,13 +10,14 @@ test_correct_labels_list = test_correct_labels.values.tolist()
 test_image_num = len(test_correct_labels_list)
 
 fold = 10
-epoch = 10
+epoch = 11
 
-submission_csv = pd.read_csv('./submission/{fold}fold_epoch{epoch}_submission.csv', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
+submission_csv = pd.read_csv(f'./submission/{fold}fold_epoch{epoch}_submission.csv', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
 submission_labels = submission_csv['label']
 submission_labels_list = submission_labels.values.tolist()
 
 normalize = 'true'
+# normalize = None
 score = accuracy_score(test_correct_labels_list, submission_labels_list)
 matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, normalize=normalize)
 
@@ -32,7 +33,7 @@ plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
 plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
 
 fmt = '.3f' if normalize=='true' else 'd'
-threshold = 0.5
+threshold = 0.5 if normalize=='true' else 450
 for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
         plt.text(j, i, format(matrix[i, j], fmt), ha='center', va='center', color='white' if matrix[i, j] > threshold else 'black')  # Horizontal Alignment
