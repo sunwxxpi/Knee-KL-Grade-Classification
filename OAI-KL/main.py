@@ -73,7 +73,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         
         history = {'train_loss': [], 'test_loss': []}
         
-        print('Fold {}'.format(fold + 1))
+        print(f'Fold {fold + 1}')
     
         for epoch in range(epochs):
             train_loss = train_for_kfold(model_ft, train_loader, criterion, optimizer)
@@ -84,7 +84,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
             test_loss = test_loss / len(test_loader)
             # test_loss = test_correct / len(test_loader.sampler)*100
 
-            print("Epoch:{}/{} AVG Training Loss:{:.3f} AVG Test Loss:{:.3f}".format(epoch + 1, epochs, train_loss, test_loss))
+            print(f"Epoch:{epoch + 1}/{epochs} AVG Training Loss: {train_loss:.3f} AVG Test Loss: {test_loss:.3f}")
             
             history['train_loss'].append(train_loss)
             history['test_loss'].append(test_loss)
@@ -94,34 +94,35 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
                 print("Early stopping")
                 break
         
-        foldperf['fold{}'.format(fold+1)] = history  
+        foldperf[f"fold{fold+1}"] = history  
     
     tl_f, testl_f = [], []
 
     for f in range(1, k+1):
-        tl_f.append(np.mean(foldperf['fold{}'.format(f)]['train_loss']))
-        testl_f.append(np.mean(foldperf['fold{}'.format(f)]['test_loss']))
+        tl_f.append(np.mean(foldperf[f'fold{f}']['train_loss']))
+        testl_f.append(np.mean(foldperf[f'fold{f}']['test_loss']))
 
-    print('Performance of {} fold cross validation'.format(k))
-    print("Average Training Loss: {:.3f} \t Average Test Loss: {:.3f}".format(np.mean(tl_f), np.mean(testl_f)))
+    print(f"Performance of {k} fold cross validation")
+    print(f"Average Training Loss: {np.mean(tl_f):.3f} \t Average Test Loss: {np.mean(testl_f):.3f}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model_type', dest='model_type', action='store')
-    parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action="store")
-    parser.add_argument('-l', '--learning_rate', type=float, default=0.0005, dest='learning_rate', action="store")
+    parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action='store')
+    parser.add_argument('-l', '--learning_rate', type=float, default=0.0005, dest='learning_rate', action='store')
     args = parser.parse_args()
-    print('Model Type : {}'.format(args.model_type))
-    print('Image Size : ({}, {})'.format(args.image_size, args.image_size))
-    print('Learning Rate : {}'.format(args.learning_rate))
     
-    image_size_dir = (args.image_size, args.image_size)
+    image_size_tuple = (args.image_size, args.image_size)
+    
+    print(f"Model Type : {args.model_type}")
+    print(f"Image Size : ({args.image_size}, {args.image_size})")
+    print(f"Learning Rate : {args.learning_rate}")
     
     train_csv = pd.read_csv('./KneeXray/Train.csv')
-    # train_csv = pd.read_csv('./KneeXray/Train_{}.csv'.format(image_size_dir))
+    # train_csv = pd.read_csv(f'./KneeXray/Train_{image_size_dir}.csv')
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
-                                    # transforms.Resize((args.image_size, args.image_size), transforms.InterpolationMode.BICUBIC),
+                                    # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
                                     transforms.RandomHorizontalFlip(p=0.5),
                                     transforms.RandomRotation(20),
                                     transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]), # -1 ~ 1의 범위를 가지도록 정규화

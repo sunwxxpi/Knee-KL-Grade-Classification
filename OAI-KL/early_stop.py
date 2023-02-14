@@ -27,15 +27,15 @@ class EarlyStopping:
 
     def save_checkpoint(self, val_loss, model, args, fold, epoch):
         if self.verbose:
-            print(f'Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+            print(f"Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...")
             
         image_size_dir = (args.image_size, args.image_size)
         
         if isinstance(model, nn.DataParallel):
-            torch.save(model.module.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
+            torch.save(model.module.state_dict(), f'./models/{args.model_type}/{image_size_dir}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt')
         else:
-            torch.save(model.state_dict(), './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
-        # torch.save(model, './models/{}/{}/kfold_CNN_{}fold_epoch{}.pt'.format(args.model_type, image_size_dir, fold + 1, epoch + 1))
+            torch.save(model.state_dict(), f'./models/{args.model_type}/{image_size_dir}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt')
+        # torch.save(model, f"./models/{args.model_type}/{image_size_dir}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt")
             
         self.val_loss_min = val_loss
         
@@ -48,7 +48,7 @@ class EarlyStopping:
             self.save_checkpoint(val_loss, model, args, fold, epoch)
         elif self.best_score - self.delta > score:
             self.counter += 1
-            print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            print(f"EarlyStopping counter: {self.counter} out of {self.patience}")
             if self.counter >= self.patience:
                 self.early_stop = True
         else:

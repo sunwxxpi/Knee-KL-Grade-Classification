@@ -11,17 +11,16 @@ parser.add_argument('-t', '--threshold', type=float, default=0.65, dest='thresho
 parser.add_argument('-r', '--remove_option', default=False, dest='remove_option', action="store_true")
 args = parser.parse_args()
 
+image_size_tuple = (args.image_size, args.image_size)
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-image_size_dir = (args.image_size, args.image_size)
-
-submission_path = './submission/'
-# submission_path = './submission/{}/{}/'.format(args.model_type, image_size_dir)
+submission_path = './submission'
+# submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
 submission_list = os.listdir(submission_path)
-submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
+submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
 submission_list_csv = natsort.natsorted(submission_list_csv)
 submission_num = len(submission_list_csv)
 
@@ -30,11 +29,11 @@ sum_f1_macro = 0
 sum_f1_weighted = 0
 
 for i in submission_list_csv:
-    submission_csv = pd.read_csv('{}{}'.format(submission_path, i), names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
+    submission_csv = pd.read_csv(f'{submission_path}/{i}', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
     submission_labels = submission_csv['label']
     submission_labels_list = submission_labels.values.tolist()
     
-    print('{}'.format(i))
+    print(f'{i}')
     accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
     f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
     f1_weighted = f1_score(test_correct_labels_list, submission_labels_list, average='weighted')
@@ -47,17 +46,17 @@ for i in submission_list_csv:
     f1_weighted = round(f1_weighted, 4)
         
     if (accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold) and args.remove_option == True :
-        print('Accuracy Score : {}'.format(accuracy))
-        print('F1 Score (Macro) : {}'.format(f1_macro))
-        # print('F1 Score (Weighted) : {}'.format(f1_weighted))
-        os.remove('{}{}'.format(submission_path, i))
-        print('{}{} Removed'.format(submission_path, i))
+        print(f"Accuracy Score : {accuracy}")
+        print(f"F1 Score (Macro) : {f1_macro}")
+        # print(f"F1 Score (Weighted) : {f1_weighted}")
+        os.remove(f'{submission_path}/{i}')
+        print(f'{submission_path}/{i} Removed')
         print()
 
     elif accuracy >= args.threshold and f1_macro >= args.threshold and f1_weighted >= args.threshold:
-        print('Accuracy Score : {}'.format(accuracy))
-        print('F1 Score (Macro) : {}'.format(f1_macro))
-        # print('F1 Score (Weighted) : {}'.format(f1_weighted))
+        print(f"Accuracy Score : {accuracy}")
+        print(f"F1 Score (Macro) : {f1_macro}")
+        # print(f"F1 Score (Weighted) : {f1_weighted}")
         print()
         
 avg_accuracy = sum_accuracy / submission_num
@@ -68,8 +67,8 @@ avg_f1_macro = round(avg_f1_macro, 4)
 avg_f1_weighted = round(avg_f1_weighted, 4)
 
 print('-------------------------------')
-print('{}'.format(submission_path))
-print('Average Accuracy Score : {}'.format(avg_accuracy))
-print('Average F1 Score (Macro) : {}'.format(avg_f1_macro))
-# print('Average F1 Score (Weighted) : {}'.format(avg_f1_weighted))
+print(f'{submission_path}')
+print(f"Average Accuracy Score : {avg_accuracy}")
+print(f"Average F1 Score (Macro) : {avg_f1_macro}")
+# print("Average F1 Score (Weighted) : {avg_f1_weighted}")
 print()

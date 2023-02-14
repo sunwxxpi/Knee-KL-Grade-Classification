@@ -40,8 +40,8 @@ def probs_to_csv(probs_ensemble, set_epoch, mode):
             
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
-    submit.to_csv('{}10fold_epoch{}_submission.csv'.format(submission_path, set_epoch), index=False)
-    print('save {} ensemble_submission.csv'.format(mode))
+    submit.to_csv(f'{submission_path}/10fold_epoch{set_epoch}_submission.csv', index=False)
+    print(f"save {mode} ensemble_submission.csv")
     
     
 def hard_voting(probs_ensemble): # Hard Voting
@@ -84,9 +84,9 @@ test_correct_labels_list = test_correct_labels.values.tolist()
 
 test_image_num = len(test_correct_labels_list)
 
-submission_path = './submission/'
+submission_path = './submission'
 submission_list = os.listdir(submission_path)
-submission_list_csv = [file for file in submission_list if file.endswith(".csv")]
+submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
 
 ensemble_model_num = len(submission_list_csv)
 labels_ensemble = [[0 for j in range(ensemble_model_num)] for i in range(test_image_num)]
@@ -94,41 +94,41 @@ probs_ensemble = [[0 for j in range(5)] for i in range(test_image_num)]
 
 submission_index = 0
 for i in submission_list_csv:
-    submission_csv = pd.read_csv('{}{}'.format(submission_path, i), names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
+    submission_csv = pd.read_csv(f'{submission_path}/{i}', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
     
     submission_labels = submission_csv['label']
-    globals()['{}_labels'.format(i)] = submission_labels.values.tolist()
-    globals()['{}_probs'.format(i)] = []
+    globals()[f'{i}_labels'] = submission_labels.values.tolist()
+    globals()[f'{i}_probs'] = []
     
     for j in range(test_image_num):
-        labels_ensemble[j][submission_index] = globals()['{}_labels'.format(i)][j]
+        labels_ensemble[j][submission_index] = globals()[f'{i}_labels'][j]
     submission_index += 1
     
     for j in range(test_image_num):
-        globals()['{}_image_{}'.format(i, j)] = [0 for k in range(5)]
+        globals()[f'{i}_image_{j}'] = [0 for k in range(5)]
         
     for j in range(5):
-        submission_probs = submission_csv['prob_{}'.format(j)]
+        submission_probs = submission_csv[f'prob_{j}']
         submission_probs_list = submission_probs.values.tolist()
         
         for k in range(test_image_num):
-            globals()['{}_image_{}'.format(i, k)][j] = submission_probs_list[k]
+            globals()[f'{i}_image_{k}'][j] = submission_probs_list[k]
             
     for j in range(test_image_num):
-        globals()['{}_probs'.format(i)].append(globals()['{}_image_{}'.format(i, j)])
+        globals()[f'{i}_probs'].append(globals()[f'{i}_image_{j}'])
 
 """ # 수동 Ensemble : 가중치 조절 가능
 for i in range(test_image_num):
     for j in range(5):
-        # probs_ensemble[i][j] = (globals()['{}_probs'.format('2fold_epoch7_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch23_submission.csv')][i][j]) / 2
+        # probs_ensemble[i][j] = (globals()[f"{'2fold_epoch7_submission.csv'}_probs"][i][j] + globals()[f"{'5fold_epoch23_submission.csv'}_probs"][i][j]) / 2
             
-        probs_ensemble[i][j] = (globals()['{}_probs'.format('5fold_epoch30_submission.csv')][i][j] + globals()['{}_probs'.format('2fold_epoch5_submission.csv')][i][j] + globals()['{}_probs'.format('5fold_epoch19_submission.csv')][i][j]) / 3 """
+        probs_ensemble[i][j] = (globals()[f"{'5fold_epoch30_submission.csv'}_probs"][i][j] + globals()[f"{'2fold_epoch5_submission.csv'}_probs"][i][j] + globals()[f"{'5fold_epoch19_submission.csv'}_probs"][i][j]) / 3 """
 
 # 자동 Ensemble : 가중치 1로 고정
 for i in submission_list_csv:
     for j in range(test_image_num):
         for k in range(5):
-            probs_ensemble[j][k] += globals()['{}_probs'.format(i)][j][k]
+            probs_ensemble[j][k] += globals()[f'{i}_probs'][j][k]
 
 probs_ensemble_array = np.array(probs_ensemble)
 probs_ensemble = (probs_ensemble_array / ensemble_model_num).tolist()

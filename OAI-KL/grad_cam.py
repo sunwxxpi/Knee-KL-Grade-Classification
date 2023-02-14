@@ -63,4 +63,4 @@ for i in test_img_list:
 
     cam_img = Image.fromarray(visualization, 'RGB')
     cam_img = cam_img.resize((224, 224))
-    cam_img.save('./Grad CAM/{}'.format(i.split('test')[-1]))
+    cam_img.save(f"./Grad CAM/{i.split('test')[-1]}")
