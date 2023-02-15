@@ -119,7 +119,7 @@ if __name__ == '__main__':
     print(f"Learning Rate : {args.learning_rate}")
     
     train_csv = pd.read_csv('./KneeXray/Train.csv')
-    # train_csv = pd.read_csv(f'./KneeXray/Train_{image_size_dir}.csv')
+    # train_csv = pd.read_csv(f'./KneeXray/Train_{image_size_tuple}.csv')
     transform = transforms.Compose([
                                     transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
                                     # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
