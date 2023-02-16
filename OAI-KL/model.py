@@ -19,24 +19,18 @@ def model_return(args):
         
     elif args.model_type == 'efficientnet_b3':
         model_ft = models.efficientnet_b3(weights='DEFAULT')
-        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-        sequential_0 = model_ft.classifier._modules.get('0')
-        sequential_1 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        in_ftrs = model_ft.classifier[1].in_features
+        model_ft.classifier[1] = nn.Linear(in_ftrs, 5)
         
     elif args.model_type == 'efficientnet_b5':
         model_ft = models.efficientnet_b5(weights='DEFAULT')
-        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-        sequential_0 = model_ft.classifier._modules.get('0')
-        sequential_1 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        in_ftrs = model_ft.classifier[1].in_features
+        model_ft.classifier[1] = nn.Linear(in_ftrs, 5)
         
     elif args.model_type == 'efficientnet_v2_s':
         model_ft = models.efficientnet_v2_s(weights='DEFAULT')
-        in_ftrs = model_ft.classifier._modules.__getitem__('1').__getattribute__('in_features')
-        sequential_0 = model_ft.classifier._modules.get('0')
-        sequential_1 = nn.Linear(in_ftrs, 5)
-        model_ft.classifier = nn.Sequential(sequential_0, sequential_1)
+        in_ftrs = model_ft.classifier[1].in_features
+        model_ft.classifier[1] = nn.Linear(in_ftrs, 5)
 
     elif args.model_type == 'resnext':
         model_ft = models.resnext50_32x4d(weights='DEFAULT')
