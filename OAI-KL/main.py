@@ -50,11 +50,7 @@ def test_for_kfold(model, dataloader, criterion):
     return test_loss
 
 def train(dataset, args, batch_size, epochs, k, splits, foldperf):
-    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset)))):
-        patience = 5
-        delta = 0.1
-        early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
-    
+    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))), start=1):
         train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
         test_sampler = SubsetRandomSampler(val_idx)
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
@@ -73,18 +69,20 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         
         history = {'train_loss': [], 'test_loss': []}
         
-        print(f'Fold {fold + 1}')
+        print(f'Fold {fold}')
     
-        for epoch in range(epochs):
+        patience = 5
+        delta = 0.1
+        early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
+        
+        for epoch in range(1, epochs + 1):
             train_loss = train_for_kfold(model_ft, train_loader, criterion, optimizer)
             test_loss = test_for_kfold(model_ft, test_loader, criterion)
 
             train_loss = train_loss / len(train_loader)
-            # train_loss = train_correct / len(train_loader.sampler)*100
             test_loss = test_loss / len(test_loader)
-            # test_loss = test_correct / len(test_loader.sampler)*100
 
-            print(f"Epoch:{epoch + 1}/{epochs} AVG Training Loss: {train_loss:.3f} AVG Test Loss: {test_loss:.3f}")
+            print(f"Epoch:{epoch}/{epochs} AVG Training Loss: {train_loss:.3f} AVG Test Loss: {test_loss:.3f}")
             
             history['train_loss'].append(train_loss)
             history['test_loss'].append(test_loss)
@@ -94,7 +92,7 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
                 print("Early stopping")
                 break
         
-        foldperf[f"fold{fold+1}"] = history  
+        foldperf[f"fold{fold}"] = history  
     
     tl_f, testl_f = [], []
 

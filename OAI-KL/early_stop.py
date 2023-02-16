@@ -32,15 +32,14 @@ class EarlyStopping:
         image_size_tuple = (args.image_size, args.image_size)
         
         if isinstance(model, nn.DataParallel):
-            torch.save(model.module.state_dict(), f'./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt')
+            torch.save(model.module.state_dict(), f'./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold}fold_epoch{epoch}.pt')
         else:
-            torch.save(model.state_dict(), f'./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt')
-        # torch.save(model, f"./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold + 1}fold_epoch{epoch + 1}.pt")
+            torch.save(model.state_dict(), f'./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold}fold_epoch{epoch}.pt')
+        # torch.save(model, f"./models/{args.model_type}/{image_size_tuple}/kfold_CNN_{fold}fold_epoch{epoch}.pt")
             
         self.val_loss_min = val_loss
         
     def __call__(self, val_loss, model, args, fold, epoch):
-    
         score = -val_loss
 
         if self.best_score is None:
