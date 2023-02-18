@@ -38,7 +38,7 @@ for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
         plt.text(j, i, format(matrix[i, j], fmt), ha='center', va='center', color='white' if matrix[i, j] > threshold else 'black')  # Horizontal Alignment
 
-correct_label = [[0 for j in range(5)] for i in range(test_image_num)]
+correct_label = [[0 for _ in range(5)] for _ in range(test_image_num)]
 
 for i in range(test_image_num):
     if test_correct_labels_list[i] == 0:

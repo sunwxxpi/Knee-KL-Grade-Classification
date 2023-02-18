@@ -15,14 +15,14 @@ EfficientNet-b5 : (456, 456) Batch Size_16 lr_0.0005
 EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
 5fold_epoch35 : 0.7409 / 0.7281
 
+<RegNet_Y_8GF> (448, 448)
+5fold_epoch24 : 0.7415 / 0.7522
+
 <ResNet-101> (384, 384)
 4fold_epoch14 : 0.7246 / 0.7251
 
 <ResNext50_32x4d> (448, 448)
 3fold_epoch10 : 0.7271 / 0.7018
-
-<RegNet_Y_8GF> (448, 448)
-5fold_epoch24 : 0.7415 / 0.7522
 
 <ShuffleNet-V2> (448, 448)
 1fold_epoch6 : 0.7077 / 0.7177
