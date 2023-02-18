@@ -140,34 +140,4 @@ HorizontalFlip(p=0.5), Rotation(20), TTA        HorizontalFlip(p=0.5), Rotation(
 Batch Size : 32                                 Batch Size : 16                                 Batch Size : 16
 Adam lr=0.0006                                  Adam lr=0.0005                                  Adam lr=0.0007
 23/01/31                                        23/01/31                                        23/01/31                           
-
-Accuracy Score / F1 Score (macro avg)
-
-DenseNet-201 : (448, 448) Batch Size_32 lr_0.0006
-2fold_epoch14 : 0.7204 / 0.7212
-
-EfficientNet-b5 : (456, 456) Batch Size_16 lr_0.0005
-4fold_epoch9 : 0.7361 / 0.7246
-
-EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
-1fold_epoch14 : 0.7452 / 0.7330
-
-Hard Voting : 0.7440 / 0.7421
-Soft Voting : 0.7579 / 0.7525
-Mix Voting : 0.7500 / 0.7496
 --------------------------------------------------------Custom Loss (L2CE)--------------------------------------------------------------
-
-Accuracy Score / F1 Score (macro avg)
-
-DenseNet-201 : (448, 448) Batch Size_32 lr_0.0006
-1fold_epoch18 : 0.7313 / 0.7161
-
-EfficientNet-b5 : (456, 456) Batch Size_16 lr_0.0005
-5fold_epoch13 : 0.7361 / 0.7375
-
-EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
-5fold_epoch35 : 0.7409 / 0.7281
-
-Hard Voting : 0.7699 / 0.7659
-Soft Voting : 0.7572 / 0.7530
-Mix Voting : 0.7669 / 0.7640

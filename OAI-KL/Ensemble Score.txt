@@ -1,0 +1,39 @@
+Accuracy Score / F1 Score (macro avg)
+
+<DenseNet-169> (448, 448)
+3fold_epoch32 : 0.7252 / 0.7010
+
+DenseNet-201 : (448, 448) Batch Size_32 lr_0.0006
+1fold_epoch18 : 0.7313 / 0.7161
+
+<EfficientNet-b3> (448, 448)
+4fold_epoch10 : 0.7337 / 0.7331
+
+EfficientNet-b5 : (456, 456) Batch Size_16 lr_0.0005
+5fold_epoch13 : 0.7361 / 0.7375
+
+EfficientNet-V2-s : (384, 384) Batch Size_16 lr_0.0007
+5fold_epoch35 : 0.7409 / 0.7281
+
+<ResNet-101> (384, 384)
+4fold_epoch14 : 0.7246 / 0.7251
+
+<ResNext50_32x4d> (448, 448)
+3fold_epoch10 : 0.7271 / 0.7018
+
+<RegNet_Y_8GF> (448, 448)
+5fold_epoch24 : 0.7415 / 0.7522
+
+<ShuffleNet-V2> (448, 448)
+1fold_epoch6 : 0.7077 / 0.7177
+
+<Inception-V3> (299, 299)
+1fold_epoch33 : 0.7120 / 0.7104
+
+DenseNet-201
+Efficientnet-b5
+Efficientnet-V2-s
+RegNet-Y-8GF
+ShuffleNet-V2
+Inception-V3
+(0.8442 / 0.8361) & (0.8194 / 0.8049)
