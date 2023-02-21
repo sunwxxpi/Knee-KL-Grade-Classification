@@ -115,17 +115,17 @@ Batch Size : 16                                                                 
 Adam lr=0.0005                                                                          Adam lr=0.0007                          
 22/08/25                                                                                22/08/28     
 
-<DenseNet-201>                             <EfficientNet-b5 (pretrained)>               <EfficientNet-V2-s (pretrained.1k)>
-1fold_epoch24 : 0.7144 / 0.7099 / 0.7103   1fold_epoch12 : 0.7258 / 0.7312 / 0.7204     1fold_epoch20 : 0.7337 / 0.7421 / 0.7330
-2fold_epoch14 : 0.7204 / 0.6993 / 0.6925   2fold_epoch9 : 0.7409 / 0.7251 / 0.7269      2fold_epoch19 : 0.7301 / 0.7180 / 0.7237
-3fold_epoch30 : 0.7138 / 0.7150 / 0.7095   3fold_epoch4 : 0.7240 / 0.7179 / 0.7162      3fold_epoch19 : 0.7319 / 0.7252 / 0.7196
-4fold_epoch20 : 0.7114 / 0.6907 / 0.6926   4fold_epoch9 : 0.7228 / 0.7139 / 0.7145      4fold_epoch16 : 0.7349 / 0.7138 / 0.7153
-5fold_epoch21 : 0.7180 / 0.7075 / 0.7058   5fold_epoch13 : 0.7361 / 0.7375 / 0.7330     5fold_epoch25 : 0.7355 / 0.7424 / 0.7359 
-0.7156 / 0.7045 / 0.7021                   0.7300 / 0.7251 / 0.7222                     0.7332 / 0.7283 / 0.7225                
-HorizontalFlip(p=0.5), Rotation(20), TTA   HorizontalFlip(p=0.5), Rotation(20), TTA     HorizontalFlip(p=0.5), Rotation(20), TTA
-Batch Size : 32                            Batch Size : 16 (Because of VRAM)            Batch Size : 32      
-Adam lr=0.0006                             Adam lr=0.0005                               Adam lr=0.0007                          
-22/08/25                                   22/09/13                                     22/08/23                   
+<DenseNet-201>                              <EfficientNet-b5 (pretrained)>              <EfficientNet-V2-s (pretrained.1k)>
+1fold_epoch24 : 0.7144 / 0.7099 / 0.7103    1fold_epoch12 : 0.7258 / 0.7312 / 0.7204    1fold_epoch20 : 0.7337 / 0.7421 / 0.7330
+2fold_epoch14 : 0.7204 / 0.6993 / 0.6925    2fold_epoch9 : 0.7409 / 0.7251 / 0.7269     2fold_epoch19 : 0.7301 / 0.7180 / 0.7237
+3fold_epoch30 : 0.7138 / 0.7150 / 0.7095    3fold_epoch4 : 0.7240 / 0.7179 / 0.7162     3fold_epoch19 : 0.7319 / 0.7252 / 0.7196
+4fold_epoch20 : 0.7114 / 0.6907 / 0.6926    4fold_epoch9 : 0.7228 / 0.7139 / 0.7145     4fold_epoch16 : 0.7349 / 0.7138 / 0.7153
+5fold_epoch21 : 0.7180 / 0.7075 / 0.7058    5fold_epoch13 : 0.7361 / 0.7375 / 0.7330    5fold_epoch25 : 0.7355 / 0.7424 / 0.7359 
+0.7156 / 0.7045 / 0.7021                    0.7300 / 0.7251 / 0.7222                    0.7332 / 0.7283 / 0.7225                
+HorizontalFlip(p=0.5), Rotation(20), TTA    HorizontalFlip(p=0.5), Rotation(20), TTA    HorizontalFlip(p=0.5), Rotation(20), TTA
+Batch Size : 32                             Batch Size : 16 (Because of VRAM)           Batch Size : 32      
+Adam lr=0.0006                              Adam lr=0.0005                              Adam lr=0.0007                          
+22/08/25                                    22/09/13                                    22/08/23                   
 --------------------------------------------------------(456, 456)--------------------------------------------------------------
 
 --------------------------------------------------------Custom Loss (L2CE)--------------------------------------------------------------
