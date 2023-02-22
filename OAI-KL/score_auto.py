@@ -33,7 +33,6 @@ for i in submission_list_csv:
     submission_labels = submission_csv['label']
     submission_labels_list = submission_labels.values.tolist()
     
-    print(f'{i}')
     accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
     f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
     f1_weighted = f1_score(test_correct_labels_list, submission_labels_list, average='weighted')
@@ -44,20 +43,19 @@ for i in submission_list_csv:
     accuracy = round(accuracy, 4)
     f1_macro = round(f1_macro, 4)
     f1_weighted = round(f1_weighted, 4)
-        
-    if (accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold) and args.remove_option == True :
-        print(f"Accuracy Score : {accuracy}")
-        print(f"F1 Score (Macro) : {f1_macro}")
-        # print(f"F1 Score (Weighted) : {f1_weighted}")
-        os.remove(f'{submission_path}/{i}')
-        print(f'{submission_path}/{i} Removed')
-        print()
 
-    elif accuracy >= args.threshold and f1_macro >= args.threshold and f1_weighted >= args.threshold:
+    print(f'{i}')
+    
+    if accuracy >= args.threshold and f1_macro >= args.threshold and f1_weighted >= args.threshold:
         print(f"Accuracy Score : {accuracy}")
         print(f"F1 Score (Macro) : {f1_macro}")
         # print(f"F1 Score (Weighted) : {f1_weighted}")
         print()
+    elif accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold:
+        if args.remove_option == True:
+            os.remove(f'{submission_path}/{i}')
+            print(f'{submission_path}/{i} Removed')
+            print()
         
 avg_accuracy = sum_accuracy / submission_num
 avg_f1_macro = sum_f1_macro / submission_num
