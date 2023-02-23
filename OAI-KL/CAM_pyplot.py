@@ -9,8 +9,8 @@ densenet_cam_dir = "C:/Users/PiSunWoo-RTOS/Desktop/KLGrade Project/Final/Grad CA
 efficientnet_cam_dir = "C:/Users/PiSunWoo-RTOS/Desktop/KLGrade Project/Final/Grad CAM/EfficientNet-b5_ScoreCAM/4"
 efficientnetv2_cam_dir = "C:/Users/PiSunWoo-RTOS/Desktop/KLGrade Project/Final/Grad CAM/EfficientNet-V2-s_ScoreCAM/4"
 
-img_dir_list = [original_dir, densenet_cam_dir, efficientnet_cam_dir, efficientnetv2_cam_dir]
 img_list = os.listdir(original_dir)
+img_dir_list = [original_dir, densenet_cam_dir, efficientnet_cam_dir, efficientnetv2_cam_dir]
 
 save_dir = "C:/Users/PiSunWoo-RTOS/Desktop/4"
 
