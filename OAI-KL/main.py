@@ -8,6 +8,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import transforms
 from sklearn.model_selection import KFold
+from tqdm import tqdm
 from dataset import ImageDataset
 from early_stop import EarlyStopping
 from model import model_return
@@ -19,7 +20,7 @@ def train_for_kfold(model, dataloader, criterion, optimizer):
     train_loss = 0.0
     model.train() # model을 train mode로 변환 >> Dropout Layer 같은 경우 train시 동작 해야 함
     with torch.set_grad_enabled(True): # with문 : 자원의 효율적 사용, 객체의 life cycle을 설계 가능, 항상(True) gradient 연산 기록을 추적
-        for batch in (dataloader):
+        for batch in (tqdm(dataloader, unit='Batch')):
             optimizer.zero_grad() # 반복 시 gradient(기울기)를 0으로 초기화, gradient는 += 되기 때문
             image, labels = batch['image'].cuda(), batch['target'].cuda() # tensor를 gpu에 할당
             
@@ -29,7 +30,7 @@ def train_for_kfold(model, dataloader, criterion, optimizer):
             loss = criterion(output, labels) # error, prediction loss를 계산
             train_loss += loss.item() # loss.item()을 통해 loss의 스칼라 값을 가져온다.
 
-            loss.backward() # prediction loss를 backpropagation으로 계산
+            loss.backward() # prediction loss를 back propagation으로 계산
             optimizer.step() # optimizer를 이용해 loss를 효율적으로 최소화 할 수 있게 parameter 수정
             
     return train_loss
@@ -38,7 +39,7 @@ def test_for_kfold(model, dataloader, criterion):
     test_loss = 0.0
     model.eval() # model을 eval mode로 전환 >> Dropout Layer 같은 경우 eval시 동작 하지 않아야 함
     with torch.no_grad(): # gradient 연산 기록 추적 off
-        for batch in (dataloader):
+        for batch in (tqdm(dataloader, unit='Batch')):
             image, labels = batch['image'].cuda(), batch['target'].cuda()
             
             # labels = F.one_hot(labels, num_classes=5).float() # nn.MSELoss() 사용 시 필요

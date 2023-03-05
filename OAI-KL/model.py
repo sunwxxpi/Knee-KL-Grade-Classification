@@ -27,6 +27,11 @@ def model_return(args):
         in_ftrs = model_ft.classifier.in_features
         model_ft.classifier = nn.Linear(in_ftrs, 5)
         
+    elif args.model_type == 'densenet_161':
+        model_ft = models.densenet161(weights='DEFAULT')
+        in_ftrs = model_ft.classifier.in_features
+        model_ft.classifier = nn.Linear(in_ftrs, 5)
+        
     elif args.model_type == 'efficientnet_b3':
         model_ft = models.efficientnet_b3(weights='DEFAULT')
         in_ftrs = model_ft.classifier[1].in_features
