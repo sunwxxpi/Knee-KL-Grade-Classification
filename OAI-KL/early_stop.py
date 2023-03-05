@@ -27,7 +27,7 @@ class EarlyStopping:
 
     def save_checkpoint(self, val_loss, model, args, fold, epoch):
         if self.verbose:
-            print(f"Validation Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...")
+            print(f"Valid Loss ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving Model ...")
             
         image_size_tuple = (args.image_size, args.image_size)
         
