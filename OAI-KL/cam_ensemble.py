@@ -7,6 +7,7 @@ from torch import nn
 from torchvision import models
 from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, XGradCAM, AblationCAM, ScoreCAM, EigenCAM, FullGrad
 from PIL import Image
+from tqdm import tqdm
 
 def cam_image(image, image_size_tuple, cam):
     image = image.resize(image_size_tuple)
@@ -30,7 +31,7 @@ test_img_list = test_img.values.tolist()
 
 cam_list = []
 
-for i in test_img_list:
+for i in tqdm(test_img_list, unit='Image'):
     image = Image.open(i).convert('RGB')
     
     model_ft = models.densenet161(weights='DEFAULT')

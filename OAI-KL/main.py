@@ -20,7 +20,7 @@ def train_for_kfold(model, dataloader, criterion, optimizer, fold, epoch):
     train_loss = 0.0
     model.train() # model을 train mode로 변환 >> Dropout Layer 같은 경우 train시 동작 해야 함
     with torch.set_grad_enabled(True): # with문 : 자원의 효율적 사용, 객체의 life cycle을 설계 가능, 항상(True) gradient 연산 기록을 추적
-        for batch in (tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Train', unit='Batch')):
+        for batch in tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Train', unit='Batch'):
             optimizer.zero_grad() # 반복 시 gradient(기울기)를 0으로 초기화, gradient는 += 되기 때문
             image, labels = batch['image'].cuda(), batch['target'].cuda() # tensor를 gpu에 할당
             
@@ -39,7 +39,7 @@ def test_for_kfold(model, dataloader, criterion, fold, epoch):
     test_loss = 0.0
     model.eval() # model을 eval mode로 전환 >> Dropout Layer 같은 경우 eval시 동작 하지 않아야 함
     with torch.no_grad(): # gradient 연산 기록 추적 off
-        for batch in (tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Valid', unit='Batch')):
+        for batch in tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Valid', unit='Batch'):
             image, labels = batch['image'].cuda(), batch['target'].cuda()
             
             # labels = F.one_hot(labels, num_classes=5).float() # nn.MSELoss() 사용 시 필요
