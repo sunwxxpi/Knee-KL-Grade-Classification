@@ -3,7 +3,7 @@ import torch
 import torchvision
 import numpy as np
 import pandas as pd
-from pytorch_grad_cam import AblationCAM, EigenCAM, FullGrad, GradCAM, GradCAMPlusPlus, ScoreCAM, XGradCAM
+from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, XGradCAM, AblationCAM, ScoreCAM, EigenCAM, FullGrad
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from PIL import Image
@@ -15,42 +15,42 @@ args = parser.parse_args()
 
 model_ft = model_return(args)
 if args.model_type == 'densenet_161':
-    model_ft.load_state_dict(torch.load('./models/1_DenseNet-161.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/1_DenseNet-161.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'efficientnet_b5':
-    model_ft.load_state_dict(torch.load('./models/2_EfficientNet-b5.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/2_EfficientNet-b5.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'efficientnet_v2_s':
-    model_ft.load_state_dict(torch.load('./models/3_EfficientNet-V2-s.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/3_EfficientNet-V2-s.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (384, 384)
     
 elif args.model_type == 'regnet_y_8gf':
-    model_ft.load_state_dict(torch.load('./models/4_RegNet-Y-8GF.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/4_RegNet-Y-8GF.pt'))
     target_layers = [model_ft.trunk_output[-1]]
     image_size_tuple = (448, 448)
     
 elif args.model_type == 'resnet_101':
-    model_ft.load_state_dict(torch.load('./models/5_ResNet-101.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/5_ResNet-101.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'resnext_50_32x4d':
-    model_ft.load_state_dict(torch.load('./models/6_ResNext-50-32x4d.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/6_ResNext-50-32x4d.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (512, 512)
     
 elif args.model_type == 'wide_resnet_50_2':
-    model_ft.load_state_dict(torch.load('./models/7_Wide-ResNet-50-2.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/7_Wide-ResNet-50-2.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'shufflenet_v2_x2_0':
-    model_ft.load_state_dict(torch.load('./models/8_ShuffleNet-V2-X2-0.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-X2-0.pt'))
     target_layers = [model_ft.conv5]    
     image_size_tuple = (512, 512)
 
@@ -79,7 +79,7 @@ for i in test_img_list:
     # targets = [ClassifierOutputTarget(281)]
     # target_category = None
 
-    grayscale_cam = cam(input_tensor=input_tensor, aug_smooth=True, eigen_smooth=True)
+    grayscale_cam = cam(input_tensor=input_tensor, aug_smooth=True, eigen_smooth=False)
     grayscale_cam = grayscale_cam[0, :] # In this example grayscale_cam has only one image in the batch:
     
     visualization = show_cam_on_image(image, grayscale_cam, use_rgb=True)
