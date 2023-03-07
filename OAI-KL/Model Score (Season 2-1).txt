@@ -14,7 +14,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 0.7036 / 0.7011                                 0.7011 / 0.6914                                 0.7000 / 0.6887                                 0.7204 / 0.7132
 23/01/14                                        23/01/14                                        23/01/15                                        23/01/14
 
-<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-X2-0>
+<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>
 1fold_epoch18 : 0.7023 / 0.6998                 1fold_epoch17 : 0.7240 / 0.7127                 1fold_epoch18 : 0.6884 / 0.7844
 2fold_epoch12 : 0.7156 / 0.6976                 2fold_epoch9 : 0.7204 / 0.6915                  2fold_epoch21 : 0.6920 / 0.6741
 3fold_epoch18 : 0.6902 / 0.7019                 3fold_epoch18 : 0.7246 / 0.7028                 3fold_epoch14 : 0.6745 / 0.6831
@@ -34,7 +34,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 0.7085 / 0.7020                                 0.7129 / 0.6991                                 0.7122 / 0.6968                                 0.7267 / 0.7193
 23/01/14                                        23/01/14                                        23/01/14                                        23/01/14
 
-<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-X2-0>
+<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>
 1fold_epoch19 : 0.7089 / 0.7103                 1fold_epoch23 : 0.7271 / 0.7239                 1fold_epoch7 : 0.6999 / 0.6685
 2fold_epoch5 : 0.7083 / 0.7331                  2fold_epoch16 : 0.7343 / 0.7232                 2fold_epoch7 : 0.6944 / 0.6651
 3fold_epoch16 : 0.7162 / 0.6915                 3fold_epoch12 : 0.7228 / 0.7124                 3fold_epoch9 : 0.7029 / 0.6822
@@ -54,7 +54,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 0.7190 / 0.7117                                 0.7107 / 0.7047                                 0.7219 / 0.7068                                 0.7378 / 0.7320
 23/01/14                                        23/01/14                                        23/01/15                                        23/01/14
 
-<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-X2-0>
+<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>
 1fold_epoch11 : 0.7210 / 0.6940                 1fold_epoch18 : 0.7258 / 0.7181                 1fold_epoch9 : 0.7138 / 0.7118
 2fold_epoch18 : 0.7083 / 0.7067                 2fold_epoch14 : 0.7434 / 0.7353                 2fold_epoch14 : 0.7011 / 0.6791
 3fold_epoch21 : 0.7089 / 0.6999                 3fold_epoch14 : 0.7379 / 0.7191                 3fold_epoch9 : 0.7101 / 0.6853
@@ -74,7 +74,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 0.7190 / 0.7068                                 0.7143 / 0.7023                                 0.7250 / 0.7071                                 0.7348 / 0.7242
 23/01/15                                        23/01/14                                        23/01/14                                        23/01/14
 
-<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-X2-0>
+<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>
 1fold_epoch21 : 0.7222 / 0.7016                 1fold_epoch26 : 0.7271 / 0.7263                 1fold_epoch6 : 0.7077 / 0.7177
 2fold_epoch13 : 0.7144 / 0.7134                 2fold_epoch13 : 0.7301 / 0.7325                 2fold_epoch18 : 0.6914 / 0.6948
 3fold_epoch10 : 0.7271 / 0.7018                 3fold_epoch13 : 0.7355 / 0.7341                 3fold_epoch19 : 0.7107 / 0.6916
@@ -94,7 +94,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 0.7225 / 0.7115                                 0.7135 / 0.7098                                 0.7255 / 0.7106                                 0.7349 / 0.7297
 23/02/21                                        23/02/21                                        23/02/21                                        23/02/21
 
-<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-X2-0>
+<ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>
 1fold_epoch12 : 0.7283 / 0.7180                 1fold_epoch23 : 0.7295 / 0.7331                 1fold_epoch18 : 0.7101 / 0.7988
 2fold_epoch15 : 0.7162 / 0.7133                 2fold_epoch18 : 0.7228 / 0.7073                 2fold_epoch13 : 0.7138 / 0.6813
 3fold_epoch15 : 0.7204 / 0.7045                 3fold_epoch17 : 0.7530 / 0.7334                 3fold_epoch12 : 0.7107 / 0.7026
