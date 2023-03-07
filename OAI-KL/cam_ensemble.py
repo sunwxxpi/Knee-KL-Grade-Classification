@@ -31,7 +31,7 @@ test_img_list = test_img.values.tolist()
 
 cam_list = []
 
-for i in tqdm(test_img_list, unit='Image'):
+for i in tqdm(test_img_list, unit='Images'):
     image = Image.open(i).convert('RGB')
     
     model_ft = models.densenet161(weights='DEFAULT')
