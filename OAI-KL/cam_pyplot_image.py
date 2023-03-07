@@ -5,12 +5,12 @@ from tqdm import tqdm
 
 xlabels = ['xlabel', 'Original', 'DenseNet-161', 'EfficientNet-b5', 'EfficientNet-V2-s', 'RegNet-Y-8GF', 'ResNet-101', 'ResNext-50-32x4d', 'Wide-ResNet-50-2', 'ShuffleNet-V2-x2-0', 'CAM Ensemble']
     
-def make_cam_pyplot():
+def make_cam_pyplot(class_num):
     fig = plt.figure(figsize=(6, 12), dpi=200) # rows*cols 행렬의 pos번째 subplot 생성
     rows = 5
     cols = 2
 
-    for i in tqdm(img_list, unit='Images'):
+    for i in tqdm(img_list, desc=f'Class {class_num}', unit='Images'):
         for j, pos in zip(img_dir_list, range(1, 11)):
             img = cv2.imread(f"{j}/{i}", cv2.IMREAD_COLOR)
             ax = fig.add_subplot(rows, cols, pos)
@@ -51,4 +51,4 @@ for class_num in range(0, 5):
         ensemble_cam_dir
         ]
     
-    make_cam_pyplot()
+    make_cam_pyplot(class_num)
