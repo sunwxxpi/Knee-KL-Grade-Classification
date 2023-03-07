@@ -41,7 +41,7 @@ def probs_to_csv(probs_ensemble, set_epoch, mode):
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
     submit.to_csv(f'{submission_path}/10fold_epoch{set_epoch}_submission.csv', index=False)
-    print(f"save {mode} ensemble_submission.csv")
+    print(f"Save {mode} Ensemble submission.csv")
     
     
 def hard_voting(probs_ensemble): # Hard Voting
@@ -82,13 +82,12 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-test_image_num = len(test_correct_labels_list)
-
 submission_path = './submission'
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
 
 ensemble_model_num = len(submission_list_csv)
+test_image_num = len(test_correct_labels_list)
 labels_ensemble = [[0 for j in range(ensemble_model_num)] for i in range(test_image_num)]
 probs_ensemble = [[0 for j in range(5)] for i in range(test_image_num)]
 
