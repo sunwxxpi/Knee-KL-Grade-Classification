@@ -1,0 +1,25 @@
+Accuracy Score / F1 Score (macro avg)
+
+<DenseNet-161> : (456, 456)
+1fold_epoch39 : 0.7301 / 0.7203
+
+<EfficientNet-b5> : (456, 456)
+5fold_epoch13 : 0.7361 / 0.7375
+
+<EfficientNet-V2-s> : (384, 384)
+5fold_epoch35 : 0.7409 / 0.7281
+
+<RegNet-Y-8GF> (448, 448)
+5fold_epoch24 : 0.7415 / 0.7522
+
+<ResNet-101> (456, 456)
+5fold_epoch40 : 0.7252 / 0.7218
+
+<ResNext50-32x4d> (512, 512)
+1fold_epoch14 : 0.7289 / 0.7263
+
+<Wide-ResNet-50-2> (456, 456)
+3fold_epoch21 : 0.7319 / 0.7238
+
+<ShuffleNet-V2-x2-0> (512, 512)
+3fold_epoch16 : 0.7162 / 0.7117
