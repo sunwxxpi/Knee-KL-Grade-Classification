@@ -21,16 +21,14 @@ normalize = 'true'
 score = accuracy_score(test_correct_labels_list, submission_labels_list)
 matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, normalize=normalize)
 
-title = 'Confusion Matrix'
 plt.figure(1, figsize=(7, 7.5))
 plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Purples)
-plt.title(title, size=12)
+plt.title('Confusion Matrix', size=12)
 plt.colorbar(fraction=0.05, pad=0.05)
-tick_marks = np.arange(5, 5)
 plt.xlabel(f"Predicted label\n\naccuracy={score:.5f}\nTotal : 1656\n0 : 639          1 : 296          2 : 447          3 : 223          4 : 51")
 plt.ylabel("True label")
-plt.xticks(np.arange(5), ('0', '1', '2', '3', '4'))
-plt.yticks(np.arange(5), ('0', '1', '2', '3', '4'))
+plt.xticks(range(5), (0, 1, 2, 3, 4))
+plt.yticks(range(5), (0, 1, 2, 3, 4))
 
 fmt = '.3f' if normalize=='true' else 'd'
 threshold = 0.5 if normalize=='true' else 450
