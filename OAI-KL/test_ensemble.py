@@ -3,7 +3,7 @@ import torch
 import numpy as np
 import pandas as pd
 
-def probs_to_csv(probs_ensemble, set_epoch, mode):
+def probs_to_csv(probs_ensemble, set_epoch, ensemble_mode):
     probs_ensemble = np.array(probs_ensemble)
     probs_0 = probs_ensemble[:, 0]
     probs_1 = probs_ensemble[:, 1]
@@ -16,32 +16,32 @@ def probs_to_csv(probs_ensemble, set_epoch, mode):
                 
     for i in range(test_image_num):
         if test_correct_labels_list[i] == 0:
-            probs_correct.append(probs_0)
+            probs_correct.append(probs_0[i])
         elif test_correct_labels_list[i] == 1:
-            probs_correct.append(probs_1)
+            probs_correct.append(probs_1[i])
         elif test_correct_labels_list[i] == 2:
-            probs_correct.append(probs_2)
+            probs_correct.append(probs_2[i])
         elif test_correct_labels_list[i] == 3:
-            probs_correct.append(probs_3)
+            probs_correct.append(probs_3[i])
         elif test_correct_labels_list[i] == 4:
-            probs_correct.append(probs_4)
+            probs_correct.append(probs_4[i])
             
     for i in range(test_image_num):
         if preds[i] == 0:
-            probs_predict.append(probs_0)
+            probs_predict.append(probs_0[i])
         elif preds[i] == 1:
-            probs_predict.append(probs_1)
+            probs_predict.append(probs_1[i])
         elif preds[i] == 2:
-            probs_predict.append(probs_2)
+            probs_predict.append(probs_2[i])
         elif preds[i] == 3:
-            probs_predict.append(probs_3)
+            probs_predict.append(probs_3[i])
         elif preds[i] == 4:
-            probs_predict.append(probs_4)
-            
+            probs_predict.append(probs_4[i])
+                        
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
     submit.to_csv(f'{submission_path}/10fold_epoch{set_epoch}_submission.csv', index=False)
-    print(f"Save {mode} Ensemble submission.csv")
+    print(f"Save {ensemble_mode} Ensemble submission.csv")
     
     
 def hard_voting(probs_ensemble): # Hard Voting
@@ -54,7 +54,7 @@ def hard_voting(probs_ensemble): # Hard Voting
         else:
             preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
-    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=10, mode='hard')
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=10, ensemble_mode='hard')
     
 def soft_voting(probs_ensemble): # Soft Voting
     global preds
@@ -63,7 +63,7 @@ def soft_voting(probs_ensemble): # Soft Voting
     ensemble_output = torch.tensor(probs_ensemble)
     preds.extend([i.item() for i in torch.argmax(ensemble_output, axis=1)])
     
-    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, mode='soft')
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=11, ensemble_mode='soft')
             
 def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
     global preds
@@ -76,7 +76,7 @@ def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
         else: # Hard Voting
             preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
-    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=12, mode='mix')
+    probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=12, ensemble_mode='mix')
 
 test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
