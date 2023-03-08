@@ -11,6 +11,8 @@ def calculate_performace(model_combinations_num):
     accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
     f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
     
+    # globals()[f'performance_{model_combinations_num}'].append(round(accuracy, 4))
+    # globals()[f'performance_{model_combinations_num}'].append(round(f1_macro, 4))
     globals()[f'performance_{model_combinations_num}'].append(round(accuracy + f1_macro, 4))
 
 for i in range(1, 9):
@@ -25,26 +27,29 @@ test_correct_labels_list = test_correct_labels.values.tolist()
 submission_ensemble_all_dir = './submission/Ensemble/all'
 model_combinations_dir_list = os.listdir(submission_ensemble_all_dir)
 
-for model_combinations_dir in model_combinations_dir_list:
+for model_combinations_dir_index, model_combinations_dir in enumerate(model_combinations_dir_list, start=1):
     model_combinations_list = os.listdir(f'{submission_ensemble_all_dir}/{model_combinations_dir}')
     submission_list_csv = [file for file in model_combinations_list if file.endswith('.csv')]
 
     for index, submission in enumerate(submission_list_csv, start=1):
         calculate_performace(model_combinations_num=model_combinations_dir)
-
-        if index % 3 == 0:
+        
+        if model_combinations_dir_index != 1 and index % 3 == 0:
             globals()[f'best_performance_{model_combinations_dir}'].append(max(globals()[f'performance_{model_combinations_dir}']))
             globals()[f'performance_{model_combinations_dir}'].clear()
-    
+
 plt.rcParams['figure.figsize'] = (6, 5)
 plt.rcParams['font.size'] = 10
 
 fig, ax = plt.subplots()
 
+# ax.set_ylim(0.7, 0.85)
 ax.set_ylim(1.4, 1.7)
 ax.set_xlabel('Number of Ensemble Models')
+# ax.set_ylabel('Accuracy Score')
+# ax.set_ylabel('F1 Score')
 ax.set_ylabel('Accuracy Score + F1 Score')
-ax.boxplot([globals()['best_performance_8c1'],
+ax.boxplot([globals()['performance_8c1'],
             globals()['best_performance_8c2'],
             globals()['best_performance_8c3'],
             globals()['best_performance_8c4'],
