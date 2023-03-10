@@ -15,7 +15,7 @@ HorizontalFlip(p=0.5), Rotation(20), TTA
 23/01/14                                        23/03/03                                        22/11/03                                        23/01/14
 
 <ResNext-50-32x4d>                              <RegNet-Y-8GF>                                  <ShuffleNet-V2-x2-0>                            <Wide-ResNet-50-2>
-1fold_epoch18 : 0.7023 / 0.6998                 1fold_epoch17 : 0.7240 / 0.7127                 1fold_epoch18 : 0.6884 / 0.7844                 1fold_epoch19 : 0.7059 / 0.6826
+1fold_epoch18 : 0.7023 / 0.6998                 1fold_epoch17 : 0.7240 / 0.7127                 1fold_epoch18 : 0.6884 / 0.6844                 1fold_epoch19 : 0.7059 / 0.6826
 2fold_epoch12 : 0.7156 / 0.6976                 2fold_epoch9 : 0.7204 / 0.6915                  2fold_epoch21 : 0.6920 / 0.6741                 2fold_epoch19 : 0.6944 / 0.6892
 3fold_epoch18 : 0.6902 / 0.7019                 3fold_epoch18 : 0.7246 / 0.7028                 3fold_epoch14 : 0.6745 / 0.6831                 3fold_epoch17 : 0.6950 / 0.6803
 4fold_epoch13 : 0.7065 / 0.6860                 4fold_epoch16 : 0.7210 / 0.7079                 4fold_epoch16 : 0.6957 / 0.6796                 4fold_epoch16 : 0.7035 / 0.6717

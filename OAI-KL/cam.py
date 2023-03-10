@@ -7,6 +7,7 @@ from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, XGradCAM, AblationCAM, Sc
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from PIL import Image
+from tqdm import tqdm
 from model import model_return
 
 parser = argparse.ArgumentParser()
@@ -66,7 +67,7 @@ test_csv = pd.read_csv(f'./KneeXray/Test_correct_{image_size_tuple}.csv', names=
 test_img = test_csv['data']
 test_img_list = test_img.values.tolist()
 
-for i in test_img_list:
+for i in tqdm(test_img_list, unit='Images'):
     # Note: input_tensor can be a batch tensor with several images! """
     image = Image.open(i).convert('RGB')
     image = (image - np.min(image)) / (np.max(image) - np.min(image)) # Max Min normalization
