@@ -43,8 +43,8 @@ plt.rcParams['font.size'] = 10
 
 fig, ax = plt.subplots()
 
-# ax.set_ylim(0.7, 0.85)
-ax.set_ylim(1.4, 1.7)
+# ax.set_ylim(0.65, 0.85)
+ax.set_ylim(1.3, 1.7)
 ax.set_xlabel('Number of Ensemble Models')
 # ax.set_ylabel('Accuracy Score')
 # ax.set_ylabel('F1 Score')
@@ -59,6 +59,7 @@ ax.boxplot([globals()['performance_8c1'],
             globals()['best_performance_8c8']
             ])
 
-plt.title('Ensemble Performance', size=14)
+# plt.title('Ensemble Performance (224x224)', size=14)
+plt.title('Ensemble Performance (Image Optimization)', size=14)
 plt.xticks(range(1, 9), ['Single Model', 2, 3, 4, 5, 6, 7, 8])
 plt.show()
