@@ -51,7 +51,7 @@ elif args.model_type == 'wide_resnet_50_2':
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'shufflenet_v2_x2_0':
-    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-X2-0.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-x2-0.pt'))
     target_layers = [model_ft.conv5]    
     image_size_tuple = (512, 512)
 

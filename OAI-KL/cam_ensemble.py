@@ -122,7 +122,7 @@ for i in tqdm(test_img_list, unit='Images'):
     in_ftrs = model_ft.fc.in_features
     model_ft.fc = nn.Linear(in_ftrs, 5)
     
-    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-X2-0.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-x2-0.pt'))
     model_ft.eval()
 
     image_size_tuple = (512, 512)
