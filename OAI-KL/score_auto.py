@@ -50,6 +50,7 @@ for i in submission_list_csv:
         print(f"Accuracy Score : {accuracy}")
         print(f"F1 Score (Macro) : {f1_macro}")
         # print(f"F1 Score (Weighted) : {f1_weighted}")
+        print(f"Accuracy Score + F1 Score (Macro) : {accuracy + f1_macro}")
         print()
     elif accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold:
         if args.remove_option == True:
