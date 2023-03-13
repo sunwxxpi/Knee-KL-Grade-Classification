@@ -11,9 +11,9 @@ def calculate_performace(model_combinations_num):
     accuracy = accuracy_score(test_correct_labels_list, submission_labels_list)
     f1_macro = f1_score(test_correct_labels_list, submission_labels_list, average='macro')
     
-    # globals()[f'performance_{model_combinations_num}'].append(round(accuracy, 4))
+    globals()[f'performance_{model_combinations_num}'].append(round(accuracy, 4))
     # globals()[f'performance_{model_combinations_num}'].append(round(f1_macro, 4))
-    globals()[f'performance_{model_combinations_num}'].append(round(accuracy + f1_macro, 4))
+    # globals()[f'performance_{model_combinations_num}'].append(round(accuracy + f1_macro, 4))
 
 for i in range(1, 9):
     globals()[f'performance_8c{i}'] = []
@@ -43,12 +43,12 @@ plt.rcParams['font.size'] = 10
 
 fig, ax = plt.subplots()
 
-# ax.set_ylim(0.65, 0.85)
-ax.set_ylim(1.3, 1.7)
+ax.set_ylim(0.675, 0.78)
+# ax.set_ylim(1.35, 1.55)
 ax.set_xlabel('Number of Ensemble Models')
-# ax.set_ylabel('Accuracy Score')
+ax.set_ylabel('Accuracy Score')
 # ax.set_ylabel('F1 Score')
-ax.set_ylabel('Accuracy Score + F1 Score')
+# ax.set_ylabel('Accuracy Score + F1 Score')
 ax.boxplot([globals()['performance_8c1'],
             globals()['best_performance_8c2'],
             globals()['best_performance_8c3'],
