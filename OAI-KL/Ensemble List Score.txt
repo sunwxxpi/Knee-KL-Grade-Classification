@@ -15,7 +15,7 @@ Accuracy Score / F1 Score (macro avg)
 <ResNet-101> (456, 456)
 5fold_epoch40 : 0.7252 / 0.7218
 
-<ResNext50-32x4d> (512, 512)
+<ResNext-50-32x4d> (512, 512)
 1fold_epoch14 : 0.7289 / 0.7263
 
 <Wide-ResNet-50-2> (456, 456)
