@@ -6,7 +6,5 @@ opencv_python==4.7.0.72
 pandas==1.5.3
 Pillow==9.4.0
 scikit_learn==1.2.2
-torch==2.0.0+cu117
-torchvision==0.15.1+cu117
 tqdm==4.65.0
 ttach==0.0.3
