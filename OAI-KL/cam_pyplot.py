@@ -3,21 +3,21 @@ import cv2
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-xlabels = ['xlabel', 'Original', 'DenseNet-161', 'EfficientNet-b5', 'EfficientNet-V2-s', 'RegNet-Y-8GF', 'ResNet-101', 'ResNext-50-32x4d', 'Wide-ResNet-50-2', 'ShuffleNet-V2-x2-0', 'CAM Ensemble']
+xlabels = ['xlabel', 'Original', 'DenseNet-161', 'EfficientNet-b5', 'EfficientNet-V2-s', 'RegNet-Y-8GF', 'ResNet-101', 'ResNext-50-32x4d', 'Wide-ResNet-50-2', 'ShuffleNet-V2-x2-0', 'Ensembled CAM']
         
 for class_num in range(0, 5):
     original_img_dir = f'./KneeXray/test/{class_num}'
-    densenet_161_cam_dir = f'./Grad CAM/densenet_161/{class_num}'
-    efficientnet_b5_cam_dir = f'./Grad CAM/efficientnet_b5/{class_num}'
-    efficientnet_v2_s_cam_dir = f'./Grad CAM/efficientnet_v2_s/{class_num}'
-    regnet_y_8gf_cam_dir = f'./Grad CAM/regnet_y_8gf/{class_num}'
-    resnet_101_cam_dir = f'./Grad CAM/resnet_101/{class_num}'
-    resnext_50_32x4d_cam_dir = f'./Grad CAM/resnext_50_32x4d/{class_num}'
-    wide_resnet_50_2_cam_dir = f'./Grad CAM/wide_resnet_50_2/{class_num}'
-    shufflenet_v2_x2_0_cam_dir = f'./Grad CAM/shufflenet_v2_x2_0/{class_num}'
-    ensemble_cam_dir = f'./Grad CAM/ensemble_cam/{class_num}'
+    densenet_161_cam_dir = f'./Grad CAM (Model)/densenet_161/{class_num}'
+    efficientnet_b5_cam_dir = f'./Grad CAM (Model)/efficientnet_b5/{class_num}'
+    efficientnet_v2_s_cam_dir = f'./Grad CAM (Model)/efficientnet_v2_s/{class_num}'
+    regnet_y_8gf_cam_dir = f'./Grad CAM (Model)/regnet_y_8gf/{class_num}'
+    resnet_101_cam_dir = f'./Grad CAM (Model)/resnet_101/{class_num}'
+    resnext_50_32x4d_cam_dir = f'./Grad CAM (Model)/resnext_50_32x4d/{class_num}'
+    wide_resnet_50_2_cam_dir = f'./Grad CAM (Model)/wide_resnet_50_2/{class_num}'
+    shufflenet_v2_x2_0_cam_dir = f'./Grad CAM (Model)/shufflenet_v2_x2_0/{class_num}'
+    ensemble_cam_dir = f'./Grad CAM (Model)/ensemble_cam/{class_num}'
 
-    save_dir = f'./Grad CAM/pyplot/{class_num}'
+    save_dir = f'./Grad CAM(Model)/pyplot/{class_num}'
     
     img_list = os.listdir(original_img_dir)
     img_dir_list = [
