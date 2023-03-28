@@ -1,2 +1,2 @@
-# Knee KLGrade Classification
-Knee Osteoarthritis_KLGrade Classification using Deep-Learning with Ensemble
+# Knee KL Grade Classification
+Automatic Classification of KL Grade According to Severity of Knee Osteoarthritis Using Deep Learning : Optimized Image Size and Ensemble Technique
