@@ -24,7 +24,7 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-submission_ensemble_all_dir = './submission/Ensemble/all'
+submission_ensemble_all_dir = './Ensemble (Submission)/all'
 model_combinations_dir_list = os.listdir(submission_ensemble_all_dir)
 
 for model_combinations_dir_index, model_combinations_dir in enumerate(model_combinations_dir_list, start=1):
@@ -49,15 +49,16 @@ ax.set_xlabel('Number of Ensemble Models')
 ax.set_ylabel('Accuracy Score')
 # ax.set_ylabel('F1 Score')
 # ax.set_ylabel('Accuracy Score + F1 Score')
-ax.boxplot([globals()['performance_8c1'],
-            globals()['best_performance_8c2'],
-            globals()['best_performance_8c3'],
-            globals()['best_performance_8c4'],
-            globals()['best_performance_8c5'],
-            globals()['best_performance_8c6'],
-            globals()['best_performance_8c7'],
-            globals()['best_performance_8c8']
-            ])
+ax.boxplot([
+    globals()['performance_8c1'],
+    globals()['best_performance_8c2'],
+    globals()['best_performance_8c3'],
+    globals()['best_performance_8c4'],
+    globals()['best_performance_8c5'],
+    globals()['best_performance_8c6'],
+    globals()['best_performance_8c7'],
+    globals()['best_performance_8c8']
+])
 
 # plt.title('Ensemble Performance (224x224)', size=14)
 plt.title('Ensemble Performance (Image Optimization)', size=14)
