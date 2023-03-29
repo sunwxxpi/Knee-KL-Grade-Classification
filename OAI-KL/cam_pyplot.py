@@ -17,7 +17,7 @@ for class_num in range(0, 5):
     shufflenet_v2_x2_0_cam_dir = f'./Grad CAM (Model)/shufflenet_v2_x2_0/{class_num}'
     ensemble_cam_dir = f'./Grad CAM (Model)/ensemble_cam/{class_num}'
 
-    save_dir = f'./Grad CAM(Model)/pyplot/{class_num}'
+    save_dir = f'./Grad CAM (Model)/pyplot/{class_num}'
     
     img_list = os.listdir(original_img_dir)
     img_dir_list = [

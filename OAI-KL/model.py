@@ -61,5 +61,10 @@ def model_return(args):
         model_ft = models.inception_v3(weights='DEFAULT')
         in_ftrs = model_ft.fc.in_features
         model_ft.fc = nn.Linear(in_ftrs, 5)
+    
+    elif args.model_type == 'PingJunChen_vgg_19':
+        model_ft = models.vgg19(weights='DEFAULT')
+        in_ftrs = model_ft.classifier[6].in_features
+        model_ft.classifier[6] = nn.Linear(in_ftrs, 5)
         
     return model_ft
