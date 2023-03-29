@@ -31,12 +31,12 @@ transform = transforms.Compose([
 test_data = ImageDataset(test_csv, image_size=args.image_size, transforms=transform)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
-transform_tta = tta.Compose([
-                            tta.HorizontalFlip()
-                            ])
+transform_tta = tta.Compose([tta.HorizontalFlip()])
 
-model_path = f'./models/{args.model_type}/{image_size_tuple}'
-submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
+model_path = f'./models'
+submission_path = f'./submission'
+# model_path = f'./models/{args.model_type}/{image_size_tuple}'
+# submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith('.pt')]
 model_list_pt = natsort.natsorted(model_list_pt)
@@ -71,6 +71,8 @@ for i in model_list_pt:
         
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
-    fold_and_epoch = i[10:-3]
-    submit.to_csv(f'{submission_path}/{fold_and_epoch}_submission.csv', index=False)
-    print(f'save {submission_path}/{fold_and_epoch}_submission.csv')
+    # fold_and_epoch = i[10:-3]
+    # submit.to_csv(f'{submission_path}/{fold_and_epoch}_submission.csv', index=False)
+    # print(f'save {submission_path}/{fold_and_epoch}_submission.csv')
+    submit.to_csv(f'{submission_path}/{i}_submission.csv', index=False)
+    print(f'save {submission_path}/{i}_submission.csv')
