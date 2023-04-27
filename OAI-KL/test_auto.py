@@ -24,9 +24,9 @@ test_csv = pd.read_csv(f"./KneeXray/Test_correct.csv")
 # test_csv = pd.read_csv(f"./KneeXray/Test_correct_{image_size_tuple}.csv")
 
 transform = transforms.Compose([
-                                transforms.ToTensor(),
-                                # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
-                                transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5]),
+                                transforms.ToTensor(), 
+                                # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC), 
+                                transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
                                 ])
 test_data = ImageDataset(test_csv, image_size=args.image_size, transforms=transform)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
