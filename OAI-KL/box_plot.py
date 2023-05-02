@@ -13,7 +13,6 @@ def calculate_performace(model_combinations_num):
     
     globals()[f'performance_{model_combinations_num}'].append(round(accuracy, 4))
     # globals()[f'performance_{model_combinations_num}'].append(round(f1_macro, 4))
-    # globals()[f'performance_{model_combinations_num}'].append(round(accuracy + f1_macro, 4))
 
 for i in range(1, 9):
     globals()[f'performance_8c{i}'] = []
@@ -24,7 +23,7 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-submission_ensemble_all_dir = './Ensemble (Submission)/all'
+submission_ensemble_all_dir = './Ensemble Network Box Plot/all'
 model_combinations_dir_list = os.listdir(submission_ensemble_all_dir)
 
 for model_combinations_dir_index, model_combinations_dir in enumerate(model_combinations_dir_list, start=1):
@@ -38,29 +37,29 @@ for model_combinations_dir_index, model_combinations_dir in enumerate(model_comb
             globals()[f'best_performance_{model_combinations_dir}'].append(max(globals()[f'performance_{model_combinations_dir}']))
             globals()[f'performance_{model_combinations_dir}'].clear()
 
-plt.rcParams['figure.figsize'] = (6, 5)
-plt.rcParams['font.size'] = 10
+plt.rcParams['figure.figsize'] = (6.5, 5.5)
+plt.rcParams['font.size'] = 11
 
 fig, ax = plt.subplots()
 
 ax.set_ylim(0.675, 0.78)
-# ax.set_ylim(1.35, 1.55)
-ax.set_xlabel('Number of Ensemble Models')
-ax.set_ylabel('Accuracy Score')
-# ax.set_ylabel('F1 Score')
-# ax.set_ylabel('Accuracy Score + F1 Score')
-ax.boxplot([
-    globals()['performance_8c1'],
-    globals()['best_performance_8c2'],
-    globals()['best_performance_8c3'],
-    globals()['best_performance_8c4'],
-    globals()['best_performance_8c5'],
-    globals()['best_performance_8c6'],
-    globals()['best_performance_8c7'],
-    globals()['best_performance_8c8']
-])
+ax.set_xlabel('Number of Models in Ensemble Network', size=15, labelpad=8)
+ax.set_ylabel('Accuracy', size=15, labelpad=8)
+# ax.set_ylabel('F1 Score', size=15, labelpad=8)
 
-# plt.title('Ensemble Performance (224x224)', size=14)
-plt.title('Ensemble Performance (Image Optimization)', size=14)
+ax.boxplot([
+        globals()['performance_8c1'],
+        globals()['best_performance_8c2'],
+        globals()['best_performance_8c3'],
+        globals()['best_performance_8c4'],
+        globals()['best_performance_8c5'],
+        globals()['best_performance_8c6'],
+        globals()['best_performance_8c7'],
+        globals()['best_performance_8c8']
+        ])
+
+plt.title('Base Ensemble Network Performance', size=18, pad=8)
+# plt.title('Optimized Ensemble Network Performance', size=18, pad=8)
 plt.xticks(range(1, 9), ['Single Model', 2, 3, 4, 5, 6, 7, 8])
+
 plt.show()

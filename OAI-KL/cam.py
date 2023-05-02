@@ -10,53 +10,54 @@ from PIL import Image
 from tqdm import tqdm
 from model import model_return
 
+print()
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model_type', dest='model_type', action='store')
 args = parser.parse_args()
 
 model_ft = model_return(args)
 if args.model_type == 'densenet_161':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/1_DenseNet-161.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/1_DenseNet-161.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'efficientnet_b5':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/2_EfficientNet-b5.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/2_EfficientNet-b5.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'efficientnet_v2_s':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/3_EfficientNet-V2-s.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/3_EfficientNet-V2-s.pt'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (384, 384)
     
 elif args.model_type == 'regnet_y_8gf':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/4_RegNet-Y-8GF.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/4_RegNet-Y-8GF.pt'))
     target_layers = [model_ft.trunk_output[-1]]
     image_size_tuple = (448, 448)
     
 elif args.model_type == 'resnet_101':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/5_ResNet-101.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/5_ResNet-101.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'resnext_50_32x4d':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/6_ResNext-50-32x4d.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/6_ResNext-50-32x4d.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (512, 512)
     
 elif args.model_type == 'wide_resnet_50_2':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/7_Wide-ResNet-50-2.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/7_Wide-ResNet-50-2.pt'))
     target_layers = [model_ft.layer4[-1]]
     image_size_tuple = (456, 456)
     
 elif args.model_type == 'shufflenet_v2_x2_0':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/8_ShuffleNet-V2-x2-0.pt'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/8_ShuffleNet-V2-x2-0.pt'))
     target_layers = [model_ft.conv5]    
     image_size_tuple = (512, 512)
     
 elif args.model_type == 'PingJunChen_vgg_19':
-    model_ft.load_state_dict(torch.load('./Grad CAM (Model)/PingJunChen_vgg_19.pth'))
+    model_ft.load_state_dict(torch.load('./Grad CAM/PingJunChen_vgg_19.pth'))
     target_layers = [model_ft.features[-1]]
     image_size_tuple = (224, 224)
 
@@ -93,4 +94,4 @@ for i in tqdm(test_img_list, unit='Images'):
 
     cam_img = Image.fromarray(visualization, 'RGB')
     cam_img = cam_img.resize((224, 224))
-    cam_img.save(f"./Grad CAM (Model)/{args.model_type}/{i.split(f'test/')[-1]}")
+    cam_img.save(f"./Grad CAM/{args.model_type}/{i.split(f'test/')[-1]}")

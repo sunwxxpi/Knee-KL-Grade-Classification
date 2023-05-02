@@ -10,7 +10,7 @@ test_correct_labels_list = test_correct_labels.values.tolist()
 test_image_num = len(test_correct_labels_list)
 
 fold = 10
-epoch = 11
+epoch = 12
 
 submission_csv = pd.read_csv(f'./submission/{fold}fold_epoch{epoch}_submission.csv', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
 submission_labels = submission_csv['label']
@@ -22,19 +22,19 @@ score = accuracy_score(test_correct_labels_list, submission_labels_list)
 matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, normalize=normalize)
 
 plt.figure(1, figsize=(7, 7.5))
-plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Purples)
-plt.title('Confusion Matrix', size=12)
-plt.colorbar(fraction=0.05, pad=0.05)
-plt.xlabel(f"Predicted label\n\naccuracy={score:.5f}\nTotal : 1656\n0 : 639          1 : 296          2 : 447          3 : 223          4 : 51")
-plt.ylabel("True label")
-plt.xticks(range(5), (0, 1, 2, 3, 4))
-plt.yticks(range(5), (0, 1, 2, 3, 4))
+plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Blues, vmin=0, vmax=1)
+plt.title('3 Model\nBase Ensemble Network', size=19)
+plt.xlabel(f"Predicted label\n\nAccuracy = {score * 100: .2f}%", size=15)
+plt.ylabel("True label", size=15)
+plt.xticks(range(5), (0, 1, 2, 3, 4), size=11)
+plt.yticks(range(5), (0, 1, 2, 3, 4), size=11)
+plt.colorbar(fraction=0.05, pad=0.05, ticks=[0, 0.2, 0.4, 0.6, 0.8, 1])
 
 fmt = '.3f' if normalize=='true' else 'd'
 threshold = 0.5 if normalize=='true' else 450
 for i in range(matrix.shape[0]):
     for j in range(matrix.shape[1]):
-        plt.text(j, i, format(matrix[i, j], fmt), ha='center', va='center', color='white' if matrix[i, j] > threshold else 'black')  # Horizontal Alignment
+        plt.text(j, i, format(matrix[i, j], fmt), ha='center', va='center', color='white' if matrix[i, j] > threshold else 'black', size=13)  # Horizontal Alignment
 
 correct_label = [[0 for _ in range(5)] for _ in range(test_image_num)]
 

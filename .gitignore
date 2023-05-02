@@ -1,13 +1,13 @@
 # Byte-compiled / optimized / DLL files
-OAI-KL/__pycache__/
+OAI-KL/__pycache__
 *.py[cod]
 
 # Dataset / Models / Submissions
-OAI-KL/KneeXray/
-OAI-KL/models/
-OAI-KL/submission/
-OAI-KL/Grad CAM (Model)
-OAI-KL/Ensemble (Submission)
+OAI-KL/KneeXray
+OAI-KL/models
+OAI-KL/submission
+OAI-KL/Grad CAM
+OAI-KL/Ensemble Network Box Plot
 OAI-KL/Final Result
 
 *.pdf

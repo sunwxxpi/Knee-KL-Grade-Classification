@@ -119,12 +119,12 @@ if __name__ == '__main__':
     train_csv = pd.read_csv('./KneeXray/Train.csv')
     # train_csv = pd.read_csv(f'./KneeXray/Train_{image_size_tuple}.csv')
     transform = transforms.Compose([
-                                    transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
-                                    # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
-                                    transforms.RandomHorizontalFlip(p=0.5),
-                                    transforms.RandomRotation(20),
-                                    transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
-                                    ])
+                                transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
+                                # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
+                                transforms.RandomHorizontalFlip(p=0.5),
+                                transforms.RandomRotation(20),
+                                transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                                ])
     dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
     batch_size = 32
     epochs = 1
