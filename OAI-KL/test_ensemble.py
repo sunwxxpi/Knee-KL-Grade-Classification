@@ -2,6 +2,7 @@ import os
 import torch
 import numpy as np
 import pandas as pd
+from collections import Counter
 
 def probs_to_csv(probs_ensemble, set_epoch, ensemble_mode):
     probs_ensemble = np.array(probs_ensemble)
@@ -43,14 +44,17 @@ def probs_to_csv(probs_ensemble, set_epoch, ensemble_mode):
     submit.to_csv(f'{submission_path}/10fold_epoch{set_epoch}_submission.csv', index=False)
     print(f"Save {ensemble_mode} Ensemble submission.csv")
     
-    
 def hard_voting(probs_ensemble): # Hard Voting
     global preds
     preds = []
     
     for i in range(test_image_num):
-        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
-            preds.append(min(labels_ensemble[i])) # Select [Minimum Class]
+        counts = Counter(labels_ensemble[i])
+        max_count = max(counts.values())
+        most_common = [num for num, count in counts.items() if count == max_count]
+        
+        if list(counts.values()).count(max_count) >= 2:
+            preds.append(min(most_common)) # Select [Minimum Class]
         else:
             preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
@@ -70,7 +74,10 @@ def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
     preds = []
     
     for i in range(test_image_num):
-        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])): # Soft Voting
+        counts = Counter(labels_ensemble[i])
+        max_count = max(counts.values())
+        
+        if list(counts.values()).count(max_count) >= 2: # Soft Voting
             probs_ensemble_output = torch.tensor([probs_ensemble[i]])
             preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
         else: # Hard Voting

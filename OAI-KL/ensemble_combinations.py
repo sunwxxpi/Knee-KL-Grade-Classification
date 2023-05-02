@@ -4,14 +4,16 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score
 from itertools import combinations
+from collections import Counter
 
 def make_file_name(model_number):
-    global file_name
     file_name = ''
     
     for i in model_number:
         file_name += i                                                                              
         file_name += '_'
+        
+    return file_name
         
 def calculate_performace(file_name, ensemble_mode):
     submission_csv = pd.read_csv(f'{submission_path}/all/8c{ensemble_model_num}/{file_name}{ensemble_mode}.csv', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
@@ -68,8 +70,12 @@ def hard_voting(probs_ensemble): # Hard Voting
     preds = []
     
     for i in range(test_image_num):
-        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])):
-            preds.append(min(labels_ensemble[i])) # Select [Minimum Class]
+        counts = Counter(labels_ensemble[i])
+        max_count = max(counts.values())
+        most_common = [num for num, count in counts.items() if count == max_count]
+        
+        if list(counts.values()).count(max_count) >= 2:
+            preds.append(min(most_common)) # Select [Minimum Class]
         else:
             preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
             
@@ -89,7 +95,10 @@ def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
     preds = []
     
     for i in range(test_image_num):
-        if len(labels_ensemble[i]) == len(set(labels_ensemble[i])): # Soft Voting
+        counts = Counter(labels_ensemble[i])
+        max_count = max(counts.values())
+        
+        if list(counts.values()).count(max_count) >= 2: # Soft Voting
             probs_ensemble_output = torch.tensor([probs_ensemble[i]])
             preds.extend([j.item() for j in torch.argmax(probs_ensemble_output, axis=1)])
         else: # Hard Voting
@@ -155,7 +164,7 @@ for combinations in combinations_list: # combinations : 8c2, 8c3 ... 8c8
         probs_ensemble_array = np.array(probs_ensemble)
         probs_ensemble = (probs_ensemble_array / ensemble_model_num).tolist()
         
-        make_file_name(model_number=model_number_list)
+        file_name = make_file_name(model_number=model_number_list)
         
         performance = []
         
