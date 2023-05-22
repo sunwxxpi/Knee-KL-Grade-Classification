@@ -46,13 +46,11 @@ for i in submission_list_csv:
 
     print(f'{i}')
     
-    if accuracy >= args.threshold and f1_macro >= args.threshold and f1_weighted >= args.threshold:
+    if accuracy >= args.threshold and f1_macro >= args.threshold:
         print(f"Accuracy Score : {accuracy}")
         print(f"F1 Score (Macro) : {f1_macro}")
-        # print(f"F1 Score (Weighted) : {f1_weighted}")
-        # print(f"Accuracy Score + F1 Score (Macro) : {accuracy + f1_macro}")
         print()
-    elif accuracy < args.threshold or f1_macro < args.threshold or f1_weighted < args.threshold:
+    elif accuracy < args.threshold or f1_macro < args.threshold:
         if args.remove_option == True:
             os.remove(f'{submission_path}/{i}')
             print(f'{submission_path}/{i} Removed')
@@ -69,5 +67,4 @@ print('-------------------------------')
 print(f'{submission_path}')
 print(f"Average Accuracy Score : {avg_accuracy}")
 print(f"Average F1 Score (Macro) : {avg_f1_macro}")
-# print("Average F1 Score (Weighted) : {avg_f1_weighted}")
 print()

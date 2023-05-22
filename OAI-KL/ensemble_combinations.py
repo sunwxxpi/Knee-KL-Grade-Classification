@@ -72,9 +72,9 @@ def hard_voting(probs_ensemble): # Hard Voting
     for i in range(test_image_num):
         counts = Counter(labels_ensemble[i])
         max_count = max(counts.values())
-        most_common = [num for num, count in counts.items() if count == max_count]
         
         if list(counts.values()).count(max_count) >= 2:
+            most_common = [num for num, count in counts.items() if count == max_count]
             preds.append(min(most_common)) # Select [Minimum Class]
         else:
             preds.append(max(labels_ensemble[i], key=labels_ensemble[i].count))
