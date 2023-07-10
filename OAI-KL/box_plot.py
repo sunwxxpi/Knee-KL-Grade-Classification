@@ -43,7 +43,7 @@ plt.rcParams['font.size'] = 11
 fig, ax = plt.subplots()
 
 ax.set_ylim(0.675, 0.78)
-ax.set_xlabel('Number of Models in Ensemble Network', size=15, labelpad=8)
+ax.set_xlabel('Number of Models in the Ensemble Network', size=15, labelpad=8)
 ax.set_ylabel('Accuracy', size=15, labelpad=8)
 # ax.set_ylabel('F1 Score', size=15, labelpad=8)
 

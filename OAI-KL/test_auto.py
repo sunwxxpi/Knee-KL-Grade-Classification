@@ -33,10 +33,10 @@ testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 transform_tta = tta.Compose([tta.HorizontalFlip()])
 
-model_path = f'./models'
-submission_path = f'./submission'
-# model_path = f'./models/{args.model_type}/{image_size_tuple}'
-# submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
+# model_path = f'./models'
+# submission_path = f'./submission'
+model_path = f'./models/{args.model_type}/{image_size_tuple}'
+submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith('.pt')]
 model_list_pt = natsort.natsorted(model_list_pt)

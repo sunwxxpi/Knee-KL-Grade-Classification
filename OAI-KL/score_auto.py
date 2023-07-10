@@ -17,8 +17,8 @@ test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], s
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-submission_path = './submission'
-# submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
+# submission_path = './submission'
+submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
 submission_list_csv = natsort.natsorted(submission_list_csv)
