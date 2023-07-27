@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-OAI-KL/__pycache__
+__pycache__
 *.py[cod]
 
 # Dataset / Models / Submissions
@@ -9,6 +9,9 @@ OAI-KL/submission
 OAI-KL/Grad CAM
 OAI-KL/Ensemble Network Box Plot
 OAI-KL/Final Result
+
+Datasets
+*.pt
 
 *.pdf
 .DS_Store
