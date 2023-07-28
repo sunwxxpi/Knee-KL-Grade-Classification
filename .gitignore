@@ -12,6 +12,7 @@ OAI-KL/Final Result
 
 Datasets
 *.pt
+*.csv
 
 *.pdf
 .DS_Store
