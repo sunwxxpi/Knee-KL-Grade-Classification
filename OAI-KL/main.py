@@ -18,26 +18,26 @@ from model import model_return
 
 def train_for_kfold(model, dataloader, criterion, optimizer, fold, epoch):
     train_loss = 0.0
-    model.train() # model을 train mode로 변환 >> Dropout Layer 같은 경우 train시 동작 해야 함
+    model.train() # Model을 Train Mode로 변환 >> Dropout Layer 같은 경우 Train시 동작 해야 함
     with torch.set_grad_enabled(True): # with문 : 자원의 효율적 사용, 객체의 life cycle을 설계 가능, 항상(True) gradient 연산 기록을 추적
         for batch in tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Train', unit='Batch'):
             optimizer.zero_grad() # 반복 시 gradient(기울기)를 0으로 초기화, gradient는 += 되기 때문
-            image, labels = batch['image'].cuda(), batch['target'].cuda() # tensor를 gpu에 할당
+            image, labels = batch['image'].cuda(), batch['target'].cuda() # Tensor를 GPU에 할당
             
             # labels = F.one_hot(labels, num_classes=5).float() # nn.MSELoss() 사용 시 필요
             output = model(image) # image(data)를 model에 넣어서 hypothesis(가설) 값을 획득
             
-            loss = criterion(output, labels) # error, prediction loss를 계산
-            train_loss += loss.item() # loss.item()을 통해 loss의 스칼라 값을 가져온다.
+            loss = criterion(output, labels) # Error, Prediction Loss 계산
+            train_loss += loss.item() # loss.item()을 통해 Loss의 스칼라 값을 가져온다.
 
-            loss.backward() # prediction loss를 back propagation으로 계산
-            optimizer.step() # optimizer를 이용해 loss를 효율적으로 최소화 할 수 있게 parameter 수정
+            loss.backward() # Prediction Loss를 Back Propagation으로 계산
+            optimizer.step() # optimizer를 이용해 Loss를 효율적으로 최소화 할 수 있게 Parameter 수정
             
     return train_loss
 
 def test_for_kfold(model, dataloader, criterion, fold, epoch):
     test_loss = 0.0
-    model.eval() # model을 eval mode로 전환 >> Dropout Layer 같은 경우 eval시 동작 하지 않아야 함
+    model.eval() # Model을 Eval Mode로 전환 >> Dropout Layer 같은 경우 Eval시 동작 하지 않아야 함
     with torch.no_grad(): # gradient 연산 기록 추적 off
         for batch in tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Valid', unit='Batch'):
             image, labels = batch['image'].cuda(), batch['target'].cuda()
@@ -52,25 +52,26 @@ def test_for_kfold(model, dataloader, criterion, fold, epoch):
 
 def train(dataset, args, batch_size, epochs, k, splits, foldperf):
     for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))), start=1):
-        train_sampler = SubsetRandomSampler(train_idx) # data load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
+        train_sampler = SubsetRandomSampler(train_idx) # Data Load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
         test_sampler = SubsetRandomSampler(val_idx)
         train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
         test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
         
         model_ft = model_return(args)
+        model_ft.load_state_dict(torch.load(f'./Final Result/Optimized Image Size/Model/3_EfficientNet-V2-s.pt'))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
-        model_ft.cuda() # model을 gpu에 할당
+        model_ft.cuda() # Model을 GPU에 할당
 
-        criterion = nn.CrossEntropyLoss() # loss function
+        criterion = nn.CrossEntropyLoss() # Loss Function
         # criterion = nn.MSELoss()
         # criterion = my_ce_mse_loss
-        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # optimizer
+        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
         
         history = {'train_loss': [], 'test_loss': []}
             
-        patience = 5
+        patience = 10
         delta = 0.1
         early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
         
@@ -116,8 +117,7 @@ if __name__ == '__main__':
     print(f"Image Size : ({args.image_size}, {args.image_size})")
     print(f"Learning Rate : {args.learning_rate}")
     
-    train_csv = pd.read_csv('./KneeXray/Train.csv')
-    # train_csv = pd.read_csv(f'./KneeXray/Train_{image_size_tuple}.csv')
+    train_csv = pd.read_csv('./KneeXray/HH_1_center_crop/HH_1_center_crop.csv')
     transform = transforms.Compose([
                                 transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
                                 # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
@@ -126,8 +126,8 @@ if __name__ == '__main__':
                                 transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                                 ])
     dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
-    batch_size = 32
-    epochs = 1
+    batch_size = 16
+    epochs = 100
     k = 5
     torch.manual_seed(42)
     splits = KFold(n_splits=k, shuffle=True, random_state=42)

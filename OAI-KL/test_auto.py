@@ -20,8 +20,7 @@ image_size_tuple = (args.image_size, args.image_size)
 print(f"Model Type : {args.model_type}")
 print(f"Image Size : {image_size_tuple}")
 
-test_csv = pd.read_csv(f"./KneeXray/Test_correct.csv")
-# test_csv = pd.read_csv(f"./KneeXray/Test_correct_{image_size_tuple}.csv")
+test_csv = pd.read_csv(f"./KneeXray/HH_2_center_crop/HH_2_center_crop.csv")
 
 transform = transforms.Compose([
                             transforms.ToTensor(), 
@@ -37,23 +36,31 @@ transform_tta = tta.Compose([tta.HorizontalFlip()])
 # submission_path = f'./submission'
 model_path = f'./models/{args.model_type}/{image_size_tuple}'
 submission_path = f'./submission/{args.model_type}/{image_size_tuple}'
+
 model_list = os.listdir(model_path)
 model_list_pt = [file for file in model_list if file.endswith('.pt')]
 model_list_pt = natsort.natsorted(model_list_pt)
 
+submission_list = os.listdir(submission_path)
+submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
+submission_list_csv = natsort.natsorted(submission_list_csv)
+
 for i in model_list_pt:
+    if f'{os.path.splitext(i)[0]}_submission.csv' in submission_list_csv:
+        continue
+    
     model_ft = model_return(args)
     
-    preds = []
-    probs_correct = []
-    probs_predict = []
-    probs_0, probs_1, probs_2, probs_3, probs_4 = [], [], [], [], []
-
     model_ft.load_state_dict(torch.load(f'{model_path}/{i}'))
     # model_ft = torch.load(f'{model_path}/{i}')
     model_ft.eval()
     model_ft.cuda()
     model_ft = tta.ClassificationTTAWrapper(model_ft, transform_tta)
+    
+    preds = []
+    probs_correct = []
+    probs_predict = []
+    probs_0, probs_1, probs_2, probs_3, probs_4 = [], [], [], [], []
     
     for batch in testloader:
         with torch.no_grad():
@@ -71,8 +78,6 @@ for i in model_list_pt:
         
     submit = pd.DataFrame({'data':[i.split('/')[-1] for i in test_csv['data']], 'label':preds, 'prob_correct':probs_correct, 'prob_predict':probs_predict, 'prob_0':probs_0, 'prob_1':probs_1, 'prob_2':probs_2, 'prob_3':probs_3, 'prob_4':probs_4})
 
-    # fold_and_epoch = i[10:-3]
-    # submit.to_csv(f'{submission_path}/{fold_and_epoch}_submission.csv', index=False)
-    # print(f'save {submission_path}/{fold_and_epoch}_submission.csv')
+    i = os.path.splitext(i)[0]
     submit.to_csv(f'{submission_path}/{i}_submission.csv', index=False)
-    print(f'save {submission_path}/{i}_submission.csv')
+    print(f'Save {submission_path}/{i}_submission.csv')

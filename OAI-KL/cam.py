@@ -10,7 +10,6 @@ from PIL import Image
 from tqdm import tqdm
 from model import model_return
 
-print()
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model_type', dest='model_type', action='store')
 args = parser.parse_args()

@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay, PrecisionRecallDisplay, classification_report
 
-test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/HH_2_center_crop/HH_2_center_crop.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
@@ -16,10 +16,11 @@ submission_csv = pd.read_csv(f'./submission/{fold}fold_epoch{epoch}_submission.c
 submission_labels = submission_csv['label']
 submission_labels_list = submission_labels.values.tolist()
 
+labels = [0, 1, 2, 3, 4]
 normalize = 'true'
 # normalize = None
 score = accuracy_score(test_correct_labels_list, submission_labels_list)
-matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, normalize=normalize)
+matrix = confusion_matrix(test_correct_labels_list, submission_labels_list, labels=labels, normalize=normalize)
 
 plt.figure(1, figsize=(7, 7.5))
 plt.imshow(matrix, interpolation='nearest', cmap=plt.cm.Blues, vmin=0, vmax=1)
@@ -32,8 +33,8 @@ plt.colorbar(fraction=0.05, pad=0.05, ticks=[0, 0.2, 0.4, 0.6, 0.8, 1])
 
 fmt = '.3f' if normalize=='true' else 'd'
 threshold = 0.5 if normalize=='true' else 450
-for i in range(matrix.shape[0]):
-    for j in range(matrix.shape[1]):
+for i in range(len(labels)):
+    for j in range(len(labels)):
         plt.text(j, i, format(matrix[i, j], fmt), ha='center', va='center', color='white' if matrix[i, j] > threshold else 'black', size=13)  # Horizontal Alignment
 
 correct_label = [[0 for _ in range(5)] for _ in range(test_image_num)]
