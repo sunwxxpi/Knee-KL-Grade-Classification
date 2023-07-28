@@ -71,8 +71,8 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         
         history = {'train_loss': [], 'test_loss': []}
             
-        patience = 10
-        delta = 0.1
+        patience = 30
+        delta = 0.2
         early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
         
         for epoch in range(1, epochs + 1):
@@ -127,7 +127,7 @@ if __name__ == '__main__':
                                 ])
     dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
     batch_size = 16
-    epochs = 100
+    epochs = 200
     k = 5
     torch.manual_seed(42)
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
