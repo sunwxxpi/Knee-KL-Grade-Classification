@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 image_size_tuple = (args.image_size, args.image_size)
 
-test_csv = pd.read_csv('./KneeXray/HH_2_center_crop/HH_2_center_crop.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/HH_2/center_crop/HH_2_center_crop.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
@@ -90,7 +90,7 @@ for fold in range(1, 6):
             if accuracy < fold_avg_accuracy and f1_macro < fold_avg_f1_macro and f1_weighted < fold_avg_f1_weighted:
                 print(f"Accuracy Score, F1 Score (Macro, Weighted) : {accuracy:.4f}, {f1_macro:.4f}, {f1_weighted:.4f}")
                 
-                os.remove(f'{basic_path}/{submission.split("_submission")[0]}')
+                os.remove(f'./models/{basic_path}/{submission.split("_submission")[0]}.pt')
                 os.remove(f'{submission_path}/{submission}')
                 print(f'{submission.split("_submission")[0]} Model, Submission Removed')
         print('----------------Remove Process----------------')
