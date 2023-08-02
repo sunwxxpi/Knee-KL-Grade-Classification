@@ -1,13 +1,13 @@
 import torch
 import cv2
 from torch.utils.data import Dataset
-from torchvision import transforms
 
 class ImageDataset(Dataset):
-    def __init__(self, df, image_size, transforms=transforms.Compose([transforms.ToTensor()])):
+    def __init__(self, df, image_size, transforms=None):
         self.path = df['data']
         self.image_size = (image_size, image_size)
         self.transforms = transforms
+        
         if 'label' in df:
             self.target = df['label']
         else:
@@ -23,7 +23,7 @@ class ImageDataset(Dataset):
         image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB) # OpenCV에서는 BGR 방식으로 표현
 
         if self.transforms:
-            image = self.transforms(image)
+            image = self.transforms(image=image)['image']
 
         if self.target is not None:
             return {

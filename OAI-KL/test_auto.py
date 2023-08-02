@@ -2,11 +2,12 @@ import os
 import argparse
 import natsort
 import torch
+import albumentations as A
 import pandas as pd
-import ttach as tta
+import ttach
 from torch import nn
 from torch.utils.data import DataLoader
-from torchvision import transforms
+from albumentations.pytorch.transforms import ToTensorV2
 from dataset import ImageDataset
 from model import model_return
 
@@ -22,15 +23,14 @@ print(f"Image Size : {image_size_tuple}")
 
 test_csv = pd.read_csv(f"./KneeXray/HH_2/center_crop/HH_2_center_crop.csv")
 
-transform = transforms.Compose([
-                            transforms.ToTensor(), 
-                            # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC), 
-                            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-                            ])
+transform = A.Compose([
+                A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
+                ])
 test_data = ImageDataset(test_csv, image_size=args.image_size, transforms=transform)
 testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
-transform_tta = tta.Compose([tta.HorizontalFlip()])
+transform_ttach = ttach.Compose([ttach.HorizontalFlip()])
 
 # model_path = f'./models'
 # submission_path = f'./submission'
@@ -57,7 +57,7 @@ for i in model_list_pt:
     # model_ft = torch.load(f'{model_path}/{i}')
     model_ft.eval()
     model_ft.cuda()
-    model_ft = tta.ClassificationTTAWrapper(model_ft, transform_tta)
+    model_ft = ttach.ClassificationTTAWrapper(model_ft, transform_ttach)
     
     preds = []
     probs_correct = []

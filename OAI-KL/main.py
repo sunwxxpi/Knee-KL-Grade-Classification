@@ -3,10 +3,12 @@ import argparse
 import torch
 import numpy as np
 import pandas as pd
+import albumentations as A
 from torch import nn, optim
 # from torch.nn import functional as F
 from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import transforms
+from torch.optim.lr_scheduler import StepLR
+from albumentations.pytorch.transforms import ToTensorV2
 from sklearn.model_selection import KFold
 from tqdm import tqdm
 from dataset import ImageDataset
@@ -16,7 +18,7 @@ from model import model_return
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 
-def train_for_kfold(model, dataloader, criterion, optimizer, fold, epoch):
+def train_for_kfold(model, dataloader, criterion, optimizer, scheduler, fold, epoch):
     train_loss = 0.0
     model.train() # Model을 Train Mode로 변환 >> Dropout Layer 같은 경우 Train시 동작 해야 함
     with torch.set_grad_enabled(True): # with문 : 자원의 효율적 사용, 객체의 life cycle을 설계 가능, 항상(True) gradient 연산 기록을 추적
@@ -33,10 +35,12 @@ def train_for_kfold(model, dataloader, criterion, optimizer, fold, epoch):
             loss.backward() # Prediction Loss를 Back Propagation으로 계산
             optimizer.step() # optimizer를 이용해 Loss를 효율적으로 최소화 할 수 있게 Parameter 수정
             
+        scheduler.step()
+            
     return train_loss
 
-def test_for_kfold(model, dataloader, criterion, fold, epoch):
-    test_loss = 0.0
+def val_for_kfold(model, dataloader, criterion, fold, epoch):
+    val_loss = 0.0
     model.eval() # Model을 Eval Mode로 전환 >> Dropout Layer 같은 경우 Eval시 동작 하지 않아야 함
     with torch.no_grad(): # gradient 연산 기록 추적 off
         for batch in tqdm(dataloader, desc=f'Fold {fold} Epoch {epoch} Valid', unit='Batch'):
@@ -46,19 +50,22 @@ def test_for_kfold(model, dataloader, criterion, fold, epoch):
             output = model(image)
             
             loss = criterion(output, labels)
-            test_loss += loss.item()
+            val_loss += loss.item()
              
-    return test_loss
+    return val_loss
 
-def train(dataset, args, batch_size, epochs, k, splits, foldperf):
-    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))), start=1):
-        train_sampler = SubsetRandomSampler(train_idx) # Data Load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
-        test_sampler = SubsetRandomSampler(val_idx)
-        train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler) # Data Load
-        test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, foldperf):
+    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(train_dataset))), start=1):
+        # Data Load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
+        train_sampler = SubsetRandomSampler(train_idx)
+        val_sampler = SubsetRandomSampler(val_idx)
+        # Data Load
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=train_sampler)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=val_sampler)
         
         model_ft = model_return(args)
-        model_ft.load_state_dict(torch.load(f'./Final Result/Optimized Image Size/Model/3_EfficientNet-V2-s.pt'))
+        # model_ft.load_state_dict(torch.load(f'./Final Result/Optimized Image Size/Model/3_EfficientNet-V2-s.pt'))
+        model_ft.load_state_dict(torch.load(f'./efficientnet_v2_s_OAI_normalized.pt'))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -67,42 +74,44 @@ def train(dataset, args, batch_size, epochs, k, splits, foldperf):
         criterion = nn.CrossEntropyLoss() # Loss Function
         # criterion = nn.MSELoss()
         # criterion = my_ce_mse_loss
-        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
         
-        history = {'train_loss': [], 'test_loss': []}
+        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
+        scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
+        
+        history = {'train_loss': [], 'val_loss': []}
             
-        patience = 30
-        delta = 0.2
+        patience = 10
+        delta = 0.15
         early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
         
         for epoch in range(1, epochs + 1):
-            train_loss = train_for_kfold(model_ft, train_loader, criterion, optimizer, fold, epoch)
-            test_loss = test_for_kfold(model_ft, test_loader, criterion, fold, epoch)
-
+            train_loss = train_for_kfold(model_ft, train_loader, criterion, optimizer, scheduler, fold, epoch)
+            val_loss = val_for_kfold(model_ft, val_loader, criterion, fold, epoch)
+            
             train_loss = train_loss / len(train_loader)
-            test_loss = test_loss / len(test_loader)
+            val_loss = val_loss / len(val_loader)
 
-            print(f"Epoch: {epoch}/{epochs} \t Avg Train Loss: {train_loss:.3f} \t Avg Valid Loss: {test_loss:.3f}")
+            print(f"Epoch: {epoch}/{epochs} \t Avg Train Loss: {train_loss:.3f} \t Avg Valid Loss: {val_loss:.3f}")
             
             history['train_loss'].append(train_loss)
-            history['test_loss'].append(test_loss)
+            history['val_loss'].append(val_loss)
             
-            early_stopping(test_loss, model_ft, args, fold, epoch)
+            early_stopping(val_loss, model_ft, args, fold, epoch)
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
-        
-        foldperf[f"fold{fold}"] = history  
+            
+        foldperf[f"fold{fold}"] = history
     
-    tl_f, testl_f = [], []
+    tl_f, vall_f = [], []
 
     for f in range(1, k+1):
         tl_f.append(np.mean(foldperf[f'fold{f}']['train_loss']))
-        testl_f.append(np.mean(foldperf[f'fold{f}']['test_loss']))
+        vall_f.append(np.mean(foldperf[f'fold{f}']['val_loss']))
 
     print()
     print(f"Performance of {k} Fold Cross Validation")
-    print(f"Avg Train Loss: {np.mean(tl_f):.3f} \t Avg Valid Loss: {np.mean(testl_f):.3f}")
+    print(f"Avg Train Loss: {np.mean(tl_f):.3f} \t Avg Valid Loss: {np.mean(vall_f):.3f}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -117,20 +126,26 @@ if __name__ == '__main__':
     print(f"Image Size : ({args.image_size}, {args.image_size})")
     print(f"Learning Rate : {args.learning_rate}")
     
-    train_csv = pd.read_csv('./KneeXray/HH_1_center_crop/HH_1_center_crop.csv')
-    transform = transforms.Compose([
-                                transforms.ToTensor(), # 0 ~ 1의 범위를 가지도록 정규화
-                                # transforms.Resize(image_size_tuple, transforms.InterpolationMode.BICUBIC),
-                                transforms.RandomHorizontalFlip(p=0.5),
-                                transforms.RandomRotation(20),
-                                transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
-                                ])
-    dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=transform)
+    train_csv = pd.read_csv('./KneeXray/HH_1/center_crop/HH_1_center_crop.csv')
+
+    train_transform = A.Compose([
+                    A.HorizontalFlip(p=0.5),
+                    A.Rotate(limit=20, p=1),
+                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
+                    ])
+    val_transform = A.Compose([
+                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
+                    ])
+    train_dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=train_transform)
+    val_dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=val_transform)
+    
     batch_size = 16
-    epochs = 200
+    epochs = 5
     k = 5
     torch.manual_seed(42)
     splits = KFold(n_splits=k, shuffle=True, random_state=42)
     foldperf = {}
 
-    train(dataset, args, batch_size, epochs, k, splits, foldperf)
+    train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, foldperf)
