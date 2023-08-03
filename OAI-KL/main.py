@@ -9,7 +9,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.optim.lr_scheduler import StepLR
 from albumentations.pytorch.transforms import ToTensorV2
-from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 from dataset import ImageDataset
 from early_stop import EarlyStopping
@@ -54,18 +54,16 @@ def val_for_kfold(model, dataloader, criterion, fold, epoch):
              
     return val_loss
 
-def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, foldperf):
-    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(train_dataset))), start=1):
+def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, labels, foldperf):
+    for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(train_dataset)), labels), start=1):
         # Data Load에 사용되는 index, key의 순서를 지정하는데 사용, Sequential , Random, SubsetRandom, Batch 등 + Sampler
         train_sampler = SubsetRandomSampler(train_idx)
-        val_sampler = SubsetRandomSampler(val_idx)
+        val_sampler = SubsetRandomSampler(val_idx)        
         # Data Load
         train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=train_sampler)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=val_sampler)
         
         model_ft = model_return(args)
-        # model_ft.load_state_dict(torch.load(f'./Final Result/Optimized Image Size/Model/3_EfficientNet-V2-s.pt'))
-        model_ft.load_state_dict(torch.load(f'./efficientnet_v2_s_OAI_normalized.pt'))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -145,7 +143,8 @@ if __name__ == '__main__':
     epochs = 5
     k = 5
     torch.manual_seed(42)
-    splits = KFold(n_splits=k, shuffle=True, random_state=42)
+    splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)
+    labels = train_dataset.get_labels()
     foldperf = {}
 
-    train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, foldperf)
+    train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, labels, foldperf)
