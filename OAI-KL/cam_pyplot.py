@@ -1,7 +1,9 @@
 import os
+
 import cv2
-import matplotlib.pyplot as plt
+
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 xlabels = ['xlabel', 'Original', 'DenseNet-161', 'EfficientNet-b5', 'EfficientNet-V2-s', 'RegNet-Y-8GF', 'ResNet-101', 'ResNext-50-32x4d', 'Wide-ResNet-50-2', 'ShuffleNet-V2-x2-0', 'Ensembled CAM']
         

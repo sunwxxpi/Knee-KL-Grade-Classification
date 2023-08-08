@@ -1,4 +1,5 @@
 import os
+
 import cv2
 
 input_image_path = "./KneeXray/HH_1/4/"

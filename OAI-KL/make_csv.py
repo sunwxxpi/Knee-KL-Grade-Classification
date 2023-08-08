@@ -1,4 +1,5 @@
 import glob
+
 import pandas as pd
 
 a = glob.glob('./KneeXray/HH_1/0/'+'*.jpg') # glob.glob >> List 형식으로 반환
