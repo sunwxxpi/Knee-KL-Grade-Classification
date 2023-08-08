@@ -1,7 +1,9 @@
 import os
 import argparse
-import natsort
+
 import pandas as pd
+
+import natsort
 from sklearn.metrics import accuracy_score, f1_score
 
 parser = argparse.ArgumentParser()
@@ -13,7 +15,9 @@ args = parser.parse_args()
 
 image_size_tuple = (args.image_size, args.image_size)
 
-test_csv = pd.read_csv('./KneeXray/HH_2/center_crop/HH_2_center_crop.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
+# test_csv = pd.read_csv('./KneeXray/HH_2/HH_2.csv', names=['data', 'label'], skiprows=1)
+
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 

@@ -1,12 +1,14 @@
 import torch
-import cv2
 from torch.utils.data import Dataset
 
+import cv2
+import albumentations as A
+from albumentations.pytorch.transforms import ToTensorV2
+
 class ImageDataset(Dataset):
-    def __init__(self, df, image_size, transforms=None):
+    def __init__(self, df, transforms=None):
         self.data = df['data']
         self.label = df['label']
-        self.image_size = (image_size, image_size)
         self.transforms = transforms
         
         if 'label' in df:
@@ -20,7 +22,6 @@ class ImageDataset(Dataset):
     def __getitem__(self, idx):
         data = self.data[idx]
         image = cv2.imread(data, cv2.IMREAD_GRAYSCALE)
-        image = cv2.resize(image, dsize=self.image_size, interpolation=cv2.INTER_CUBIC)
         image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB) # OpenCV에서는 BGR 방식으로 표현
 
         if self.transforms:

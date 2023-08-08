@@ -1,22 +1,26 @@
 # import ssl
+# ssl._create_default_https_context = ssl._create_unverified_context
 import argparse
-import torch
+
 import numpy as np
 import pandas as pd
-import albumentations as A
+
+import torch
 from torch import nn, optim
 # from torch.nn import functional as F
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.optim.lr_scheduler import StepLR
+
+from tqdm import tqdm
+import cv2
+import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
 from sklearn.model_selection import StratifiedKFold
-from tqdm import tqdm
+
 from dataset import ImageDataset
 from early_stop import EarlyStopping
 from model import model_return
 # from my_custom_loss import my_ce_mse_loss
-
-# ssl._create_default_https_context = ssl._create_unverified_context
 
 def train_for_kfold(model, dataloader, criterion, optimizer, scheduler, fold, epoch):
     train_loss = 0.0
@@ -74,11 +78,11 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
         # criterion = my_ce_mse_loss
         
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
-        scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
+        scheduler = StepLR(optimizer, step_size=1, gamma=1)
         
         history = {'train_loss': [], 'val_loss': []}
             
-        patience = 10
+        patience = 15
         delta = 0.15
         early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
         
@@ -124,23 +128,25 @@ if __name__ == '__main__':
     print(f"Image Size : ({args.image_size}, {args.image_size})")
     print(f"Learning Rate : {args.learning_rate}")
     
-    train_csv = pd.read_csv('./KneeXray/HH_1/center_crop/HH_1_center_crop.csv')
+    train_csv = pd.read_csv('./KneeXray/train/train.csv')
 
     train_transform = A.Compose([
+                    A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
                     A.HorizontalFlip(p=0.5),
                     A.Rotate(limit=20, p=1),
-                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
     val_transform = A.Compose([
-                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
+                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
-    train_dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=train_transform)
-    val_dataset = ImageDataset(train_csv, image_size=args.image_size, transforms=val_transform)
+    train_dataset = ImageDataset(train_csv, transforms=train_transform)
+    val_dataset = ImageDataset(train_csv, transforms=val_transform)
     
     batch_size = 16
-    epochs = 5
+    epochs = 100
     k = 5
     torch.manual_seed(42)
     splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)

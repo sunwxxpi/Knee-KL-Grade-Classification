@@ -1,13 +1,18 @@
 import os
 import argparse
-import natsort
-import torch
-import albumentations as A
+
 import pandas as pd
-import ttach
+
+import torch
 from torch import nn
 from torch.utils.data import DataLoader
+
+import cv2
+import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
+import ttach
+import natsort
+
 from dataset import ImageDataset
 from model import model_return
 
@@ -21,16 +26,7 @@ image_size_tuple = (args.image_size, args.image_size)
 print(f"Model Type : {args.model_type}")
 print(f"Image Size : {image_size_tuple}")
 
-test_csv = pd.read_csv(f"./KneeXray/HH_2/center_crop/HH_2_center_crop.csv")
-
-transform = A.Compose([
-                A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
-                ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
-                ])
-test_data = ImageDataset(test_csv, image_size=args.image_size, transforms=transform)
-testloader = DataLoader(test_data, batch_size=1, shuffle=False)
-
-transform_ttach = ttach.Compose([ttach.HorizontalFlip()])
+test_csv = pd.read_csv(f"./KneeXray/test/test_correct.csv")
 
 # model_path = f'./models'
 # submission_path = f'./submission'
@@ -44,6 +40,18 @@ model_list_pt = natsort.natsorted(model_list_pt)
 submission_list = os.listdir(submission_path)
 submission_list_csv = [file for file in submission_list if file.endswith('.csv')]
 submission_list_csv = natsort.natsorted(submission_list_csv)
+
+transform = A.Compose([
+                A.Resize(int(args.image_size), int(args.image_size), interpolation=cv2.INTER_CUBIC, p=1),
+                A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
+                ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
+                ])
+test_data = ImageDataset(test_csv, transforms=transform)
+testloader = DataLoader(test_data, batch_size=1, shuffle=False)
+
+transform_ttach = ttach.Compose([
+                        ttach.HorizontalFlip(),
+                        ])
 
 for i in model_list_pt:
     base_name = os.path.splitext(i)[0]

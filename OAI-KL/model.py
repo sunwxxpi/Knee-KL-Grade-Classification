@@ -46,6 +46,13 @@ def model_return(args):
         model_ft = models.efficientnet_v2_s(weights='DEFAULT')
         in_ftrs = model_ft.classifier[1].in_features
         model_ft.classifier[1] = nn.Linear(in_ftrs, 5)
+        
+        # for num, block_layer in enumerate(model_ft.features.children()):
+        #     while num < 6:
+        #         for layer in block_layer:
+        #             for param in layer.parameters():
+        #                 param.requires_grad = False
+        #         break
 
     elif args.model_type == 'regnet_y_8gf':
         model_ft = models.regnet_y_8gf(weights='DEFAULT')
