@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 image_size_tuple = (args.image_size, args.image_size)
 
-test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/HH_2/HH_2.csv', names=['data', 'label'], skiprows=1)
 # test_csv = pd.read_csv('./KneeXray/HH_2/HH_2.csv', names=['data', 'label'], skiprows=1)
 
 test_correct_labels = test_csv['label']

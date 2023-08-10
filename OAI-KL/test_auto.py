@@ -26,7 +26,7 @@ image_size_tuple = (args.image_size, args.image_size)
 print(f"Model Type : {args.model_type}")
 print(f"Image Size : {image_size_tuple}")
 
-test_csv = pd.read_csv(f"./KneeXray/test/test_correct.csv")
+test_csv = pd.read_csv(f"./KneeXray/HH_2/HH_2.csv")
 
 # model_path = f'./models'
 # submission_path = f'./submission'
@@ -43,7 +43,7 @@ submission_list_csv = natsort.natsorted(submission_list_csv)
 
 transform = A.Compose([
                 A.Resize(int(args.image_size), int(args.image_size), interpolation=cv2.INTER_CUBIC, p=1),
-                A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
+                A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                 ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                 ])
 test_data = ImageDataset(test_csv, transforms=transform)
@@ -51,6 +51,7 @@ testloader = DataLoader(test_data, batch_size=1, shuffle=False)
 
 transform_ttach = ttach.Compose([
                         ttach.HorizontalFlip(),
+                        ttach.FiveCrops(int(384*0.8), int(384*0.8))
                         ])
 
 for i in model_list_pt:

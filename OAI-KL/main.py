@@ -68,6 +68,7 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
         val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=val_sampler)
         
         model_ft = model_return(args)
+        model_ft.load_state_dict(torch.load(f'./OAI_GD_ET.pt'))
                 
         if torch.cuda.device_count() > 1:
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
@@ -78,7 +79,7 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
         # criterion = my_ce_mse_loss
         
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
-        scheduler = StepLR(optimizer, step_size=1, gamma=1)
+        scheduler = StepLR(optimizer, step_size=1, gamma=0.8)
         
         history = {'train_loss': [], 'val_loss': []}
             
@@ -128,25 +129,28 @@ if __name__ == '__main__':
     print(f"Image Size : ({args.image_size}, {args.image_size})")
     print(f"Learning Rate : {args.learning_rate}")
     
-    train_csv = pd.read_csv('./KneeXray/train/train.csv')
+    train_csv = pd.read_csv('./KneeXray/HH_1/HH_1.csv')
 
     train_transform = A.Compose([
                     A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
+                    A.RandomCrop(height=int(384*0.8), width=int(384*0.8), p=1),
+                    A.GridDistortion(p=0.5),
+                    A.ElasticTransform(p=0.5),
                     A.HorizontalFlip(p=0.5),
                     A.Rotate(limit=20, p=1),
-                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
     val_transform = A.Compose([
                     A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
-                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
     train_dataset = ImageDataset(train_csv, transforms=train_transform)
     val_dataset = ImageDataset(train_csv, transforms=val_transform)
     
     batch_size = 16
-    epochs = 100
+    epochs = 10
     k = 5
     torch.manual_seed(42)
     splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)
