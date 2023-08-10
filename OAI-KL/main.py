@@ -74,12 +74,12 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
             model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
         model_ft.cuda() # Model을 GPU에 할당
 
-        criterion = nn.CrossEntropyLoss() # Loss Function
+        criterion = nn.CrossEntropyLoss(label_smoothing=0.3) # Loss Function
         # criterion = nn.MSELoss()
         # criterion = my_ce_mse_loss
         
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
-        scheduler = StepLR(optimizer, step_size=1, gamma=0.8)
+        scheduler = StepLR(optimizer, step_size=1, gamma=0.9)
         
         history = {'train_loss': [], 'val_loss': []}
             
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     val_dataset = ImageDataset(train_csv, transforms=val_transform)
     
     batch_size = 16
-    epochs = 10
+    epochs = 30
     k = 5
     torch.manual_seed(42)
     splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)

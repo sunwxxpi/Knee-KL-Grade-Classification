@@ -10,8 +10,8 @@ test_correct_labels_list = test_correct_labels.values.tolist()
 
 test_image_num = len(test_correct_labels_list)
 
-fold = 10
-epoch = 12
+fold = 5
+epoch = 18
 
 submission_csv = pd.read_csv(f'./submission/{fold}fold_epoch{epoch}_submission.csv', names=['data', 'label', 'prob_correct', 'prob_predict', 'prob_0', 'prob_1', 'prob_2', 'prob_3', 'prob_4'], skiprows=1)
 submission_labels = submission_csv['label']
@@ -55,17 +55,17 @@ for i in range(test_image_num):
 probs = []
 
 for i in range(test_image_num):
-        globals()[f'image_{i}'] = [0 for j in range(5)]
+    globals()[f'image_{i}'] = [0 for _ in range(5)]
         
 for i in range(5):
-        submission_probs = submission_csv[f'prob_{i}']
-        submission_probs_list = submission_probs.values.tolist()
-        
-        for j in range(test_image_num):
-            globals()[f'image_{j}'][i] = submission_probs_list[j]
+    submission_probs = submission_csv[f'prob_{i}']
+    submission_probs_list = submission_probs.values.tolist()
+    
+    for j in range(test_image_num):
+        globals()[f'image_{j}'][i] = submission_probs_list[j]
             
 for i in range(test_image_num):
-        probs.append(globals()[f'image_{i}'])
+    probs.append(globals()[f'image_{i}'])
 
 correct_label = np.array(correct_label)
 probs = np.array(probs)
