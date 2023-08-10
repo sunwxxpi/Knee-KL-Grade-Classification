@@ -2,7 +2,6 @@ import os
 import argparse
 
 import pandas as pd
-
 import natsort
 from sklearn.metrics import accuracy_score, f1_score
 

@@ -1,11 +1,10 @@
 import os
+from collections import Counter
 
 import numpy as np
 import pandas as pd
 
 import torch
-
-from collections import Counter
 
 def probs_to_csv(probs_ensemble, set_epoch, ensemble_mode):
     probs_ensemble = np.array(probs_ensemble)

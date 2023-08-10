@@ -1,12 +1,12 @@
-import torch
-from torch.utils.data import Dataset
-
 import cv2
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
 
+import torch
+from torch.utils.data import Dataset
+
 class ImageDataset(Dataset):
-    def __init__(self, df, transforms=None):
+    def __init__(self, df, transforms=A.Compose([ToTensorV2()])):
         self.data = df['data']
         self.label = df['label']
         self.transforms = transforms

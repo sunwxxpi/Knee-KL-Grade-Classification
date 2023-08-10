@@ -1,14 +1,12 @@
 import os
+from itertools import combinations
+from collections import Counter
 
 import numpy as np
 import pandas as pd
-
-import torch
-
 from sklearn.metrics import accuracy_score, f1_score
 
-from itertools import combinations
-from collections import Counter
+import torch
 
 def make_file_name(model_number):
     file_name = ''

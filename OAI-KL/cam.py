@@ -2,16 +2,14 @@ import argparse
 
 import numpy as np
 import pandas as pd
-
-import torch
-import torchvision
-
 from tqdm import tqdm
 from PIL import Image
-
 from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, XGradCAM, AblationCAM, ScoreCAM, EigenCAM, FullGrad
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+
+import torch
+import torchvision
 
 from model import model_return
 

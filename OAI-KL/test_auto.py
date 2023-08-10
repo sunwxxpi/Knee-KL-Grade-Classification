@@ -2,16 +2,15 @@ import os
 import argparse
 
 import pandas as pd
-
-import torch
-from torch import nn
-from torch.utils.data import DataLoader
-
 import cv2
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
 import ttach
 import natsort
+
+import torch
+from torch import nn
+from torch.utils.data import DataLoader
 
 from dataset import ImageDataset
 from model import model_return
