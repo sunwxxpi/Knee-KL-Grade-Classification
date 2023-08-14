@@ -78,7 +78,7 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
         # criterion = my_ce_mse_loss
         
         optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
-        scheduler = StepLR(optimizer, step_size=1, gamma=0.9)
+        scheduler = StepLR(optimizer, step_size=1, gamma=0.8)
         
         history = {'train_loss': [], 'val_loss': []}
             
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     print(f"Image Size : ({args.image_size}, {args.image_size})")
     print(f"Learning Rate : {args.learning_rate}")
     
-    train_csv = pd.read_csv('./KneeXray/HH_1/HH_1.csv')
+    train_csv = pd.read_csv('./KneeXray/HH_1/resize/HH_1_resize.csv')
 
     train_transform = A.Compose([
                     A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),

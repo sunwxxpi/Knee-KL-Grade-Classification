@@ -25,7 +25,7 @@ image_size_tuple = (args.image_size, args.image_size)
 print(f"Model Type : {args.model_type}")
 print(f"Image Size : {image_size_tuple}")
 
-test_csv = pd.read_csv(f"./KneeXray/HH_2/HH_2.csv")
+test_csv = pd.read_csv(f"./KneeXray/HH_2/resize/HH_2_resize.csv")
 
 # model_path = f'./models'
 # submission_path = f'./submission'
