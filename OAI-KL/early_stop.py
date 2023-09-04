@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 class EarlyStopping:
-    def __init__(self, args, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
+    def __init__(self, args, patience=7, verbose=False, delta=0):
         """
         Args:
             patience (int): validation loss가 개선된 후 기다리는 기간
@@ -13,8 +13,6 @@ class EarlyStopping:
                             Default: False
             delta (float): 개선되었다고 인정되는 monitered quantity의 최소 변화
                             Default: 0
-            path (str): checkpoint 저장 경로
-                            Default: 'checkpoint.pt'
         """
         self.args = args
         self.patience = patience
@@ -24,7 +22,6 @@ class EarlyStopping:
         self.early_stop = False
         self.val_loss_min = np.Inf
         self.delta = delta
-        self.path = path
 
     def save_checkpoint(self, val_loss, model, args, fold, epoch):
         if self.verbose:

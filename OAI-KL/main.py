@@ -14,7 +14,7 @@ import torch
 from torch import nn, optim
 # from torch.nn import functional as F
 from torch.utils.data import DataLoader, SubsetRandomSampler
-from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import StepLR, MultiStepLR
 
 from dataset import ImageDataset
 from early_stop import EarlyStopping
@@ -37,8 +37,9 @@ def train_for_kfold(model, dataloader, criterion, optimizer, scheduler, fold, ep
 
             loss.backward() # Prediction Loss를 Back Propagation으로 계산
             optimizer.step() # optimizer를 이용해 Loss를 효율적으로 최소화 할 수 있게 Parameter 수정
-            
-        scheduler.step()
+        
+        if scheduler is not None:
+            scheduler.step()
             
     return train_loss
 
@@ -67,26 +68,35 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
         val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=val_sampler)
         
         model_ft = model_return(args)
-        model_ft.load_state_dict(torch.load(f'./OAI_GD_ET.pt'))
-                
-        if torch.cuda.device_count() > 1:
-            model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
-        model_ft.cuda() # Model을 GPU에 할당
-
-        criterion = nn.CrossEntropyLoss(label_smoothing=0.3) # Loss Function
+        
+        criterion = nn.CrossEntropyLoss(label_smoothing=0.1) # Loss Function
         # criterion = nn.MSELoss()
         # criterion = my_ce_mse_loss
         
-        optimizer = optim.Adam(model_ft.parameters(), lr=args.learning_rate) # Optimizer
-        scheduler = StepLR(optimizer, step_size=1, gamma=0.8)
+        optimizer = optim.Adam(filter(lambda p: p.requires_grad, model_ft.parameters()), lr=0.01) # Optimizer
+        scheduler = None
+        
+        if torch.cuda.device_count() > 1:
+            model_ft = nn.DataParallel(model_ft) # model이 여러 대의 gpu에 할당되도록 병렬 처리
+        model_ft.cuda() # Model을 GPU에 할당
         
         history = {'train_loss': [], 'val_loss': []}
             
-        patience = 15
-        delta = 0.15
+        patience = 7
+        delta = 0.1
         early_stopping = EarlyStopping(args, patience=patience, verbose=True, delta=delta)
         
         for epoch in range(1, epochs + 1):
+            if epoch == 2:
+                for param in model_ft.parameters():
+                    param.requires_grad=True
+
+                optimizer = optim.Adam(filter(lambda p: p.requires_grad,model_ft.parameters()), weight_decay=0.0001, lr=0.001)
+                # scheduler = StepLR(optimizer, step_size=100, gamma=0.1)
+                scheduler = MultiStepLR(optimizer, milestones=[2], gamma=0.1)
+
+            print(f"Learning Rate : {optimizer.param_groups[0]['lr']}")
+                
             train_loss = train_for_kfold(model_ft, train_loader, criterion, optimizer, scheduler, fold, epoch)
             val_loss = val_for_kfold(model_ft, val_loader, criterion, fold, epoch)
             
@@ -104,7 +114,7 @@ def train(train_dataset, val_dataset, args, batch_size, epochs, k, splits, label
                 break
             
         foldperf[f"fold{fold}"] = history
-    
+            
     tl_f, vall_f = [], []
 
     for f in range(1, k+1):
@@ -119,37 +129,35 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model_type', dest='model_type', action='store')
     parser.add_argument('-i', '--image_size', type=int, default=224, dest='image_size', action='store')
-    parser.add_argument('-l', '--learning_rate', type=float, default=0.0005, dest='learning_rate', action='store')
     args = parser.parse_args()
     
     image_size_tuple = (args.image_size, args.image_size)
     
     print(f"Model Type : {args.model_type}")
-    print(f"Image Size : ({args.image_size}, {args.image_size})")
-    print(f"Learning Rate : {args.learning_rate}")
-    
-    train_csv = pd.read_csv('./KneeXray/HH_1/resize/HH_1_resize.csv')
+    print(f"Image Size : {image_size_tuple}")
+        
+    train_csv = pd.read_csv('./KneeXray/train/train.csv')
 
     train_transform = A.Compose([
                     A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
-                    A.RandomCrop(height=int(384*0.8), width=int(384*0.8), p=1),
-                    A.GridDistortion(p=0.5),
-                    A.ElasticTransform(p=0.5),
+                    # A.RandomCrop(height=int(384*0.8), width=int(384*0.8), p=1),
+                    # A.GridDistortion(p=0.5),
+                    # A.ElasticTransform(p=0.5),
                     A.HorizontalFlip(p=0.5),
                     A.Rotate(limit=20, p=1),
-                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
     val_transform = A.Compose([
                     A.Resize(args.image_size, args.image_size, interpolation=cv2.INTER_CUBIC, p=1),
-                    A.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]), # -1 ~ 1의 범위를 가지도록 정규화
+                    A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), # -1 ~ 1의 범위를 가지도록 정규화
                     ToTensorV2() # 0 ~ 1의 범위를 가지도록 정규화
                     ])
     train_dataset = ImageDataset(train_csv, transforms=train_transform)
     val_dataset = ImageDataset(train_csv, transforms=val_transform)
     
     batch_size = 16
-    epochs = 30
+    epochs = 40
     k = 5
     torch.manual_seed(42)
     splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)
