@@ -45,7 +45,7 @@ for submission in submission_list_csv:
     f1_weighted = f1_score(test_correct_labels_list, submission_labels_list, average='weighted')
     
     with open('./performance.txt', 'a', encoding='utf8') as f:
-        f.write(f"{submission.split('_submission')[0]} Accuracy Score, F1 Score (Macro, Weighted) : {accuracy:.4f}, {f1_macro:.4f}, {f1_weighted:.4f}\n")
+        f.write(f"{submission.split('_submission')[0]} : {accuracy:.4f}, {f1_macro:.4f}, {f1_weighted:.4f}\n")
     
     sum_accuracy += accuracy
     sum_f1_macro += f1_macro
@@ -56,9 +56,7 @@ avg_f1_macro = sum_f1_macro / submission_num
 avg_f1_weighted = sum_f1_weighted / submission_num
 
 with open('./performance.txt', 'a', encoding='utf8') as f:
-    f.write(f'\nAverage Accuracy Score : {avg_accuracy:.4f}\n')
-    f.write(f'Average F1 Score (Macro) : {avg_f1_macro:.4f}\n')
-    f.write(f'Average F1 Score (Weighted) : {avg_f1_weighted:.4f}\n')
+    f.write(f'\n{avg_accuracy:.4f}, {avg_f1_macro:.4f}, {avg_f1_weighted:.4f}\n')
     f.write('---------------------------------------------------------------------------------------------\n\n')
     
 print("Write Performance at 'performance.txt'")

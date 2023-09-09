@@ -87,7 +87,7 @@ def mix_voting(probs_ensemble): # Hard Voting + Soft Voting = Mix Voting
             
     probs_to_csv(probs_ensemble=probs_ensemble, set_epoch=12, ensemble_mode='mix')
 
-test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 

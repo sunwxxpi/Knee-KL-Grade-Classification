@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay, PrecisionRecallDisplay, classification_report
 
-test_csv = pd.read_csv('./KneeXray/HH_2/HH_2.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 

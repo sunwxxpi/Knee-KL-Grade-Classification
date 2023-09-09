@@ -19,7 +19,6 @@ test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-# submission_path = './submission'
 basic_path = f'{args.model_type}/{image_size_tuple}'
 submission_path = os.path.join('./submission', basic_path)
 

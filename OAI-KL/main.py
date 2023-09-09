@@ -157,7 +157,7 @@ if __name__ == '__main__':
     val_dataset = ImageDataset(train_csv, transforms=val_transform)
     
     batch_size = 16
-    epochs = 40
+    epochs = 30
     k = 5
     torch.manual_seed(42)
     splits = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)

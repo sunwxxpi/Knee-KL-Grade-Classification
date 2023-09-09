@@ -20,7 +20,7 @@ for i in range(1, 9):
 for i in range(1, 9):
     globals()[f'best_performance_8c{i}'] = []
 
-test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 

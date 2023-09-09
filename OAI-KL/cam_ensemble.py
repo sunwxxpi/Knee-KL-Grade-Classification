@@ -26,7 +26,7 @@ def cam_image(image, image_size_tuple, cam):
     
     return img
 
-test_csv = pd.read_csv('./KneeXray/Test_correct.csv', names=['data', 'label'], skiprows=1)
+test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label'], skiprows=1)
 test_img = test_csv['data']
 test_img_list = test_img.values.tolist()
 
