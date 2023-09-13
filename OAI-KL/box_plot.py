@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score
@@ -24,7 +23,7 @@ test_csv = pd.read_csv('./KneeXray/test/test_correct.csv', names=['data', 'label
 test_correct_labels = test_csv['label']
 test_correct_labels_list = test_correct_labels.values.tolist()
 
-submission_ensemble_all_dir = './Ensemble Network Box Plot/all'
+submission_ensemble_all_dir = './Ensemble Network Box Plot/Base Ensemble Network Revision/all'
 model_combinations_dir_list = os.listdir(submission_ensemble_all_dir)
 
 for model_combinations_dir_index, model_combinations_dir in enumerate(model_combinations_dir_list, start=1):
