@@ -2,6 +2,8 @@
 __pycache__
 *.py[cod]
 
+.DS_Store
+
 # Dataset / Models / Submissions
 OAI-KL/KneeXray
 OAI-KL/models
@@ -9,11 +11,7 @@ OAI-KL/submission
 
 OAI-KL/Grad CAM
 OAI-KL/Ensemble Network Box Plot
-OAI-KL/Final Result
 OAI-KL/Score txt
+OAI-KL/Final Result
 
 OAI-KL/HealthHub FT
-
-*.txt
-*.pdf
-.DS_Store
