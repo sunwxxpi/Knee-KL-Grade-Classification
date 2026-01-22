@@ -46,8 +46,7 @@ Grad-CAM visualization is used to understand the focus areas of the model. The v
 ![alt text](./image/cam.png)
 
 ## License
-Ensemble deep‐learning networks for automated osteoarthritis grading in knee X‐ray image  
-is released under the [MIT License](LICENSE).
+Ensemble deep‐learning networks for automated osteoarthritis grading in knee X‐ray image is released under the [MIT License](LICENSE).
 
 ## Citation
 ```
